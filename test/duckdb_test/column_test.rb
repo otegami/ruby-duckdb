@@ -140,6 +140,10 @@ module DuckDBTest
       assert_equal(EXPECTED_TYPES, @columns.map(&:type))
     end
 
+    def test_logical_type
+      assert_equal(EXPECTED_TYPES, @columns.map(&:logical_type))
+    end
+
     def test_name
       assert_equal(EXPECTED_NAMES, @columns.map(&:name))
     end
