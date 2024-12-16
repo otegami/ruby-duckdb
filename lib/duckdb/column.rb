@@ -18,5 +18,14 @@ module DuckDB
       type_id = _type
       DuckDB::Converter::IntToSym.type_to_sym(type_id)
     end
+
+    def logical_type
+      logical_type_id = _logical_type
+      if logical_type_id.is_a?(Integer)
+        DuckDB::Converter::IntToSym.type_to_sym(logical_type_id)
+      else
+        logical_type_id
+      end
+    end
   end
 end
