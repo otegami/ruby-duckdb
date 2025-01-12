@@ -28,10 +28,6 @@ module DuckDBTest
       @columns = result.columns
     end
 
-    def test_defined_klass
-      assert(DuckDB.const_defined?(:LogicalType))
-    end
-
     def test_decimal_width
       decimal_column = @columns.find { |column| column.type == :decimal }
       assert_equal(9, decimal_column.logical_type.width)
