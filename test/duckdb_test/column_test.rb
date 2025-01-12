@@ -145,6 +145,11 @@ module DuckDBTest
       assert(logical_types.all? { |logical_type| logical_type.is_a?(DuckDB::LogicalType) })
     end
 
+    def test_logical_type_type
+      logical_types = @columns.map(&:logical_type)
+      assert_equal(EXPECTED_TYPES, logical_types.map(&:type))
+    end
+
     def test_name
       assert_equal(EXPECTED_NAMES, @columns.map(&:name))
     end
