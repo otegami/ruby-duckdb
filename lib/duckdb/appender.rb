@@ -51,7 +51,7 @@ module DuckDB
     end
 
     # :call-seq:
-    #  flush -> self
+    #   appender.flush -> self
     #
     # Flushes the appender to the table, forcing the cache of the appender to be cleared.
     # If flushing the data triggers a constraint violation or any other error, then all
@@ -74,7 +74,7 @@ module DuckDB
     end
 
     # :call-seq:
-    #   close -> self
+    #   appender.close -> self
     #
     # Closes the appender by flushing all intermediate states and closing it for further appends.
     # If flushing the data triggers a constraint violation or any other error, then all data is
@@ -158,6 +158,69 @@ module DuckDB
       return self if _append_int16(value)
 
       raise_appender_error('failed to append_int16')
+    end
+
+    # call-seq:
+    #   appender.append_int32(val) -> self
+    #
+    # Appends an int32(INTEGER) value to the current row in the appender.
+    #
+    #   require 'duckdb'
+    #   db = DuckDB::Database.open
+    #   con = db.connect
+    #   con.query('CREATE TABLE users (id INTEGER, age INTEGER)')
+    #   appender = con.appender('users')
+    #   appender
+    #     .append_int32(1)
+    #     .append_int32(20)
+    #     .end_row
+    #     .flush
+    def append_int32(value)
+      return self if _append_int32(value)
+
+      raise_appender_error('failed to append_int32')
+    end
+
+    # call-seq:
+    #   appender.append_int64(val) -> self
+    #
+    # Appends an int64(BIGINT) value to the current row in the appender.
+    #
+    #   require 'duckdb'
+    #   db = DuckDB::Database.open
+    #   con = db.connect
+    #   con.query('CREATE TABLE users (id INTEGER, age BIGINT)')
+    #   appender = con.appender('users')
+    #   appender
+    #     .append_int32(1)
+    #     .append_int64(20)
+    #     .end_row
+    #     .flush
+    def append_int64(value)
+      return self if _append_int64(value)
+
+      raise_appender_error('failed to append_int64')
+    end
+
+    # call-seq:
+    #  appender.append_uint8(val) -> self
+    #
+    # Appends an uint8 value to the current row in the appender.
+    #
+    #  require 'duckdb'
+    #  db = DuckDB::Database.open
+    #  con = db.connect
+    #  con.query('CREATE TABLE users (id INTEGER, age UTINYINT)')
+    #  appender = con.appender('users')
+    #  appender
+    #    .append_int32(1)
+    #    .append_uint8(20)
+    #    .end_row
+    #    .flush
+    def append_uint8(value)
+      return self if _append_uint8(value)
+
+      raise_appender_error('failed to append_uint8')
     end
 
     # appends huge int value.

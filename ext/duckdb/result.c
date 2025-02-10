@@ -24,7 +24,6 @@ static void deallocate(void *ctx);
 static VALUE allocate(VALUE klass);
 static size_t memsize(const void *p);
 static VALUE duckdb_result_column_count(VALUE oDuckDBResult);
-static VALUE duckdb_result_row_count(VALUE oDuckDBResult);
 static VALUE duckdb_result_rows_changed(VALUE oDuckDBResult);
 static VALUE duckdb_result_columns(VALUE oDuckDBResult);
 static VALUE duckdb_result_streaming_p(VALUE oDuckDBResult);
@@ -149,36 +148,6 @@ static VALUE duckdb_result_column_count(VALUE oDuckDBResult) {
 
 /*
  *  call-seq:
- *    result.row_count -> Integer
- *
- *  Returns the column size of the result.
- *
- *    DuckDB::Database.open do |db|
- *      db.connect do |con|
- *        r = con.query('CREATE TABLE t2 (id INT, name VARCHAR(128))')
- *        r = con.query("INSERT INTO t2 VALUES (1, 'Alice'), (2, 'Bob'), (3, 'Catherine')")
- *        r = con.query('SELECT * FROM t2')
- *        r.row_count # => 3
- *        r = con.query('SELECT * FROM t2 where id = 1')
- *        r.row_count # => 1
- *      end
- *    end
- *
- */
-static VALUE duckdb_result_row_count(VALUE oDuckDBResult) {
-
-#ifdef DUCKDB_API_NO_DEPRECATED
-    return Qnil;
-#else
-    rubyDuckDBResult *ctx;
-    rb_warn("`row_count` will be deprecated in the future.");
-    TypedData_Get_Struct(oDuckDBResult, rubyDuckDBResult, &result_data_type, ctx);
-    return LL2NUM(duckdb_row_count(&(ctx->result)));
-#endif
-}
-
-/*
- *  call-seq:
  *    result.columns -> DuckDB::Column[]
  *
  *  Returns the column class Lists.
@@ -270,11 +239,7 @@ static VALUE duckdb_result__chunk_stream(VALUE oDuckDBResult) {
 
     arg.col_count = duckdb_column_count(&(ctx->result));
 
-#ifdef HAVE_DUCKDB_H_GE_V1_0_0
     while((arg.chunk = duckdb_fetch_chunk(ctx->result)) != NULL) {
-#else
-    while((arg.chunk = duckdb_stream_fetch_chunk(ctx->result)) != NULL) {
-#endif
         rb_ensure(yield_rows, (VALUE)&arg, destroy_data_chunk, (VALUE)&arg);
     }
     return Qnil;
@@ -913,7 +878,6 @@ void rbduckdb_init_duckdb_result(void) {
     rb_define_alloc_func(cDuckDBResult, allocate);
 
     rb_define_method(cDuckDBResult, "column_count", duckdb_result_column_count, 0);
-    rb_define_method(cDuckDBResult, "row_count", duckdb_result_row_count, 0); /* deprecated */
     rb_define_method(cDuckDBResult, "rows_changed", duckdb_result_rows_changed, 0);
     rb_define_method(cDuckDBResult, "columns", duckdb_result_columns, 0);
     rb_define_method(cDuckDBResult, "streaming?", duckdb_result_streaming_p, 0);

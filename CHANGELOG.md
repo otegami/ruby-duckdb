@@ -2,10 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 # Unreleased
+- bump duckdb to 1.2.0.
+- add `DuckDB::LogicalType` class(Thanks to @otegami).
+  - `DuckDB::LogicalType` class is under construction. `DuckDB::LogicalType#type`, `DuckDB::LogicalType#width`,
+    `DuckDB::LogicalType#scale`, `DuckDB::LogicalType#child_type` are available.
 - add `DuckDB::Appender#error_message`.
 - fix error message when `DuckDB::Appender#flush`, `DuckDB::Appender#close`, `DuckDB::Appender#end_row`,
-  `DuckDB::Appender#append_bool`, `DuckDB::Appender#append_int8`, `DuckDB::Appender#append_int16` failed.
+  `DuckDB::Appender#append_bool`, `DuckDB::Appender#append_int8`, `DuckDB::Appender#append_int16`,
+  `DuckDB::Appender#append_int32`, `DuckDB::Appender#append_int64`, `DuckDB::Appender#append_uint8` failed.
 - `DuckDB::Appender#begin_row` does nothing. Only returns self. `DuckDB::Appender#end_row` is only required.
+
+## Breaking changes
+- `DuckDB::Result#row_count`, `DuckDB::Result#row_size` are deprecated.
+- `DuckDB::Result#use_chunk_each?`, `DuckDB::Result#use_chunk_each=` are deprecated.
 
 # 1.1.3.1 - 2024-11-27
 - fix to `DuckDB::Connection#query` with multiple SQL statements. Calling PreparedStatement#destroy after each statement executed.
