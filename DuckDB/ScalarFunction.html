@@ -5,11 +5,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>class DuckDB::InstanceCache - RDoc Documentation</title>
+<title>class DuckDB::ScalarFunction - RDoc Documentation</title>
 
-  <meta name="keywords" content="ruby,class,DuckDB::InstanceCache">
+  <meta name="keywords" content="ruby,class,DuckDB::ScalarFunction">
 
-    <meta name="description" content="class DuckDB::InstanceCache: program (re)opens multiple databases to the same file within the same statement. InstanceCache.">
+    <meta name="description" content="Documentation for the DuckDB::ScalarFunction class">
 
 
 <script type="text/javascript">
@@ -86,8 +86,7 @@
   <div class="nav-section">
     <h3>Instance Methods</h3>
     <ul class="link-list" role="directory">
-      <li ><a href="#method-i-destroy">destroy</a></li>
-      <li ><a href="#method-i-get">get</a></li>
+      <li ><a href="#method-i-set_name">set_name</a></li>
     </ul>
   </div>
 
@@ -101,7 +100,7 @@
 
 </nav>
 
-<main role="main" aria-labelledby="class-DuckDB::InstanceCache">
+<main role="main" aria-labelledby="class-DuckDB::ScalarFunction">
   
   
     <ol role="navigation" aria-label="breadcrumb" class="breadcrumb">
@@ -114,27 +113,19 @@
       
       <li>
         
-        <span>InstanceCache</span>
+        <span>ScalarFunction</span>
         
       </li>
       
     </ol>
   
 
-  <h1 id="class-DuckDB::InstanceCache" class="anchor-link class">
-    class DuckDB::InstanceCache
+  <h1 id="class-DuckDB::ScalarFunction" class="anchor-link class">
+    class DuckDB::ScalarFunction
   </h1>
 
   <section class="description">
     
-<p>The <a href="InstanceCache.html"><code>DuckDB::InstanceCache</code></a> is necessary if a client/program (re)opens multiple databases to the same file within the same statement.</p>
-
-<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
-<span class="ruby-identifier">cache</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">InstanceCache</span>.<span class="ruby-identifier">new</span>
-<span class="ruby-identifier">db1</span> = <span class="ruby-identifier">cache</span>.<span class="ruby-identifier">get</span>(<span class="ruby-value">path:</span> <span class="ruby-string">&#39;db.duckdb&#39;</span>)
-<span class="ruby-identifier">db2</span> = <span class="ruby-identifier">cache</span>.<span class="ruby-identifier">get</span>(<span class="ruby-value">path:</span> <span class="ruby-string">&#39;db.duckdb&#39;</span>)
-</pre>
-
   </section>
 
   <section id="5Buntitled-5D" class="documentation-section anchor-link">
@@ -166,16 +157,10 @@
 
         <div class="method-description">
           <div class="method-source-code" id="new-source">
-            <pre>static VALUE duckdb_instance_cache_initialize(VALUE self) {
-    rubyDuckDBInstanceCache *ctx;
-
-    TypedData_Get_Struct(self, rubyDuckDBInstanceCache, &amp;instance_cache_data_type, ctx);
-
-    ctx-&gt;instance_cache = duckdb_create_instance_cache();
-    if (ctx-&gt;instance_cache == NULL) {
-        rb_raise(eDuckDBError, &quot;Failed to create instance cache&quot;);
-    }
-
+            <pre>static VALUE duckdb_scalar_function_initialize(VALUE self) {
+    rubyDuckDBScalarFunction *p;
+    TypedData_Get_Struct(self, rubyDuckDBScalarFunction, &amp;scalar_function_data_type, p);
+    p-&gt;scalar_function = duckdb_create_scalar_function();
     return self;
 }</pre>
           </div>
@@ -192,12 +177,12 @@
          <h3>Public Instance Methods</h3>
        </header>
 
-      <div id="method-i-destroy" class="method-detail anchor-link ">
+      <div id="method-i-set_name" class="method-detail anchor-link ">
         <div class="method-header">
             <div class="method-heading">
-              <a href="#method-i-destroy" title="Link to this method">
-                <span class="method-name">destroy</span>
-                <span class="method-args">()</span>
+              <a href="#method-i-set_name" title="Link to this method">
+                <span class="method-name">set_name</span>
+                <span class="method-args">(p1)</span>
               </a>
             </div>
         </div>
@@ -209,54 +194,18 @@
           </div>
 
         <div class="method-description">
-          <div class="method-source-code" id="destroy-source">
-            <pre>static VALUE duckdb_instance_cache_destroy(VALUE self) {
-    rubyDuckDBInstanceCache *ctx;
-    TypedData_Get_Struct(self, rubyDuckDBInstanceCache, &amp;instance_cache_data_type, ctx);
+          <div class="method-source-code" id="set_name-source">
+            <pre>static VALUE rbduckdb_scalar_function_set_name(VALUE self, VALUE name) {
+    rubyDuckDBScalarFunction *p;
+    TypedData_Get_Struct(self, rubyDuckDBScalarFunction, &amp;scalar_function_data_type, p);
 
-    if (ctx-&gt;instance_cache) {
-        duckdb_destroy_instance_cache(&amp;(ctx-&gt;instance_cache));
-        ctx-&gt;instance_cache = NULL;
-    }
+    const char *str = StringValuePtr(name);
+    duckdb_scalar_function_set_name(p-&gt;scalar_function, str);
 
-    return Qnil;
+    return self;
 }</pre>
           </div>
           
-        </div>
-
-
-      </div>
-
-      <div id="method-i-get" class="method-detail anchor-link ">
-        <div class="method-header">
-              <div class="method-heading">
-                <a href="#method-i-get" title="Link to this method">
-                  <span class="method-callseq">
-                    get(path:, config:) &rarr; self
-                  </span>
-                </a>
-              </div>
-        </div>
-
-          <div class="method-controls">
-            <details class="method-source-toggle">
-              <summary>Source</summary>
-            </details>
-          </div>
-
-        <div class="method-description">
-          <div class="method-source-code" id="get-source">
-            <pre><span class="ruby-comment"># File lib/duckdb/instance_cache.rb, line 20</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get</span>(<span class="ruby-value">path:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">config:</span> <span class="ruby-keyword">nil</span>)
-  <span class="ruby-identifier">get_or_create</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">config</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          <p>Returns a <a href="Database.html"><code>DuckDB::Database</code></a> object for the given path and config.</p>
-
-<pre class="ruby"><span class="ruby-identifier">db1</span> = <span class="ruby-identifier">cache</span>.<span class="ruby-identifier">get</span>(<span class="ruby-value">path:</span> <span class="ruby-string">&#39;db.duckdb&#39;</span>)
-<span class="ruby-identifier">db2</span> = <span class="ruby-identifier">cache</span>.<span class="ruby-identifier">get</span>(<span class="ruby-value">path:</span> <span class="ruby-string">&#39;db.duckdb&#39;</span>)
-</pre>
         </div>
 
 
