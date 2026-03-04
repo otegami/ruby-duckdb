@@ -5,11 +5,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>module DuckDB - RDoc Documentation</title>
+<title>class PolarsDataFrameTableAdapter - RDoc Documentation</title>
 
-  <meta name="keywords" content="ruby,module,DuckDB">
+  <meta name="keywords" content="ruby,class,PolarsDataFrameTableAdapter">
 
-    <meta name="description" content="module DuckDB: DuckDB provides Ruby interface of DuckDB.">
+    <meta name="description" content="Documentation for the PolarsDataFrameTableAdapter class">
 
 
 <script type="text/javascript">
@@ -27,7 +27,7 @@
 <link href="./css/rdoc.css" rel="stylesheet">
 
 
-<body id="top" role="document" class="module">
+<body id="top" role="document" class="class">
 <div id="navigation-toggle" role="button" tabindex="0" aria-label="Toggle sidebar" aria-expanded="true" aria-controls="navigation">
   <span aria-hidden="true">&#9776;</span>
 </div>
@@ -66,26 +66,22 @@
 
   
   
-  
-  
-  
-<div id="extends-section" class="nav-section">
-  <h3>Extended With Modules</h3>
-
-  <ul class="link-list">
-    <li><a class="extend" href="DuckDB/Casting.html">DuckDB::Casting</a>
-  </ul>
+  <div id="parent-class-section" class="nav-section">
+  <h3>Ancestors</h3>
+  <ul><li><a href="Object.html">Object</a><ul><li>BasicObject</li></ul></li></ul>
 </div>
 
   
+  
+  
+
+
   <div class="nav-section">
-    <h3>Class Methods</h3>
+    <h3>Instance Methods</h3>
     <ul class="link-list" role="directory">
-      <li ><a href="#method-c-library_version">library_version</a></li>
+      <li ><a href="#method-i-call">call</a></li>
     </ul>
   </div>
-
-
 
 
 
@@ -97,56 +93,37 @@
 
 </nav>
 
-<main role="main" aria-labelledby="module-DuckDB">
+<main role="main" aria-labelledby="class-PolarsDataFrameTableAdapter">
   
   
 
-  <h1 id="module-DuckDB" class="anchor-link module">
-    module DuckDB
+  <h1 id="class-PolarsDataFrameTableAdapter" class="anchor-link class">
+    class PolarsDataFrameTableAdapter
   </h1>
 
   <section class="description">
     
-<p><a href="DuckDB.html"><code>DuckDB</code></a> provides Ruby interface of <a href="DuckDB.html"><code>DuckDB</code></a>.</p>
-
   </section>
 
   <section id="5Buntitled-5D" class="documentation-section anchor-link">
 
 
-    <section class="constants-list">
-      <header>
-        <h3>Constants</h3>
-      </header>
-      <dl>
-        <dt id="LIBRARY_VERSION">LIBRARY_VERSION
-        <dd>
-          <p>represents the version of the <a href="DuckDB.html"><code>DuckDB</code></a> library. If <a href="DuckDB.html#method-c-library_version"><code>DuckDB.library_version</code></a> is v0.2.0, then <a href="DuckDB.html#LIBRARY_VERSION"><code>DuckDB::LIBRARY_VERSION</code></a> is 0.2.0.</p>
-        <dt id="QueryProgress">QueryProgress
-        <dd>
-          
-        <dt id="VERSION">VERSION
-        <dd>
-          <p>The version string of ruby-duckdb. Currently, ruby-duckdb is NOT semantic versioning.</p>
-      </dl>
-    </section>
 
 
 
-     <section id="public-class-5Buntitled-5D-method-details" class="method-section anchor-link">
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section anchor-link">
        <header>
-         <h3>Public Class Methods</h3>
+         <h3>Public Instance Methods</h3>
        </header>
 
-      <div id="method-c-library_version" class="method-detail anchor-link ">
+      <div id="method-i-call" class="method-detail anchor-link ">
         <div class="method-header">
-              <div class="method-heading">
-                <a href="#method-c-library_version" title="Link to this method">
-                  <span class="method-callseq">
-                    library_version &rarr; String
-                  </span>
-                </a>
-              </div>
+            <div class="method-heading">
+              <a href="#method-i-call" title="Link to this method">
+                <span class="method-name">call</span>
+                <span class="method-args">(data_frame, name, columns: nil)</span>
+              </a>
+            </div>
         </div>
 
           <div class="method-controls">
@@ -156,15 +133,14 @@
           </div>
 
         <div class="method-description">
-          <div class="method-source-code" id="library_version-source">
-            <pre>static VALUE duckdb_s_library_version(VALUE self) {
-    return rb_str_new2(duckdb_library_version());
-}</pre>
+          <div class="method-source-code" id="call-source">
+            <pre><span class="ruby-comment"># File sample/issue922.rb, line 7</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">call</span>(<span class="ruby-identifier">data_frame</span>, <span class="ruby-identifier">name</span>, <span class="ruby-value">columns:</span> <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">columns</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">infer_columns</span>(<span class="ruby-identifier">data_frame</span>)
+  <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">TableFunction</span>.<span class="ruby-identifier">create</span>(<span class="ruby-value">name:</span>, <span class="ruby-value">columns:</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">execute_block</span>(<span class="ruby-identifier">data_frame</span>))
+<span class="ruby-keyword">end</span></pre>
           </div>
-          <p>Returns the version of the <a href="DuckDB.html"><code>DuckDB</code></a> library.</p>
-
-<pre class="ruby"><span class="ruby-constant">DuckDB</span>.<span class="ruby-identifier">library_version</span> <span class="ruby-comment"># =&gt; &quot;0.2.0&quot;</span>
-</pre>
+          
         </div>
 
 

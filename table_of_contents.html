@@ -84,6 +84,10 @@
     <ul>
       <li><a href="CHANGELOG_md.html#label-Changelog">Changelog</a>
       <li><a href="CHANGELOG_md.html#label-Unreleased">Unreleased</a>
+      <li><a href="CHANGELOG_md.html#label-1.4.3.0+-+2026-01-10">1.4.3.0 - 2026-01-10</a>
+      <li><a href="CHANGELOG_md.html#label-1.4.2.0+-+2025-12-27">1.4.2.0 - 2025-12-27</a>
+      <li><a href="CHANGELOG_md.html#label-1.4.1.1+-+2025-11-03">1.4.1.1 - 2025-11-03</a>
+      <li><a href="CHANGELOG_md.html#label-1.4.1.0+-+2025-11-01">1.4.1.0 - 2025-11-01</a>
       <li><a href="CHANGELOG_md.html#label-1.3.1.0+-+2025-06-28">1.3.1.0 - 2025-06-28</a>
       <li><a href="CHANGELOG_md.html#label-1.3.0.0+-+2025-05-31">1.3.0.0 - 2025-05-31</a>
       <li><a href="CHANGELOG_md.html#label-Breaking+changes">Breaking changes</a>
@@ -202,6 +206,9 @@
 
 <h2 id="classes">Classes and Modules</h2>
 <ul>
+  <li class="class">
+    <a href="CSVTableAdapter.html">CSVTableAdapter</a>
+  </li>
   <li class="module">
     <a href="DuckDB.html">DuckDB</a>
   </li>
@@ -211,6 +218,9 @@
   <li class="class">
     <a href="DuckDB/Blob.html">DuckDB::Blob</a>
   </li>
+  <li class="module">
+    <a href="DuckDB/Casting.html">DuckDB::Casting</a>
+  </li>
   <li class="class">
     <a href="DuckDB/Column.html">DuckDB::Column</a>
   </li>
@@ -219,6 +229,9 @@
   </li>
   <li class="class">
     <a href="DuckDB/Connection.html">DuckDB::Connection</a>
+  </li>
+  <li class="class">
+    <a href="DuckDB/DataChunk.html">DuckDB::DataChunk</a>
   </li>
   <li class="class">
     <a href="DuckDB/Database.html">DuckDB::Database</a>
@@ -232,8 +245,14 @@
   <li class="class">
     <a href="DuckDB/ExtractedStatementsImpl.html">DuckDB::ExtractedStatementsImpl</a>
   </li>
+  <li class="class">
+    <a href="DuckDB/FunctionInfo.html">DuckDB::FunctionInfo</a>
+  </li>
   <li class="module">
     <a href="DuckDB/Infinity.html">DuckDB::Infinity</a>
+  </li>
+  <li class="class">
+    <a href="DuckDB/InitInfo.html">DuckDB::InitInfo</a>
   </li>
   <li class="class">
     <a href="DuckDB/InstanceCache.html">DuckDB::InstanceCache</a>
@@ -243,6 +262,9 @@
   </li>
   <li class="class">
     <a href="DuckDB/LogicalType.html">DuckDB::LogicalType</a>
+  </li>
+  <li class="module">
+    <a href="DuckDB/MemoryHelper.html">DuckDB::MemoryHelper</a>
   </li>
   <li class="class">
     <a href="DuckDB/PendingResult.html">DuckDB::PendingResult</a>
@@ -257,12 +279,55 @@
     <a href="DuckDB/ScalarFunction.html">DuckDB::ScalarFunction</a>
   </li>
   <li class="class">
+    <a href="DuckDB/TableFunction.html">DuckDB::TableFunction</a>
+  </li>
+  <li class="class">
     <a href="DuckDB/ValueImpl.html">DuckDB::ValueImpl</a>
+  </li>
+  <li class="class">
+    <a href="DuckDB/Vector.html">DuckDB::Vector</a>
+  </li>
+  <li class="class">
+    <a href="Object.html">Object</a>
+  </li>
+  <li class="class">
+    <a href="PolarsDataFrameBatchTableAdapter.html">PolarsDataFrameBatchTableAdapter</a>
+  </li>
+  <li class="class">
+    <a href="PolarsDataFrameOptimizedTableAdapter.html">PolarsDataFrameOptimizedTableAdapter</a>
+  </li>
+  <li class="class">
+    <a href="PolarsDataFrameTableAdapter.html">PolarsDataFrameTableAdapter</a>
   </li>
 </ul>
 
 <h2 id="methods">Methods</h2>
 <ul>
+
+  <li class="method">
+    <a href="DuckDB/TableFunction.html#method-c-add_table_adapter">::add_table_adapter</a>
+    &mdash;
+    <span class="container">DuckDB::TableFunction</span>
+
+  <li class="method">
+    <a href="DuckDB/ScalarFunction.html#method-c-create">::create</a>
+    &mdash;
+    <span class="container">DuckDB::ScalarFunction</span>
+
+  <li class="method">
+    <a href="DuckDB/TableFunction.html#method-c-create">::create</a>
+    &mdash;
+    <span class="container">DuckDB::TableFunction</span>
+
+  <li class="method">
+    <a href="DuckDB/Appender.html#method-c-create_query">::create_query</a>
+    &mdash;
+    <span class="container">DuckDB::Appender</span>
+
+  <li class="method">
+    <a href="DuckDB/Appender.html#method-c-from_query">::from_query</a>
+    &mdash;
+    <span class="container">DuckDB::Appender</span>
 
   <li class="method">
     <a href="DuckDB/Config.html#method-c-get_config_flag">::get_config_flag</a>
@@ -340,6 +405,11 @@
     <span class="container">DuckDB::ScalarFunction</span>
 
   <li class="method">
+    <a href="DuckDB/TableFunction.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">DuckDB::TableFunction</span>
+
+  <li class="method">
     <a href="DuckDB/ExtractedStatements.html#method-c-new">::new</a>
     &mdash;
     <span class="container">DuckDB::ExtractedStatements</span>
@@ -360,14 +430,89 @@
     <span class="container">DuckDB::PreparedStatement</span>
 
   <li class="method">
+    <a href="DuckDB/LogicalType.html#method-c-resolve">::resolve</a>
+    &mdash;
+    <span class="container">DuckDB::LogicalType</span>
+
+  <li class="method">
     <a href="DuckDB/Config.html#method-c-size">::size</a>
     &mdash;
     <span class="container">DuckDB::Config</span>
 
   <li class="method">
+    <a href="DuckDB/TableFunction.html#method-c-table_adapter_for">::table_adapter_for</a>
+    &mdash;
+    <span class="container">DuckDB::TableFunction</span>
+
+  <li class="method">
     <a href="DuckDB/Interval.html#method-c-to_interval">::to_interval</a>
     &mdash;
     <span class="container">DuckDB::Interval</span>
+
+  <li class="method">
+    <a href="DuckDB/MemoryHelper.html#method-c-write_bigint">::write_bigint</a>
+    &mdash;
+    <span class="container">DuckDB::MemoryHelper</span>
+
+  <li class="method">
+    <a href="DuckDB/MemoryHelper.html#method-c-write_boolean">::write_boolean</a>
+    &mdash;
+    <span class="container">DuckDB::MemoryHelper</span>
+
+  <li class="method">
+    <a href="DuckDB/MemoryHelper.html#method-c-write_double">::write_double</a>
+    &mdash;
+    <span class="container">DuckDB::MemoryHelper</span>
+
+  <li class="method">
+    <a href="DuckDB/MemoryHelper.html#method-c-write_float">::write_float</a>
+    &mdash;
+    <span class="container">DuckDB::MemoryHelper</span>
+
+  <li class="method">
+    <a href="DuckDB/MemoryHelper.html#method-c-write_integer">::write_integer</a>
+    &mdash;
+    <span class="container">DuckDB::MemoryHelper</span>
+
+  <li class="method">
+    <a href="DuckDB/MemoryHelper.html#method-c-write_smallint">::write_smallint</a>
+    &mdash;
+    <span class="container">DuckDB::MemoryHelper</span>
+
+  <li class="method">
+    <a href="DuckDB/MemoryHelper.html#method-c-write_timestamp">::write_timestamp</a>
+    &mdash;
+    <span class="container">DuckDB::MemoryHelper</span>
+
+  <li class="method">
+    <a href="DuckDB/MemoryHelper.html#method-c-write_timestamp_tz">::write_timestamp_tz</a>
+    &mdash;
+    <span class="container">DuckDB::MemoryHelper</span>
+
+  <li class="method">
+    <a href="DuckDB/MemoryHelper.html#method-c-write_tinyint">::write_tinyint</a>
+    &mdash;
+    <span class="container">DuckDB::MemoryHelper</span>
+
+  <li class="method">
+    <a href="DuckDB/MemoryHelper.html#method-c-write_ubigint">::write_ubigint</a>
+    &mdash;
+    <span class="container">DuckDB::MemoryHelper</span>
+
+  <li class="method">
+    <a href="DuckDB/MemoryHelper.html#method-c-write_uinteger">::write_uinteger</a>
+    &mdash;
+    <span class="container">DuckDB::MemoryHelper</span>
+
+  <li class="method">
+    <a href="DuckDB/MemoryHelper.html#method-c-write_usmallint">::write_usmallint</a>
+    &mdash;
+    <span class="container">DuckDB::MemoryHelper</span>
+
+  <li class="method">
+    <a href="DuckDB/MemoryHelper.html#method-c-write_utinyint">::write_utinyint</a>
+    &mdash;
+    <span class="container">DuckDB::MemoryHelper</span>
 
   <li class="method">
     <a href="DuckDB/Interval.html#method-i-3D-3D">#==</a>
@@ -383,6 +528,21 @@
     <a href="DuckDB/LogicalType.html#method-i-_internal_type">#_internal_type</a>
     &mdash;
     <span class="container">DuckDB::LogicalType</span>
+
+  <li class="method">
+    <a href="DuckDB/TableFunction.html#method-i-add_named_parameter">#add_named_parameter</a>
+    &mdash;
+    <span class="container">DuckDB::TableFunction</span>
+
+  <li class="method">
+    <a href="DuckDB/ScalarFunction.html#method-i-add_parameter">#add_parameter</a>
+    &mdash;
+    <span class="container">DuckDB::ScalarFunction</span>
+
+  <li class="method">
+    <a href="DuckDB/TableFunction.html#method-i-add_parameter">#add_parameter</a>
+    &mdash;
+    <span class="container">DuckDB::TableFunction</span>
 
   <li class="method">
     <a href="DuckDB/LogicalType.html#method-i-alias">#alias</a>
@@ -520,6 +680,21 @@
     <span class="container">DuckDB::Connection</span>
 
   <li class="method">
+    <a href="DuckDB/Connection.html#method-i-appender_from_query">#appender_from_query</a>
+    &mdash;
+    <span class="container">DuckDB::Connection</span>
+
+  <li class="method">
+    <a href="DuckDB/Vector.html#method-i-assign_string_element">#assign_string_element</a>
+    &mdash;
+    <span class="container">DuckDB::Vector</span>
+
+  <li class="method">
+    <a href="DuckDB/Vector.html#method-i-assign_string_element_len">#assign_string_element_len</a>
+    &mdash;
+    <span class="container">DuckDB::Vector</span>
+
+  <li class="method">
     <a href="DuckDB/Connection.html#method-i-async_query">#async_query</a>
     &mdash;
     <span class="container">DuckDB::Connection</span>
@@ -538,6 +713,11 @@
     <a href="DuckDB/PreparedStatement.html#method-i-bind">#bind</a>
     &mdash;
     <span class="container">DuckDB::PreparedStatement</span>
+
+  <li class="method">
+    <a href="DuckDB/TableFunction.html#method-i-bind">#bind</a>
+    &mdash;
+    <span class="container">DuckDB::TableFunction</span>
 
   <li class="method">
     <a href="DuckDB/PreparedStatement.html#method-i-bind_args">#bind_args</a>
@@ -660,6 +840,31 @@
     <span class="container">DuckDB::PreparedStatement</span>
 
   <li class="method">
+    <a href="PolarsDataFrameTableAdapter.html#method-i-call">#call</a>
+    &mdash;
+    <span class="container">PolarsDataFrameTableAdapter</span>
+
+  <li class="method">
+    <a href="PolarsDataFrameBatchTableAdapter.html#method-i-call">#call</a>
+    &mdash;
+    <span class="container">PolarsDataFrameBatchTableAdapter</span>
+
+  <li class="method">
+    <a href="PolarsDataFrameOptimizedTableAdapter.html#method-i-call">#call</a>
+    &mdash;
+    <span class="container">PolarsDataFrameOptimizedTableAdapter</span>
+
+  <li class="method">
+    <a href="CSVTableAdapter.html#method-i-call">#call</a>
+    &mdash;
+    <span class="container">CSVTableAdapter</span>
+
+  <li class="method">
+    <a href="DuckDB/Casting.html#method-i-cast">#cast</a>
+    &mdash;
+    <span class="container">DuckDB::Casting</span>
+
+  <li class="method">
     <a href="DuckDB/LogicalType.html#method-i-child_count">#child_count</a>
     &mdash;
     <span class="container">DuckDB::LogicalType</span>
@@ -693,6 +898,11 @@
     <a href="DuckDB/Database.html#method-i-close">#close</a>
     &mdash;
     <span class="container">DuckDB::Database</span>
+
+  <li class="method">
+    <a href="DuckDB/DataChunk.html#method-i-column_count">#column_count</a>
+    &mdash;
+    <span class="container">DuckDB::DataChunk</span>
 
   <li class="method">
     <a href="DuckDB/Result.html#method-i-column_count">#column_count</a>
@@ -805,6 +1015,11 @@
     <span class="container">DuckDB::PreparedStatement</span>
 
   <li class="method">
+    <a href="DuckDB/TableFunction.html#method-i-execute">#execute</a>
+    &mdash;
+    <span class="container">DuckDB::TableFunction</span>
+
+  <li class="method">
     <a href="DuckDB/PendingResult.html#method-i-execute_check_state">#execute_check_state</a>
     &mdash;
     <span class="container">DuckDB::PendingResult</span>
@@ -825,6 +1040,11 @@
     <span class="container">DuckDB::PendingResult</span>
 
   <li class="method">
+    <a href="DuckDB/Connection.html#method-i-expose_as_table">#expose_as_table</a>
+    &mdash;
+    <span class="container">DuckDB::Connection</span>
+
+  <li class="method">
     <a href="DuckDB/Appender.html#method-i-flush">#flush</a>
     &mdash;
     <span class="container">DuckDB::Appender</span>
@@ -838,6 +1058,26 @@
     <a href="DuckDB/LogicalType.html#method-i-get_alias">#get_alias</a>
     &mdash;
     <span class="container">DuckDB::LogicalType</span>
+
+  <li class="method">
+    <a href="DuckDB/Vector.html#method-i-get_data">#get_data</a>
+    &mdash;
+    <span class="container">DuckDB::Vector</span>
+
+  <li class="method">
+    <a href="DuckDB/Vector.html#method-i-get_validity">#get_validity</a>
+    &mdash;
+    <span class="container">DuckDB::Vector</span>
+
+  <li class="method">
+    <a href="DuckDB/DataChunk.html#method-i-get_vector">#get_vector</a>
+    &mdash;
+    <span class="container">DuckDB::DataChunk</span>
+
+  <li class="method">
+    <a href="DuckDB/TableFunction.html#method-i-init">#init</a>
+    &mdash;
+    <span class="container">DuckDB::TableFunction</span>
 
   <li class="method">
     <a href="DuckDB/LogicalType.html#method-i-internal_type">#internal_type</a>
@@ -860,6 +1100,11 @@
     <span class="container">DuckDB::Column</span>
 
   <li class="method">
+    <a href="DuckDB/Vector.html#method-i-logical_type">#logical_type</a>
+    &mdash;
+    <span class="container">DuckDB::Vector</span>
+
+  <li class="method">
     <a href="DuckDB/LogicalType.html#method-i-member_count">#member_count</a>
     &mdash;
     <span class="container">DuckDB::LogicalType</span>
@@ -878,6 +1123,16 @@
     <a href="DuckDB/Column.html#method-i-name">#name</a>
     &mdash;
     <span class="container">DuckDB::Column</span>
+
+  <li class="method">
+    <a href="DuckDB/ScalarFunction.html#method-i-name-3D">#name=</a>
+    &mdash;
+    <span class="container">DuckDB::ScalarFunction</span>
+
+  <li class="method">
+    <a href="DuckDB/TableFunction.html#method-i-name-3D">#name=</a>
+    &mdash;
+    <span class="container">DuckDB::TableFunction</span>
 
   <li class="method">
     <a href="DuckDB/PreparedStatement.html#method-i-nparams">#nparams</a>
@@ -930,9 +1185,34 @@
     <span class="container">DuckDB::Connection</span>
 
   <li class="method">
+    <a href="Object.html#method-i-query_via_parquet">#query_via_parquet</a>
+    &mdash;
+    <span class="container">Object</span>
+
+  <li class="method">
+    <a href="Object.html#method-i-register_as_table_with_create_table">#register_as_table_with_create_table</a>
+    &mdash;
+    <span class="container">Object</span>
+
+  <li class="method">
+    <a href="DuckDB/Connection.html#method-i-register_scalar_function">#register_scalar_function</a>
+    &mdash;
+    <span class="container">DuckDB::Connection</span>
+
+  <li class="method">
+    <a href="DuckDB/Connection.html#method-i-register_table_function">#register_table_function</a>
+    &mdash;
+    <span class="container">DuckDB::Connection</span>
+
+  <li class="method">
     <a href="DuckDB/Result.html#method-i-return_type">#return_type</a>
     &mdash;
     <span class="container">DuckDB::Result</span>
+
+  <li class="method">
+    <a href="DuckDB/ScalarFunction.html#method-i-return_type-3D">#return_type=</a>
+    &mdash;
+    <span class="container">DuckDB::ScalarFunction</span>
 
   <li class="method">
     <a href="DuckDB/Result.html#method-i-rows_changed">#rows_changed</a>
@@ -955,9 +1235,39 @@
     <span class="container">DuckDB::Config</span>
 
   <li class="method">
+    <a href="DuckDB/FunctionInfo.html#method-i-set_error">#set_error</a>
+    &mdash;
+    <span class="container">DuckDB::FunctionInfo</span>
+
+  <li class="method">
+    <a href="DuckDB/InitInfo.html#method-i-set_error">#set_error</a>
+    &mdash;
+    <span class="container">DuckDB::InitInfo</span>
+
+  <li class="method">
     <a href="DuckDB/ScalarFunction.html#method-i-set_name">#set_name</a>
     &mdash;
     <span class="container">DuckDB::ScalarFunction</span>
+
+  <li class="method">
+    <a href="DuckDB/TableFunction.html#method-i-set_name">#set_name</a>
+    &mdash;
+    <span class="container">DuckDB::TableFunction</span>
+
+  <li class="method">
+    <a href="DuckDB/Vector.html#method-i-set_validity">#set_validity</a>
+    &mdash;
+    <span class="container">DuckDB::Vector</span>
+
+  <li class="method">
+    <a href="DuckDB/DataChunk.html#method-i-set_value">#set_value</a>
+    &mdash;
+    <span class="container">DuckDB::DataChunk</span>
+
+  <li class="method">
+    <a href="DuckDB/DataChunk.html#method-i-size">#size</a>
+    &mdash;
+    <span class="container">DuckDB::DataChunk</span>
 
   <li class="method">
     <a href="DuckDB/ExtractedStatementsImpl.html#method-i-size">#size</a>
@@ -968,6 +1278,11 @@
     <a href="DuckDB/LogicalType.html#method-i-size">#size</a>
     &mdash;
     <span class="container">DuckDB::LogicalType</span>
+
+  <li class="method">
+    <a href="DuckDB/DataChunk.html#method-i-size-3D">#size=</a>
+    &mdash;
+    <span class="container">DuckDB::DataChunk</span>
 
   <li class="method">
     <a href="DuckDB/PendingResult.html#method-i-state">#state</a>
