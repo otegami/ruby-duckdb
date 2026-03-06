@@ -1,0 +1,69 @@
+name: Ruby ASAN
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      matrix:
+        duckdb: ['1.4.4', '1.3.2']
+
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Set up Ruby with ASAN
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: asan
+        bundler-cache: true
+
+    - name: duckdb cache
+      id: duckdb-cache
+      uses: actions/cache@v5
+      with:
+        path: duckdb-v${{ matrix.duckdb }}
+        key: ${{ runner.os }}-asan-duckdb-v${{ matrix.duckdb }}
+
+    - name: Build duckdb ${{ matrix.duckdb }}
+      env:
+        DUCKDB_VERSION: ${{ matrix.duckdb }}
+      if: steps.duckdb-cache.outputs.cache-hit != 'true'
+      run: |
+        git clone -b v$DUCKDB_VERSION https://github.com/duckdb/duckdb.git duckdb-tmp-v$DUCKDB_VERSION
+        cd duckdb-tmp-v$DUCKDB_VERSION && make && cd ..
+        rm -rf duckdb-v$DUCKDB_VERSION
+        mkdir -p duckdb-v$DUCKDB_VERSION/build/release/src duckdb-v$DUCKDB_VERSION/src
+        cp -rip duckdb-tmp-v$DUCKDB_VERSION/build/release/src/*.so duckdb-v$DUCKDB_VERSION/build/release/src
+        cp -rip duckdb-tmp-v$DUCKDB_VERSION/src/include duckdb-v$DUCKDB_VERSION/src/
+
+    - name: Build with ASAN Ruby
+      env:
+        DUCKDB_VERSION: ${{ matrix.duckdb }}
+      run: |
+        bundle exec rake build -- --with-duckdb-include=${GITHUB_WORKSPACE}/duckdb-v${DUCKDB_VERSION}/src/include --with-duckdb-lib=${GITHUB_WORKSPACE}/duckdb-v${DUCKDB_VERSION}/build/release/src/
+
+    - name: test with ASAN Ruby
+      # TODO: Remove continue-on-error once all ASAN issues are fixed.
+      continue-on-error: true
+      env:
+        DUCKDB_VERSION: ${{ matrix.duckdb }}
+      run: |
+        # LD_PRELOAD resolves __cxa_throw ASAN CHECK failure when DuckDB (built
+        # without ASAN) throws C++ exceptions internally.
+        # See: https://github.com/google/sanitizers/issues/934
+        export LD_PRELOAD="$(realpath "$(gcc -print-file-name=libstdc++.so)")"
+        bundle exec ruby test/duckdb_test/asan_test.rb
