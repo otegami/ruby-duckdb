@@ -81,7 +81,10 @@
   <div class="nav-section">
     <h3>Class Methods</h3>
     <ul class="link-list" role="directory">
+      <li class="calls-super" ><a href="#method-c-const_missing">const_missing</a></li>
+      <li ><a href="#method-c-default_timezone-3D">default_timezone=</a></li>
       <li ><a href="#method-c-library_version">library_version</a></li>
+      <li ><a href="#method-c-vector_size">vector_size</a></li>
     </ul>
   </div>
 
@@ -119,6 +122,9 @@
         <h3>Constants</h3>
       </header>
       <dl>
+        <dt id="DEPRECATED_CONSTANTS">DEPRECATED_CONSTANTS
+        <dd>
+          
         <dt id="LIBRARY_VERSION">LIBRARY_VERSION
         <dd>
           <p>represents the version of the <a href="DuckDB.html"><code>DuckDB</code></a> library. If <a href="DuckDB.html#method-c-library_version"><code>DuckDB.library_version</code></a> is v0.2.0, then <a href="DuckDB.html#LIBRARY_VERSION"><code>DuckDB::LIBRARY_VERSION</code></a> is 0.2.0.</p>
@@ -131,12 +137,110 @@
       </dl>
     </section>
 
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      <div id="attribute-c-default_timezone" class="method-detail anchor-link">
+        <div class="method-heading attribute-method-heading">
+          <a href="#attribute-c-default_timezone" title="Link to this attribute">
+            <span class="method-name">default_timezone</span>
+            <span class="attribute-access-type">[R]</span>
+          </a>
+        </div>
+
+        <div class="method-description">
+        <p>Controls how <a href="DuckDB.html"><code>DuckDB</code></a> converts timestamp and time values without explicit time zone information.</p>
+<ul><li>
+<p>‘:utc`   - interpret values as UTC</p>
+</li><li>
+<p>‘:local` - (default) interpret values as local time, preserving existing behavior</p>
+</li></ul>
+
+<p>Example:</p>
+
+<pre class="ruby"><span class="ruby-constant">DuckDB</span>.<span class="ruby-identifier">default_timezone</span> = <span class="ruby-value">:utc</span>
+</pre>
+
+<p>This setting only affects conversion of values without time zone. Values with explicit time zone are always interpreted according to their offset.</p>
+        </div>
+      </div>
+    </section>
 
 
      <section id="public-class-5Buntitled-5D-method-details" class="method-section anchor-link">
        <header>
          <h3>Public Class Methods</h3>
        </header>
+
+      <div id="method-c-const_missing" class="method-detail anchor-link ">
+        <div class="method-header">
+            <div class="method-heading">
+              <a href="#method-c-const_missing" title="Link to this method">
+                <span class="method-name">const_missing</span>
+                <span class="method-args">(name)</span>
+              </a>
+            </div>
+        </div>
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+
+        <div class="method-description">
+          <div class="method-source-code" id="const_missing-source">
+            <pre><span class="ruby-comment"># File lib/duckdb.rb, line 52</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">const_missing</span>(<span class="ruby-identifier">name</span>)
+  <span class="ruby-identifier">deprecated</span> = <span class="ruby-constant">DEPRECATED_CONSTANTS</span>[<span class="ruby-identifier">name</span>]
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">super</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">deprecated</span>
+
+  <span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;DuckDB::#{name} is deprecated. Use #{deprecated} instead.&quot;</span>, <span class="ruby-value">uplevel:</span> <span class="ruby-value">1</span>
+  <span class="ruby-identifier">const_set</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">deprecated</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;::&#39;</span>).<span class="ruby-identifier">reduce</span>(<span class="ruby-constant">Object</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">mod</span>, <span class="ruby-identifier">part</span><span class="ruby-operator">|</span> <span class="ruby-identifier">mod</span>.<span class="ruby-identifier">const_get</span>(<span class="ruby-identifier">part</span>) })
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-c-default_timezone-3D" class="method-detail anchor-link ">
+        <div class="method-header">
+            <div class="method-heading">
+              <a href="#method-c-default_timezone-3D" title="Link to this method">
+                <span class="method-name">default_timezone=</span>
+                <span class="method-args">(value)</span>
+              </a>
+            </div>
+        </div>
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+
+        <div class="method-description">
+          <div class="method-source-code" id="default_timezone-3D-source">
+            <pre><span class="ruby-comment"># File lib/duckdb.rb, line 46</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">default_timezone=</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;DuckDB.default_timezone must be either :utc or :local.&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-node">%i[local utc]</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">value</span>)
+
+  <span class="ruby-ivar">@default_timezone</span> = <span class="ruby-identifier">value</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+
+      </div>
 
       <div id="method-c-library_version" class="method-detail anchor-link ">
         <div class="method-header">
@@ -164,6 +268,38 @@
           <p>Returns the version of the <a href="DuckDB.html"><code>DuckDB</code></a> library.</p>
 
 <pre class="ruby"><span class="ruby-constant">DuckDB</span>.<span class="ruby-identifier">library_version</span> <span class="ruby-comment"># =&gt; &quot;0.2.0&quot;</span>
+</pre>
+        </div>
+
+
+      </div>
+
+      <div id="method-c-vector_size" class="method-detail anchor-link ">
+        <div class="method-header">
+              <div class="method-heading">
+                <a href="#method-c-vector_size" title="Link to this method">
+                  <span class="method-callseq">
+                    vector_size &rarr; Integer
+                  </span>
+                </a>
+              </div>
+        </div>
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+
+        <div class="method-description">
+          <div class="method-source-code" id="vector_size-source">
+            <pre>static VALUE duckdb_s_vector_size(VALUE self) {
+    return ULONG2NUM(duckdb_vector_size());
+}</pre>
+          </div>
+          <p>Returns the vector size of <a href="DuckDB.html"><code>DuckDB</code></a>. The vector size is the number of rows that are processed in a single vectorized operation.</p>
+
+<pre class="ruby"><span class="ruby-constant">DuckDB</span>.<span class="ruby-identifier">vector_size</span> <span class="ruby-comment"># =&gt; 2048</span>
 </pre>
         </div>
 

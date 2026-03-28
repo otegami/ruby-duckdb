@@ -5,11 +5,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>class DuckDB::InitInfo - RDoc Documentation</title>
+<title>class DuckDB::Expression - RDoc Documentation</title>
 
-  <meta name="keywords" content="ruby,class,DuckDB::InitInfo">
+  <meta name="keywords" content="ruby,class,DuckDB::Expression">
 
-    <meta name="description" content="class DuckDB::InitInfo: InitInfo provides context during table function initialization. It is passed to the init callback to set up execution state.">
+    <meta name="description" content="class DuckDB::Expression: Expression represents a DuckDB expression object. BindInfo#get_argument during the bind phase of a scalar function.">
 
 
 <script type="text/javascript">
@@ -79,7 +79,7 @@
   <div class="nav-section">
     <h3>Instance Methods</h3>
     <ul class="link-list" role="directory">
-      <li ><a href="#method-i-set_error">set_error</a></li>
+      <li ><a href="#method-i-foldable-3F">foldable?</a></li>
     </ul>
   </div>
 
@@ -93,7 +93,7 @@
 
 </nav>
 
-<main role="main" aria-labelledby="class-DuckDB::InitInfo">
+<main role="main" aria-labelledby="class-DuckDB::Expression">
   
   
     <ol role="navigation" aria-label="breadcrumb" class="breadcrumb">
@@ -106,33 +106,22 @@
       
       <li>
         
-        <span>InitInfo</span>
+        <span>Expression</span>
         
       </li>
       
     </ol>
   
 
-  <h1 id="class-DuckDB::InitInfo" class="anchor-link class">
-    class DuckDB::InitInfo
+  <h1 id="class-DuckDB::Expression" class="anchor-link class">
+    class DuckDB::Expression
   </h1>
 
   <section class="description">
     
-<p>The <a href="InitInfo.html"><code>DuckDB::InitInfo</code></a> provides context during table function initialization.</p>
+<p><a href="Expression.html"><code>DuckDB::Expression</code></a> represents a <a href="../DuckDB.html"><code>DuckDB</code></a> expression object.</p>
 
-<p>It is passed to the init callback to set up execution state.</p>
-
-<p>Example:</p>
-
-<pre class="ruby"><span class="ruby-identifier">table_function</span>.<span class="ruby-identifier">init</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">init_info</span><span class="ruby-operator">|</span>
-  <span class="ruby-comment"># Initialize execution state</span>
-  <span class="ruby-comment"># Can report errors if initialization fails</span>
-  <span class="ruby-identifier">init_info</span>.<span class="ruby-identifier">set_error</span>(<span class="ruby-string">&#39;Initialization failed&#39;</span>)
-<span class="ruby-keyword">end</span>
-</pre>
-
-<p>rubocop:disable Lint/EmptyClass</p>
+<p>Instances are returned by DuckDB::ScalarFunction::BindInfo#get_argument during the bind phase of a scalar function.</p>
 
   </section>
 
@@ -147,12 +136,12 @@
          <h3>Public Instance Methods</h3>
        </header>
 
-      <div id="method-i-set_error" class="method-detail anchor-link ">
+      <div id="method-i-foldable-3F" class="method-detail anchor-link ">
         <div class="method-header">
               <div class="method-heading">
-                <a href="#method-i-set_error" title="Link to this method">
+                <a href="#method-i-foldable-3F" title="Link to this method">
                   <span class="method-callseq">
-                    set_error(error_message) &rarr; self
+                    foldable? &rarr; true or false
                   </span>
                 </a>
               </div>
@@ -165,23 +154,14 @@
           </div>
 
         <div class="method-description">
-          <div class="method-source-code" id="set_error-source">
-            <pre>static VALUE rbduckdb_init_info_set_error(VALUE self, VALUE error) {
-    rubyDuckDBInitInfo *ctx;
-    const char *error_msg;
-
-    TypedData_Get_Struct(self, rubyDuckDBInitInfo, &amp;init_info_data_type, ctx);
-
-    error_msg = StringValueCStr(error);
-    duckdb_init_set_error(ctx-&gt;info, error_msg);
-
-    return self;
+          <div class="method-source-code" id="foldable-3F-source">
+            <pre>static VALUE rbduckdb_expression_foldable_p(VALUE self) {
+    rubyDuckDBExpression *ctx;
+    TypedData_Get_Struct(self, rubyDuckDBExpression, &amp;expression_data_type, ctx);
+    return duckdb_expression_is_foldable(ctx-&gt;expression) ? Qtrue : Qfalse;
 }</pre>
           </div>
-          <p>Sets an error message for the init phase. This will cause the query to fail with the specified error.</p>
-
-<pre class="ruby"><span class="ruby-identifier">init_info</span>.<span class="ruby-identifier">set_error</span>(<span class="ruby-string">&#39;Invalid initialization&#39;</span>)
-</pre>
+          <p>Returns <code>true</code> if the expression can be folded to a constant at query planning time (e.g. literals, constant arithmetic), <code>false</code> otherwise (e.g. column references, non-deterministic functions).</p>
         </div>
 
 

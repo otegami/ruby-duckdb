@@ -82,7 +82,6 @@
       <li ><a href="#method-i-appender">appender</a></li>
       <li ><a href="#method-i-appender_from_query">appender_from_query</a></li>
       <li ><a href="#method-i-async_query">async_query</a></li>
-      <li ><a href="#method-i-async_query_stream">async_query_stream</a></li>
       <li ><a href="#method-i-connect">connect</a></li>
       <li ><a href="#method-i-disconnect">disconnect</a></li>
       <li ><a href="#method-i-expose_as_table">expose_as_table</a></li>
@@ -171,7 +170,7 @@
 
         <div class="method-description">
           <div class="method-source-code" id="appender-source">
-            <pre><span class="ruby-comment"># File lib/duckdb/connection.rb, line 129</span>
+            <pre><span class="ruby-comment"># File lib/duckdb/connection.rb, line 110</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">appender</span>(<span class="ruby-identifier">table</span>, <span class="ruby-operator">&amp;</span>)
   <span class="ruby-identifier">appender</span> = <span class="ruby-identifier">create_appender</span>(<span class="ruby-identifier">table</span>)
   <span class="ruby-identifier">run_appender_block</span>(<span class="ruby-identifier">appender</span>, <span class="ruby-operator">&amp;</span>)
@@ -202,7 +201,7 @@
 
         <div class="method-description">
           <div class="method-source-code" id="appender_from_query-source">
-            <pre><span class="ruby-comment"># File lib/duckdb/connection.rb, line 153</span>
+            <pre><span class="ruby-comment"># File lib/duckdb/connection.rb, line 134</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">appender_from_query</span>(<span class="ruby-identifier">query</span>, <span class="ruby-identifier">types</span>, <span class="ruby-identifier">table_name</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">column_names</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-operator">&amp;</span>)
   <span class="ruby-identifier">appender</span> = <span class="ruby-constant">Appender</span>.<span class="ruby-identifier">create_query</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">query</span>, <span class="ruby-identifier">types</span>, <span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">column_names</span>)
   <span class="ruby-identifier">run_appender_block</span>(<span class="ruby-identifier">appender</span>, <span class="ruby-operator">&amp;</span>)
@@ -243,7 +242,7 @@
 
         <div class="method-description">
           <div class="method-source-code" id="async_query-source">
-            <pre><span class="ruby-comment"># File lib/duckdb/connection.rb, line 61</span>
+            <pre><span class="ruby-comment"># File lib/duckdb/connection.rb, line 63</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">async_query</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">**</span><span class="ruby-identifier">kwargs</span>)
   <span class="ruby-identifier">prepare</span>(<span class="ruby-identifier">sql</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">stmt</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">bind_args</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">**</span><span class="ruby-identifier">kwargs</span>)
@@ -271,49 +270,6 @@
 
       </div>
 
-      <div id="method-i-async_query_stream" class="method-detail anchor-link ">
-        <div class="method-header">
-            <div class="method-heading">
-              <a href="#method-i-async_query_stream" title="Link to this method">
-                <span class="method-name">async_query_stream</span>
-                <span class="method-args">(sql, *, **)</span>
-              </a>
-            </div>
-        </div>
-
-          <div class="method-controls">
-            <details class="method-source-toggle">
-              <summary>Source</summary>
-            </details>
-          </div>
-
-        <div class="method-description">
-          <div class="method-source-code" id="async_query_stream-source">
-            <pre><span class="ruby-comment"># File lib/duckdb/connection.rb, line 83</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">async_query_stream</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-operator">*</span>, <span class="ruby-operator">**</span>)
-  <span class="ruby-identifier">warn</span>(<span class="ruby-node">&quot;`#{self.class}#{__method__}` will be deprecated. Use `#{self.class}#async_query` instead.&quot;</span>)
-
-  <span class="ruby-identifier">async_query</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-operator">*</span>, <span class="ruby-operator">**</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          <p>executes sql with args asynchronously and provides streaming result. The first argument sql must be SQL string. The rest arguments are parameters of SQL string. This method returns <a href="PendingResult.html"><code>DuckDB::PendingResult</code></a> object.</p>
-
-<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
-<span class="ruby-identifier">db</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Database</span>.<span class="ruby-identifier">open</span>(<span class="ruby-string">&#39;duckdb_file&#39;</span>)
-<span class="ruby-identifier">con</span> = <span class="ruby-identifier">db</span>.<span class="ruby-identifier">connect</span>
-
-<span class="ruby-identifier">sql</span> = <span class="ruby-string">&#39;SELECT * FROM users WHERE name = $name AND email = $email&#39;</span>
-<span class="ruby-identifier">pending_result</span> = <span class="ruby-identifier">con</span>.<span class="ruby-identifier">async_query_stream</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-value">name:</span> <span class="ruby-string">&#39;Dave&#39;</span>, <span class="ruby-value">email:</span> <span class="ruby-string">&#39;dave@example.com&#39;</span>)
-
-<span class="ruby-identifier">pending_result</span>.<span class="ruby-identifier">execute_task</span> <span class="ruby-keyword">while</span> <span class="ruby-identifier">pending_result</span>.<span class="ruby-identifier">state</span> <span class="ruby-operator">==</span> <span class="ruby-value">:not_ready</span>
-<span class="ruby-identifier">result</span> = <span class="ruby-identifier">pending_result</span>.<span class="ruby-identifier">execute_pending</span>
-<span class="ruby-identifier">result</span>.<span class="ruby-identifier">each</span>.<span class="ruby-identifier">first</span>
-</pre>
-        </div>
-
-
-      </div>
-
       <div id="method-i-connect" class="method-detail anchor-link ">
         <div class="method-header">
             <div class="method-heading">
@@ -332,7 +288,7 @@
 
         <div class="method-description">
           <div class="method-source-code" id="connect-source">
-            <pre><span class="ruby-comment"># File lib/duckdb/connection.rb, line 91</span>
+            <pre><span class="ruby-comment"># File lib/duckdb/connection.rb, line 72</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">connect</span>(<span class="ruby-identifier">db</span>)
   <span class="ruby-identifier">conn</span> = <span class="ruby-identifier">_connect</span>(<span class="ruby-identifier">db</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-identifier">conn</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">block_given?</span>
@@ -410,7 +366,7 @@
 
         <div class="method-description">
           <div class="method-source-code" id="expose_as_table-source">
-            <pre><span class="ruby-comment"># File lib/duckdb/connection.rb, line 260</span>
+            <pre><span class="ruby-comment"># File lib/duckdb/connection.rb, line 234</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">expose_as_table</span>(<span class="ruby-identifier">object</span>, <span class="ruby-identifier">name</span>, <span class="ruby-value">columns:</span> <span class="ruby-keyword">nil</span>)
   <span class="ruby-identifier">adapter</span> = <span class="ruby-constant">TableFunction</span>.<span class="ruby-identifier">table_adapter_for</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">class</span>)
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;No table adapter registered for #{object.class}&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">adapter</span>.<span class="ruby-identifier">nil?</span>
@@ -513,7 +469,7 @@
 
         <div class="method-description">
           <div class="method-source-code" id="prepared_statement-source">
-            <pre><span class="ruby-comment"># File lib/duckdb/connection.rb, line 121</span>
+            <pre><span class="ruby-comment"># File lib/duckdb/connection.rb, line 102</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">prepared_statement</span>(<span class="ruby-identifier">str</span>, <span class="ruby-operator">&amp;</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-constant">PreparedStatement</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">str</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">block_given?</span>
 
@@ -616,6 +572,8 @@
             <pre><span class="ruby-comment"># File lib/duckdb/connection.rb, line 35</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">query_multi_sql</span>(<span class="ruby-identifier">sql</span>)
   <span class="ruby-identifier">stmts</span> = <span class="ruby-constant">ExtractedStatements</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">sql</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">query_sql</span>(<span class="ruby-identifier">sql</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">stmts</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+
   <span class="ruby-identifier">result</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-identifier">stmts</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">stmt</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">result</span> = <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">execute</span>
@@ -697,7 +655,7 @@
 
         <div class="method-description">
           <div class="method-source-code" id="register_scalar_function-source">
-            <pre><span class="ruby-comment"># File lib/duckdb/connection.rb, line 203</span>
+            <pre><span class="ruby-comment"># File lib/duckdb/connection.rb, line 178</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">register_scalar_function</span>(<span class="ruby-identifier">scalar_function</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-operator">**</span><span class="ruby-identifier">kwargs</span>, <span class="ruby-operator">&amp;</span>)
   <span class="ruby-comment"># Validate: can&#39;t pass both object and inline arguments</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">scalar_function</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">ScalarFunction</span>)
@@ -706,14 +664,11 @@
     <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;Cannot pass both ScalarFunction object and block&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_given?</span>
   <span class="ruby-keyword">end</span>
 
-  <span class="ruby-identifier">check_threads</span>
   <span class="ruby-identifier">sf</span> = <span class="ruby-identifier">scalar_function</span> <span class="ruby-operator">||</span> <span class="ruby-constant">ScalarFunction</span>.<span class="ruby-identifier">create</span>(<span class="ruby-operator">**</span><span class="ruby-identifier">kwargs</span>, <span class="ruby-operator">&amp;</span>)
   <span class="ruby-identifier">_register_scalar_function</span>(<span class="ruby-identifier">sf</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           <p>Registers a scalar function with the connection.</p>
-
-<p>Scalar functions with Ruby callbacks require single-threaded execution.</p>
 
 <p>@overload <a href="Connection.html#method-i-register_scalar_function"><code>register_scalar_function</code></a>(scalar_function)</p>
 
@@ -729,12 +684,11 @@
 @param parameter_types [Array&lt;DuckDB::LogicalType&gt;, nil] multiple parameter types
 @yield [*args] the function implementation</pre>
 
-<p>@raise [DuckDB::Error] if threads setting is not 1 @raise [ArgumentError] if both object and keywords/block are provided @return [void]</p>
+<p>@raise [ArgumentError] if both object and keywords/block are provided @return [void]</p>
 
 <p>@example Register pre-created function</p>
 
-<pre class="ruby"><span class="ruby-identifier">con</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-string">&#39;SET threads=1&#39;</span>)
-<span class="ruby-identifier">sf</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">ScalarFunction</span>.<span class="ruby-identifier">create</span>(
+<pre class="ruby"><span class="ruby-identifier">sf</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">ScalarFunction</span>.<span class="ruby-identifier">create</span>(
   <span class="ruby-value">name:</span> <span class="ruby-value">:triple</span>,
   <span class="ruby-value">return_type:</span> <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span><span class="ruby-operator">::</span><span class="ruby-constant">INTEGER</span>,
   <span class="ruby-value">parameter_type:</span> <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span><span class="ruby-operator">::</span><span class="ruby-constant">INTEGER</span>
@@ -744,8 +698,7 @@
 
 <p>@example Register inline (single parameter)</p>
 
-<pre class="ruby"><span class="ruby-identifier">con</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-string">&#39;SET threads=1&#39;</span>)
-<span class="ruby-identifier">con</span>.<span class="ruby-identifier">register_scalar_function</span>(
+<pre class="ruby"><span class="ruby-identifier">con</span>.<span class="ruby-identifier">register_scalar_function</span>(
   <span class="ruby-value">name:</span> <span class="ruby-value">:triple</span>,
   <span class="ruby-value">return_type:</span> <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span><span class="ruby-operator">::</span><span class="ruby-constant">INTEGER</span>,
   <span class="ruby-value">parameter_type:</span> <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span><span class="ruby-operator">::</span><span class="ruby-constant">INTEGER</span>
@@ -754,8 +707,7 @@
 
 <p>@example Register inline (multiple parameters)</p>
 
-<pre class="ruby"><span class="ruby-identifier">con</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-string">&#39;SET threads=1&#39;</span>)
-<span class="ruby-identifier">con</span>.<span class="ruby-identifier">register_scalar_function</span>(
+<pre class="ruby"><span class="ruby-identifier">con</span>.<span class="ruby-identifier">register_scalar_function</span>(
   <span class="ruby-value">name:</span> <span class="ruby-value">:add</span>,
   <span class="ruby-value">return_type:</span> <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span><span class="ruby-operator">::</span><span class="ruby-constant">INTEGER</span>,
   <span class="ruby-value">parameter_types:</span> [<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span><span class="ruby-operator">::</span><span class="ruby-constant">INTEGER</span>, <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span><span class="ruby-operator">::</span><span class="ruby-constant">INTEGER</span>]
@@ -784,7 +736,7 @@
 
         <div class="method-description">
           <div class="method-source-code" id="register_table_function-source">
-            <pre><span class="ruby-comment"># File lib/duckdb/connection.rb, line 225</span>
+            <pre><span class="ruby-comment"># File lib/duckdb/connection.rb, line 199</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">register_table_function</span>(<span class="ruby-identifier">table_function</span>)
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;table_function must be a TableFunction&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">table_function</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">TableFunction</span>)
 
