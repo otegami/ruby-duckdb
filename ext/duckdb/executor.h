@@ -29,7 +29,7 @@ void rbduckdb_executor_ensure_started(void);
  * Dispatch a callback to the global executor thread.
  * Called from a non-Ruby thread. Blocks until the callback completes.
  */
-void rbduckdb_executor_dispatch(rbduckdb_callback_fn fn, void *data);
+void rbduckdb_executor_dispatch(rbduckdb_callback_fn callback_func, void *callback_data);
 
 /*
  * Per-worker proxy thread.
@@ -50,7 +50,8 @@ struct worker_proxy *rbduckdb_worker_proxy_create(void);
  * Blocks until the callback completes.
  */
 void rbduckdb_worker_proxy_dispatch(struct worker_proxy *proxy,
-                                     rbduckdb_callback_fn fn, void *data);
+                                     rbduckdb_callback_fn callback_func,
+                                     void *callback_data);
 
 /*
  * Destroy a per-worker proxy.

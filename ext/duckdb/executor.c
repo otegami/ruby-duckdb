@@ -34,15 +34,15 @@ extern int ruby_native_thread_p(void);
 
 /* Per-callback request, stack-allocated on the DuckDB worker thread */
 struct executor_request {
-    rbduckdb_callback_fn fn;
-    void *data;
-    int done;
+    rbduckdb_callback_fn callback_func;
+    void *callback_data;
+    int request_done;
 #ifdef _MSC_VER
-    CRITICAL_SECTION done_lock;
-    CONDITION_VARIABLE done_cond;
+    CRITICAL_SECTION request_done_lock;
+    CONDITION_VARIABLE request_done_cond;
 #else
-    pthread_mutex_t done_mutex;
-    pthread_cond_t done_cond;
+    pthread_mutex_t request_done_mutex;
+    pthread_cond_t request_done_cond;
 #endif
     struct executor_request *next;
 };
@@ -130,19 +130,19 @@ static VALUE executor_thread_func(void *data) {
             struct executor_request *req = w.request;
 
             /* Execute the callback with the GVL */
-            req->fn(req->data);
+            req->callback_func(req->callback_data);
 
             /* Signal the DuckDB worker thread that the callback is done */
 #ifdef _MSC_VER
-            EnterCriticalSection(&req->done_lock);
-            req->done = 1;
-            WakeConditionVariable(&req->done_cond);
-            LeaveCriticalSection(&req->done_lock);
+            EnterCriticalSection(&req->request_done_lock);
+            req->request_done = 1;
+            WakeConditionVariable(&req->request_done_cond);
+            LeaveCriticalSection(&req->request_done_lock);
 #else
-            pthread_mutex_lock(&req->done_mutex);
-            req->done = 1;
-            pthread_cond_signal(&req->done_cond);
-            pthread_mutex_unlock(&req->done_mutex);
+            pthread_mutex_lock(&req->request_done_mutex);
+            req->request_done = 1;
+            pthread_cond_signal(&req->request_done_cond);
+            pthread_mutex_unlock(&req->request_done_mutex);
 #endif
         }
     }
@@ -177,17 +177,17 @@ void rbduckdb_executor_ensure_started(void) {
  * Dispatch a callback to the global executor thread.
  * Called from a non-Ruby thread. Blocks until the callback completes.
  */
-void rbduckdb_executor_dispatch(rbduckdb_callback_fn fn, void *data) {
+void rbduckdb_executor_dispatch(rbduckdb_callback_fn callback_func, void *callback_data) {
     struct executor_request req;
 
-    req.fn = fn;
-    req.data = data;
-    req.done = 0;
+    req.callback_func = callback_func;
+    req.callback_data = callback_data;
+    req.request_done = 0;
     req.next = NULL;
 
 #ifdef _MSC_VER
-    InitializeCriticalSection(&req.done_lock);
-    InitializeConditionVariable(&req.done_cond);
+    InitializeCriticalSection(&req.request_done_lock);
+    InitializeConditionVariable(&req.request_done_cond);
 
     /* Enqueue the request */
     EnterCriticalSection(&g_executor_lock);
@@ -197,16 +197,16 @@ void rbduckdb_executor_dispatch(rbduckdb_callback_fn fn, void *data) {
     LeaveCriticalSection(&g_executor_lock);
 
     /* Wait for the executor to process our callback */
-    EnterCriticalSection(&req.done_lock);
-    while (!req.done) {
-        SleepConditionVariableCS(&req.done_cond, &req.done_lock, INFINITE);
+    EnterCriticalSection(&req.request_done_lock);
+    while (!req.request_done) {
+        SleepConditionVariableCS(&req.request_done_cond, &req.request_done_lock, INFINITE);
     }
-    LeaveCriticalSection(&req.done_lock);
+    LeaveCriticalSection(&req.request_done_lock);
 
-    DeleteCriticalSection(&req.done_lock);
+    DeleteCriticalSection(&req.request_done_lock);
 #else
-    pthread_mutex_init(&req.done_mutex, NULL);
-    pthread_cond_init(&req.done_cond, NULL);
+    pthread_mutex_init(&req.request_done_mutex, NULL);
+    pthread_cond_init(&req.request_done_cond, NULL);
 
     /* Enqueue the request */
     pthread_mutex_lock(&g_executor_mutex);
@@ -216,14 +216,14 @@ void rbduckdb_executor_dispatch(rbduckdb_callback_fn fn, void *data) {
     pthread_mutex_unlock(&g_executor_mutex);
 
     /* Wait for the executor to process our callback */
-    pthread_mutex_lock(&req.done_mutex);
-    while (!req.done) {
-        pthread_cond_wait(&req.done_cond, &req.done_mutex);
+    pthread_mutex_lock(&req.request_done_mutex);
+    while (!req.request_done) {
+        pthread_cond_wait(&req.request_done_cond, &req.request_done_mutex);
     }
-    pthread_mutex_unlock(&req.done_mutex);
+    pthread_mutex_unlock(&req.request_done_mutex);
 
-    pthread_cond_destroy(&req.done_cond);
-    pthread_mutex_destroy(&req.done_mutex);
+    pthread_cond_destroy(&req.request_done_cond);
+    pthread_mutex_destroy(&req.request_done_mutex);
 #endif
 }
 
@@ -241,22 +241,22 @@ void rbduckdb_executor_dispatch(rbduckdb_callback_fn fn, void *data) {
 
 struct worker_proxy {
     VALUE ruby_thread;
-    volatile int stop;
-    rbduckdb_callback_fn fn;
-    void *data;
+    volatile int stop_requested;
+    rbduckdb_callback_fn callback_func;
+    void *callback_data;
     volatile int has_request;
-    volatile int done;
-    volatile int exited;
+    volatile int request_done;
+    volatile int thread_exited;
 #ifdef _MSC_VER
     CRITICAL_SECTION lock;
     CONDITION_VARIABLE request_cond;
-    CONDITION_VARIABLE done_cond;
-    CONDITION_VARIABLE exit_cond;
+    CONDITION_VARIABLE request_done_cond;
+    CONDITION_VARIABLE thread_exit_cond;
 #else
     pthread_mutex_t lock;
     pthread_cond_t request_cond;
-    pthread_cond_t done_cond;
-    pthread_cond_t exit_cond;
+    pthread_cond_t request_done_cond;
+    pthread_cond_t thread_exit_cond;
 #endif
 };
 
@@ -266,13 +266,13 @@ static void *proxy_wait_func(void *data) {
 
 #ifdef _MSC_VER
     EnterCriticalSection(&proxy->lock);
-    while (!proxy->stop && !proxy->has_request) {
+    while (!proxy->stop_requested && !proxy->has_request) {
         SleepConditionVariableCS(&proxy->request_cond, &proxy->lock, INFINITE);
     }
     LeaveCriticalSection(&proxy->lock);
 #else
     pthread_mutex_lock(&proxy->lock);
-    while (!proxy->stop && !proxy->has_request) {
+    while (!proxy->stop_requested && !proxy->has_request) {
         pthread_cond_wait(&proxy->request_cond, &proxy->lock);
     }
     pthread_mutex_unlock(&proxy->lock);
@@ -287,12 +287,12 @@ static void proxy_stop_func(void *data) {
 
 #ifdef _MSC_VER
     EnterCriticalSection(&proxy->lock);
-    proxy->stop = 1;
+    proxy->stop_requested = 1;
     WakeConditionVariable(&proxy->request_cond);
     LeaveCriticalSection(&proxy->lock);
 #else
     pthread_mutex_lock(&proxy->lock);
-    proxy->stop = 1;
+    proxy->stop_requested = 1;
     pthread_cond_signal(&proxy->request_cond);
     pthread_mutex_unlock(&proxy->lock);
 #endif
@@ -302,28 +302,28 @@ static void proxy_stop_func(void *data) {
 static VALUE proxy_thread_func(void *data) {
     struct worker_proxy *proxy = (struct worker_proxy *)data;
 
-    while (!proxy->stop) {
+    while (!proxy->stop_requested) {
         /* Release GVL and wait for a request */
         rb_thread_call_without_gvl(proxy_wait_func, proxy, proxy_stop_func, proxy);
 
-        if (proxy->stop) break;
+        if (proxy->stop_requested) break;
 
         if (proxy->has_request) {
             /* Execute the callback with the GVL held */
-            proxy->fn(proxy->data);
+            proxy->callback_func(proxy->callback_data);
 
             /* Signal completion to the DuckDB worker thread */
 #ifdef _MSC_VER
             EnterCriticalSection(&proxy->lock);
             proxy->has_request = 0;
-            proxy->done = 1;
-            WakeConditionVariable(&proxy->done_cond);
+            proxy->request_done = 1;
+            WakeConditionVariable(&proxy->request_done_cond);
             LeaveCriticalSection(&proxy->lock);
 #else
             pthread_mutex_lock(&proxy->lock);
             proxy->has_request = 0;
-            proxy->done = 1;
-            pthread_cond_signal(&proxy->done_cond);
+            proxy->request_done = 1;
+            pthread_cond_signal(&proxy->request_done_cond);
             pthread_mutex_unlock(&proxy->lock);
 #endif
         }
@@ -341,13 +341,13 @@ static VALUE proxy_thread_func(void *data) {
      */
 #ifdef _MSC_VER
     EnterCriticalSection(&proxy->lock);
-    proxy->exited = 1;
-    WakeConditionVariable(&proxy->exit_cond);
+    proxy->thread_exited = 1;
+    WakeConditionVariable(&proxy->thread_exit_cond);
     LeaveCriticalSection(&proxy->lock);
 #else
     pthread_mutex_lock(&proxy->lock);
-    proxy->exited = 1;
-    pthread_cond_signal(&proxy->exit_cond);
+    proxy->thread_exited = 1;
+    pthread_cond_signal(&proxy->thread_exit_cond);
     pthread_mutex_unlock(&proxy->lock);
 #endif
 
@@ -368,21 +368,21 @@ struct worker_proxy *rbduckdb_worker_proxy_create(void) {
         rb_raise(rb_eNoMemError, "failed to allocate worker_proxy");
     }
 
-    proxy->stop = 0;
+    proxy->stop_requested = 0;
     proxy->has_request = 0;
-    proxy->done = 0;
-    proxy->exited = 0;
+    proxy->request_done = 0;
+    proxy->thread_exited = 0;
 
 #ifdef _MSC_VER
     InitializeCriticalSection(&proxy->lock);
     InitializeConditionVariable(&proxy->request_cond);
-    InitializeConditionVariable(&proxy->done_cond);
-    InitializeConditionVariable(&proxy->exit_cond);
+    InitializeConditionVariable(&proxy->request_done_cond);
+    InitializeConditionVariable(&proxy->thread_exit_cond);
 #else
     pthread_mutex_init(&proxy->lock, NULL);
     pthread_cond_init(&proxy->request_cond, NULL);
-    pthread_cond_init(&proxy->done_cond, NULL);
-    pthread_cond_init(&proxy->exit_cond, NULL);
+    pthread_cond_init(&proxy->request_done_cond, NULL);
+    pthread_cond_init(&proxy->thread_exit_cond, NULL);
 #endif
 
     proxy->ruby_thread = rb_thread_create(proxy_thread_func, proxy);
@@ -401,35 +401,36 @@ struct worker_proxy *rbduckdb_worker_proxy_create(void) {
  * Blocks until the proxy completes the callback.
  */
 void rbduckdb_worker_proxy_dispatch(struct worker_proxy *proxy,
-                                     rbduckdb_callback_fn fn, void *data) {
+                                     rbduckdb_callback_fn callback_func,
+                                     void *callback_data) {
 #ifdef _MSC_VER
     EnterCriticalSection(&proxy->lock);
-    proxy->fn = fn;
-    proxy->data = data;
-    proxy->done = 0;
+    proxy->callback_func = callback_func;
+    proxy->callback_data = callback_data;
+    proxy->request_done = 0;
     proxy->has_request = 1;
     WakeConditionVariable(&proxy->request_cond);
     LeaveCriticalSection(&proxy->lock);
 
     /* Wait for completion */
     EnterCriticalSection(&proxy->lock);
-    while (!proxy->done) {
-        SleepConditionVariableCS(&proxy->done_cond, &proxy->lock, INFINITE);
+    while (!proxy->request_done) {
+        SleepConditionVariableCS(&proxy->request_done_cond, &proxy->lock, INFINITE);
     }
     LeaveCriticalSection(&proxy->lock);
 #else
     pthread_mutex_lock(&proxy->lock);
-    proxy->fn = fn;
-    proxy->data = data;
-    proxy->done = 0;
+    proxy->callback_func = callback_func;
+    proxy->callback_data = callback_data;
+    proxy->request_done = 0;
     proxy->has_request = 1;
     pthread_cond_signal(&proxy->request_cond);
     pthread_mutex_unlock(&proxy->lock);
 
     /* Wait for completion */
     pthread_mutex_lock(&proxy->lock);
-    while (!proxy->done) {
-        pthread_cond_wait(&proxy->done_cond, &proxy->lock);
+    while (!proxy->request_done) {
+        pthread_cond_wait(&proxy->request_done_cond, &proxy->lock);
     }
     pthread_mutex_unlock(&proxy->lock);
 #endif
@@ -450,33 +451,33 @@ void rbduckdb_worker_proxy_destroy(void *data) {
     /* Signal the proxy thread to stop */
 #ifdef _MSC_VER
     EnterCriticalSection(&proxy->lock);
-    proxy->stop = 1;
+    proxy->stop_requested = 1;
     WakeConditionVariable(&proxy->request_cond);
     LeaveCriticalSection(&proxy->lock);
 
     /* Wait for the proxy thread to finish */
     EnterCriticalSection(&proxy->lock);
-    while (!proxy->exited) {
-        SleepConditionVariableCS(&proxy->exit_cond, &proxy->lock, INFINITE);
+    while (!proxy->thread_exited) {
+        SleepConditionVariableCS(&proxy->thread_exit_cond, &proxy->lock, INFINITE);
     }
     LeaveCriticalSection(&proxy->lock);
 
     DeleteCriticalSection(&proxy->lock);
 #else
     pthread_mutex_lock(&proxy->lock);
-    proxy->stop = 1;
+    proxy->stop_requested = 1;
     pthread_cond_signal(&proxy->request_cond);
     pthread_mutex_unlock(&proxy->lock);
 
     /* Wait for the proxy thread to finish */
     pthread_mutex_lock(&proxy->lock);
-    while (!proxy->exited) {
-        pthread_cond_wait(&proxy->exit_cond, &proxy->lock);
+    while (!proxy->thread_exited) {
+        pthread_cond_wait(&proxy->thread_exit_cond, &proxy->lock);
     }
     pthread_mutex_unlock(&proxy->lock);
 
-    pthread_cond_destroy(&proxy->exit_cond);
-    pthread_cond_destroy(&proxy->done_cond);
+    pthread_cond_destroy(&proxy->thread_exit_cond);
+    pthread_cond_destroy(&proxy->request_done_cond);
     pthread_cond_destroy(&proxy->request_cond);
     pthread_mutex_destroy(&proxy->lock);
 #endif
