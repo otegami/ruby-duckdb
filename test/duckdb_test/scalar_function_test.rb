@@ -675,6 +675,8 @@ module DuckDBTest
     end
 
     def test_scalar_function_with_multithread
+      skip 'per-worker proxy requires duckdb >= 1.5.0' if Gem::Version.new(DuckDB::LIBRARY_VERSION) < Gem::Version.new('1.5.0')
+
       @con.execute('SET threads=4')
       @con.execute('CREATE TABLE large_test AS SELECT range::INTEGER AS value FROM range(10000)')
 

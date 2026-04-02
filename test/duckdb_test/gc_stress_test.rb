@@ -83,6 +83,7 @@ module DuckDBTest
       skip 'GC.compact not available' unless GC.respond_to?(:compact)
       skip 'GC.compact hangs on Windows in parallel test execution' if Gem.win_platform?
 
+      @con.execute('SET threads=1')
 
       # Capture local variables
       multiplier = 3
@@ -135,6 +136,7 @@ module DuckDBTest
       skip 'GC.compact not available' unless GC.respond_to?(:compact)
       skip 'GC.compact hangs on Windows in parallel test execution' if Gem.win_platform?
 
+      @con.execute('SET threads=1')
 
       # Register both scalar and table functions
       @con.register_scalar_function(DuckDB::ScalarFunction.new.tap do |sf|

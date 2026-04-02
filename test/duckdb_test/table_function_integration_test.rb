@@ -7,6 +7,7 @@ module DuckDBTest
     def setup
       @database = DuckDB::Database.open
       @connection = @database.connect
+      @connection.execute('SET threads=1')
     end
 
     def teardown

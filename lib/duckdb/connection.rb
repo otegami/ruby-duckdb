@@ -221,6 +221,7 @@ module DuckDB
     def register_table_function(table_function)
       raise ArgumentError, 'table_function must be a TableFunction' unless table_function.is_a?(TableFunction)
 
+      check_threads
       _register_table_function(table_function)
     end
 
@@ -235,6 +236,7 @@ module DuckDB
     # @param columns [Hash{String => DuckDB::LogicalType}, nil] optional column schema override;
     #   if omitted, the adapter determines the columns (e.g. from headers or inference)
     # @raise [ArgumentError] if no adapter is registered for the object's class
+    # @raise [DuckDB::Error] if threads > 1 on DuckDB < 1.5.0
     # @return [void]
     #
     # @example Expose a CSV as a table
@@ -259,6 +261,24 @@ module DuckDB
     end
 
     private
+
+    # DuckDB >= 1.5.0 provides per-worker proxy threads via init_local_state,
+    # making table function callbacks thread-safe with multiple DuckDB threads.
+    # On older versions, the global executor serializes all callbacks and can
+    # deadlock under concurrent workloads, so we enforce threads=1.
+    def check_threads
+      return if Gem::Version.new(LIBRARY_VERSION) >= Gem::Version.new('1.5.0')
+
+      result = execute("SELECT current_setting('threads')")
+      thread_count = result.first.first.to_i
+
+      return unless thread_count > 1
+
+      raise DuckDB::Error,
+            'Table functions with Ruby callbacks require single-threaded execution ' \
+            "on DuckDB < 1.5.0. Current threads setting: #{thread_count}. " \
+            "Execute 'SET threads=1' before registering table functions."
+    end
 
     def run_appender_block(appender, &)
       return appender unless block_given?
