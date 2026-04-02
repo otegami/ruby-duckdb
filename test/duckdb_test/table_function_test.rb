@@ -208,7 +208,9 @@ module DuckDBTest
 
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def test_table_function_with_multithread
-      skip 'per-worker proxy requires duckdb >= 1.5.0' if Gem::Version.new(DuckDB::LIBRARY_VERSION) < Gem::Version.new('1.5.0')
+      unless Gem::Version.new(DuckDB::LIBRARY_VERSION) >= Gem::Version.new('1.5.0')
+        skip 'per-worker proxy requires duckdb >= 1.5.0'
+      end
 
       db = DuckDB::Database.open
       conn = db.connect
@@ -223,7 +225,7 @@ module DuckDBTest
         bind_info.add_result_column('value', DuckDB::LogicalType::BIGINT)
       end
 
-      tf.init { |_init_info| }
+      tf.init { |_init_info| nil }
 
       tf.execute do |_func_info, output|
         called += 1
