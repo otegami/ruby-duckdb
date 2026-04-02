@@ -16,7 +16,6 @@ module DuckDBTest
     def test_create_with_set_value
       db = DuckDB::Database.open
       conn = db.connect
-      conn.query('SET threads=1')
 
       called = 0
 
@@ -92,7 +91,6 @@ module DuckDBTest
 
       db = DuckDB::Database.open
       conn = db.connect
-      conn.query('SET threads=1')
 
       # Capture local variable in callbacks
       row_multiplier = 2
@@ -158,7 +156,6 @@ module DuckDBTest
     def test_symbol_columns
       db = DuckDB::Database.open
       conn = db.connect
-      conn.query('SET threads=1')
 
       # Capture local variable in callbacks
       row_multiplier = 2
@@ -200,6 +197,44 @@ module DuckDBTest
       assert_equal 2, rows.size
       assert_equal 1, rows[0][0]
       assert_equal 20, rows[0][1], 'Execute callback failed after GC compaction'
+
+      conn.disconnect
+      db.close
+    end
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    def test_table_function_with_multithread
+      db = DuckDB::Database.open
+      conn = db.connect
+      conn.execute('SET threads=4')
+
+      row_count = 100
+      called = 0
+      tf = DuckDB::TableFunction.new
+      tf.name = 'mt_generate'
+
+      tf.bind do |bind_info|
+        bind_info.add_result_column('value', DuckDB::LogicalType::BIGINT)
+      end
+
+      tf.init { |_init_info| }
+
+      tf.execute do |_func_info, output|
+        called += 1
+        if called > 1
+          output.size = 0
+        else
+          row_count.times { |i| output.set_value(0, i, i * 2) }
+          output.size = row_count
+        end
+      end
+
+      conn.register_table_function(tf)
+      result = conn.execute('SELECT SUM(value) FROM mt_generate()')
+      expected_sum = (0...row_count).sum { |i| i * 2 }
+
+      assert_equal expected_sum, result.first.first
 
       conn.disconnect
       db.close
