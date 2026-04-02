@@ -27,7 +27,9 @@ static VALUE rbduckdb_table_function_set_init(VALUE self);
 static void table_function_init_callback(duckdb_init_info info);
 static VALUE rbduckdb_table_function_set_execute(VALUE self);
 static void table_function_execute_callback(duckdb_function_info info, duckdb_data_chunk output);
+#ifdef HAVE_DUCKDB_H_GE_V1_5_0
 static void table_function_local_init_callback(duckdb_init_info info);
+#endif
 
 static const rb_data_type_t table_function_data_type = {
     "DuckDB/TableFunction",
@@ -387,7 +389,9 @@ static VALUE rbduckdb_table_function_set_execute(VALUE self) {
 
     ctx->execute_proc = rb_block_proc();
     duckdb_table_function_set_function(ctx->table_function, table_function_execute_callback);
+#ifdef HAVE_DUCKDB_H_GE_V1_5_0
     duckdb_table_function_set_local_init(ctx->table_function, table_function_local_init_callback);
+#endif
 
     /* Ensure the global executor thread is running for multi-thread dispatch */
     rbduckdb_executor_ensure_started();
@@ -456,19 +460,26 @@ static void table_function_execute_callback(duckdb_function_info info, duckdb_da
             rb_thread_call_with_gvl(table_execute_gvl_wrapper, &arg);
         }
     } else {
-        /* Non-Ruby thread — use per-worker proxy if available */
+        /* Non-Ruby thread */
+#ifdef HAVE_DUCKDB_H_GE_V1_5_0
+        /* Use per-worker proxy if available (DuckDB >= 1.5.0) */
         struct worker_proxy *proxy = (struct worker_proxy *)duckdb_function_get_local_init_data(info);
         if (proxy) {
             rbduckdb_worker_proxy_dispatch(proxy, table_execute_with_gvl, &arg);
         } else {
             rbduckdb_executor_dispatch(table_execute_with_gvl, &arg);
         }
+#else
+        rbduckdb_executor_dispatch(table_execute_with_gvl, &arg);
+#endif
     }
 }
 
+#ifdef HAVE_DUCKDB_H_GE_V1_5_0
 /*
  * local_init callback for table functions.
  * Creates a per-worker proxy for non-Ruby threads.
+ * Requires DuckDB >= 1.5.0 (duckdb_table_function_set_local_init).
  */
 struct table_proxy_create_arg {
     struct worker_proxy *proxy;
@@ -492,6 +503,7 @@ static void table_function_local_init_callback(duckdb_init_info info) {
         duckdb_init_set_init_data(info, arg.proxy, rbduckdb_worker_proxy_destroy);
     }
 }
+#endif
 
 rubyDuckDBTableFunction *get_struct_table_function(VALUE self) {
     rubyDuckDBTableFunction *ctx;

@@ -198,12 +198,15 @@ static VALUE rbduckdb_scalar_function_add_parameter(VALUE self, VALUE logical_ty
     return self;
 }
 
+#ifdef HAVE_DUCKDB_H_GE_V1_5_0
 /*
  * init_local_state callback for scalar functions.
  *
  * Called by DuckDB once per worker thread before the first UDF invocation.
  * For non-Ruby threads, creates a per-worker proxy thread so that callbacks
  * can be dispatched without going through the global executor bottleneck.
+ *
+ * Requires DuckDB >= 1.5.0 (duckdb_scalar_function_set_init).
  */
 struct proxy_create_arg {
     struct worker_proxy *proxy;
@@ -229,6 +232,7 @@ static void scalar_function_init_local_state(duckdb_init_info info) {
         duckdb_scalar_function_init_set_state(info, arg.proxy, rbduckdb_worker_proxy_destroy);
     }
 }
+#endif
 
 /*
  * The DuckDB callback entry point.
@@ -278,14 +282,18 @@ static void scalar_function_callback(duckdb_function_info info, duckdb_data_chun
             rb_thread_call_with_gvl(callback_with_gvl, &arg);
         }
     } else {
-        /* Case 3: Non-Ruby thread - use per-worker proxy if available */
+        /* Case 3: Non-Ruby thread */
+#ifdef HAVE_DUCKDB_H_GE_V1_5_0
+        /* Use per-worker proxy if available (DuckDB >= 1.5.0) */
         struct worker_proxy *proxy = (struct worker_proxy *)duckdb_scalar_function_get_state(info);
         if (proxy) {
             rbduckdb_worker_proxy_dispatch(proxy, scalar_execute_via_executor, &arg);
         } else {
-            /* Fallback to global executor */
             rbduckdb_executor_dispatch(scalar_execute_via_executor, &arg);
         }
+#else
+        rbduckdb_executor_dispatch(scalar_execute_via_executor, &arg);
+#endif
     }
 }
 
@@ -510,7 +518,9 @@ static VALUE rbduckdb_scalar_function_set_function(VALUE self) {
 
     duckdb_scalar_function_set_extra_info(p->scalar_function, p, NULL);
     duckdb_scalar_function_set_function(p->scalar_function, scalar_function_callback);
+#ifdef HAVE_DUCKDB_H_GE_V1_5_0
     duckdb_scalar_function_set_init(p->scalar_function, scalar_function_init_local_state);
+#endif
 
     /*
      * Mark as volatile to prevent constant folding during query optimization.
