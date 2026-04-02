@@ -246,14 +246,17 @@ struct worker_proxy {
     void *data;
     volatile int has_request;
     volatile int done;
+    volatile int exited;
 #ifdef _MSC_VER
     CRITICAL_SECTION lock;
     CONDITION_VARIABLE request_cond;
     CONDITION_VARIABLE done_cond;
+    CONDITION_VARIABLE exit_cond;
 #else
     pthread_mutex_t lock;
     pthread_cond_t request_cond;
     pthread_cond_t done_cond;
+    pthread_cond_t exit_cond;
 #endif
 };
 
@@ -331,6 +334,23 @@ static VALUE proxy_thread_func(void *data) {
         rb_ary_delete(g_proxy_threads, proxy->ruby_thread);
     }
 
+    /*
+     * Signal that this thread has finished and no longer references
+     * the proxy struct. After this signal, rbduckdb_worker_proxy_destroy
+     * may free the struct.
+     */
+#ifdef _MSC_VER
+    EnterCriticalSection(&proxy->lock);
+    proxy->exited = 1;
+    WakeConditionVariable(&proxy->exit_cond);
+    LeaveCriticalSection(&proxy->lock);
+#else
+    pthread_mutex_lock(&proxy->lock);
+    proxy->exited = 1;
+    pthread_cond_signal(&proxy->exit_cond);
+    pthread_mutex_unlock(&proxy->lock);
+#endif
+
     return Qnil;
 }
 
@@ -339,20 +359,30 @@ static VALUE proxy_thread_func(void *data) {
  * Must be called with GVL held (e.g., from the global executor callback).
  */
 struct worker_proxy *rbduckdb_worker_proxy_create(void) {
-    struct worker_proxy *proxy = xcalloc(1, sizeof(struct worker_proxy));
+    /*
+     * Use calloc (not xcalloc) because rbduckdb_worker_proxy_destroy
+     * frees the struct from a non-Ruby thread where xfree is unsafe.
+     */
+    struct worker_proxy *proxy = calloc(1, sizeof(struct worker_proxy));
+    if (proxy == NULL) {
+        rb_raise(rb_eNoMemError, "failed to allocate worker_proxy");
+    }
 
     proxy->stop = 0;
     proxy->has_request = 0;
     proxy->done = 0;
+    proxy->exited = 0;
 
 #ifdef _MSC_VER
     InitializeCriticalSection(&proxy->lock);
     InitializeConditionVariable(&proxy->request_cond);
     InitializeConditionVariable(&proxy->done_cond);
+    InitializeConditionVariable(&proxy->exit_cond);
 #else
     pthread_mutex_init(&proxy->lock, NULL);
     pthread_cond_init(&proxy->request_cond, NULL);
     pthread_cond_init(&proxy->done_cond, NULL);
+    pthread_cond_init(&proxy->exit_cond, NULL);
 #endif
 
     proxy->ruby_thread = rb_thread_create(proxy_thread_func, proxy);
@@ -409,34 +439,49 @@ void rbduckdb_worker_proxy_dispatch(struct worker_proxy *proxy,
  * Destroy a per-worker proxy.
  * Compatible with duckdb_delete_callback_t: void (*)(void *).
  * Safe to call from non-Ruby threads — uses only OS primitives.
+ *
+ * Blocks until the proxy thread has exited and no longer references the
+ * struct, then destroys OS synchronization primitives and frees memory.
  */
 void rbduckdb_worker_proxy_destroy(void *data) {
     struct worker_proxy *proxy = (struct worker_proxy *)data;
     if (proxy == NULL) return;
 
-    /* Signal the proxy thread to stop (OS primitives only, no Ruby API) */
+    /* Signal the proxy thread to stop */
 #ifdef _MSC_VER
     EnterCriticalSection(&proxy->lock);
     proxy->stop = 1;
     WakeConditionVariable(&proxy->request_cond);
     LeaveCriticalSection(&proxy->lock);
+
+    /* Wait for the proxy thread to finish */
+    EnterCriticalSection(&proxy->lock);
+    while (!proxy->exited) {
+        SleepConditionVariableCS(&proxy->exit_cond, &proxy->lock, INFINITE);
+    }
+    LeaveCriticalSection(&proxy->lock);
+
+    DeleteCriticalSection(&proxy->lock);
 #else
     pthread_mutex_lock(&proxy->lock);
     proxy->stop = 1;
     pthread_cond_signal(&proxy->request_cond);
     pthread_mutex_unlock(&proxy->lock);
+
+    /* Wait for the proxy thread to finish */
+    pthread_mutex_lock(&proxy->lock);
+    while (!proxy->exited) {
+        pthread_cond_wait(&proxy->exit_cond, &proxy->lock);
+    }
+    pthread_mutex_unlock(&proxy->lock);
+
+    pthread_cond_destroy(&proxy->exit_cond);
+    pthread_cond_destroy(&proxy->done_cond);
+    pthread_cond_destroy(&proxy->request_cond);
+    pthread_mutex_destroy(&proxy->lock);
 #endif
 
-    /*
-     * The proxy thread will exit its loop, remove itself from the
-     * GC protection array, and the Ruby thread object will be collected.
-     * We do NOT free the proxy struct here because the proxy thread may
-     * still be referencing it. The proxy struct is freed when the Ruby
-     * thread finishes and the GC collects it.
-     *
-     * For simplicity, we accept this small leak per query — the proxy
-     * struct is ~100 bytes and there are at most N (thread count) per query.
-     */
+    free(proxy);
 }
 
 /*
