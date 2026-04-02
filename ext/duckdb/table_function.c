@@ -1,5 +1,11 @@
 #include "ruby-duckdb.h"
 
+/*
+ * Thread detection functions (available since Ruby 2.3).
+ */
+extern int ruby_thread_has_gvl_p(void);
+extern int ruby_native_thread_p(void);
+
 VALUE cDuckDBTableFunction;
 extern VALUE cDuckDBTableFunctionBindInfo;
 extern VALUE cDuckDBTableFunctionInitInfo;
@@ -217,32 +223,55 @@ static VALUE call_bind_proc(VALUE arg) {
     return rb_funcall(args[0], rb_intern("call"), 1, args[1]);
 }
 
-static void table_function_bind_callback(duckdb_bind_info info) {
+/* Bind callback core logic — must be called with GVL held */
+struct table_bind_arg {
+    duckdb_bind_info info;
     rubyDuckDBTableFunction *ctx;
+};
+
+static void table_bind_with_gvl(void *data) {
+    struct table_bind_arg *arg = (struct table_bind_arg *)data;
     rubyDuckDBBindInfo *bind_info_ctx;
     VALUE bind_info_obj;
     int state = 0;
 
-    // Get the C struct pointer (safe with GC compaction)
-    ctx = (rubyDuckDBTableFunction *)duckdb_bind_get_extra_info(info);
-    if (!ctx || ctx->bind_proc == Qnil) {
+    if (!arg->ctx || arg->ctx->bind_proc == Qnil) {
         return;
     }
 
-    // Create BindInfo wrapper
     bind_info_obj = rb_class_new_instance(0, NULL, cDuckDBTableFunctionBindInfo);
     bind_info_ctx = get_struct_bind_info(bind_info_obj);
-    bind_info_ctx->bind_info = info;
+    bind_info_ctx->bind_info = arg->info;
 
-    // Call Ruby block with exception protection
-    VALUE call_args[2] = { ctx->bind_proc, bind_info_obj };
+    VALUE call_args[2] = { arg->ctx->bind_proc, bind_info_obj };
     rb_protect(call_bind_proc, (VALUE)call_args, &state);
 
     if (state) {
         VALUE err = rb_errinfo();
         VALUE msg = rb_funcall(err, rb_intern("message"), 0);
-        duckdb_bind_set_error(info, StringValueCStr(msg));
-        rb_set_errinfo(Qnil); // Clear the error
+        duckdb_bind_set_error(arg->info, StringValueCStr(msg));
+        rb_set_errinfo(Qnil);
+    }
+}
+
+static void *table_bind_gvl_wrapper(void *data) {
+    table_bind_with_gvl(data);
+    return NULL;
+}
+
+static void table_function_bind_callback(duckdb_bind_info info) {
+    struct table_bind_arg arg;
+    arg.info = info;
+    arg.ctx = (rubyDuckDBTableFunction *)duckdb_bind_get_extra_info(info);
+
+    if (ruby_native_thread_p()) {
+        if (ruby_thread_has_gvl_p()) {
+            table_bind_with_gvl(&arg);
+        } else {
+            rb_thread_call_with_gvl(table_bind_gvl_wrapper, &arg);
+        }
+    } else {
+        rbduckdb_executor_dispatch(table_bind_with_gvl, &arg);
     }
 }
 
@@ -281,32 +310,55 @@ static VALUE call_init_proc(VALUE args_val) {
     return rb_funcall(args[0], rb_intern("call"), 1, args[1]);
 }
 
-static void table_function_init_callback(duckdb_init_info info) {
+/* Init callback core logic — must be called with GVL held */
+struct table_init_arg {
+    duckdb_init_info info;
     rubyDuckDBTableFunction *ctx;
+};
+
+static void table_init_with_gvl(void *data) {
+    struct table_init_arg *arg = (struct table_init_arg *)data;
     VALUE init_info_obj;
     rubyDuckDBInitInfo *init_info_ctx;
     int state = 0;
 
-    // Get the C struct pointer (safe with GC compaction)
-    ctx = (rubyDuckDBTableFunction *)duckdb_init_get_extra_info(info);
-    if (!ctx || ctx->init_proc == Qnil) {
+    if (!arg->ctx || arg->ctx->init_proc == Qnil) {
         return;
     }
 
-    // Create InitInfo wrapper
     init_info_obj = rb_class_new_instance(0, NULL, cDuckDBTableFunctionInitInfo);
     init_info_ctx = get_struct_init_info(init_info_obj);
-    init_info_ctx->info = info;
+    init_info_ctx->info = arg->info;
 
-    // Call Ruby block with exception protection
-    VALUE call_args[2] = { ctx->init_proc, init_info_obj };
+    VALUE call_args[2] = { arg->ctx->init_proc, init_info_obj };
     rb_protect(call_init_proc, (VALUE)call_args, &state);
 
     if (state) {
         VALUE err = rb_errinfo();
         VALUE msg = rb_funcall(err, rb_intern("message"), 0);
-        duckdb_init_set_error(info, StringValueCStr(msg));
-        rb_set_errinfo(Qnil); // Clear the error
+        duckdb_init_set_error(arg->info, StringValueCStr(msg));
+        rb_set_errinfo(Qnil);
+    }
+}
+
+static void *table_init_gvl_wrapper(void *data) {
+    table_init_with_gvl(data);
+    return NULL;
+}
+
+static void table_function_init_callback(duckdb_init_info info) {
+    struct table_init_arg arg;
+    arg.info = info;
+    arg.ctx = (rubyDuckDBTableFunction *)duckdb_init_get_extra_info(info);
+
+    if (ruby_native_thread_p()) {
+        if (ruby_thread_has_gvl_p()) {
+            table_init_with_gvl(&arg);
+        } else {
+            rb_thread_call_with_gvl(table_init_gvl_wrapper, &arg);
+        }
+    } else {
+        rbduckdb_executor_dispatch(table_init_with_gvl, &arg);
     }
 }
 
@@ -335,6 +387,9 @@ static VALUE rbduckdb_table_function_set_execute(VALUE self) {
     ctx->execute_proc = rb_block_proc();
     duckdb_table_function_set_function(ctx->table_function, table_function_execute_callback);
 
+    /* Ensure the global executor thread is running for multi-thread dispatch */
+    rbduckdb_executor_ensure_started();
+
     return self;
 }
 
@@ -343,39 +398,64 @@ static VALUE call_execute_proc(VALUE args_val) {
     return rb_funcall(args[0], rb_intern("call"), 2, args[1], args[2]);
 }
 
-static void table_function_execute_callback(duckdb_function_info info, duckdb_data_chunk output) {
+/* Execute callback core logic — must be called with GVL held */
+struct table_execute_arg {
+    duckdb_function_info info;
+    duckdb_data_chunk output;
     rubyDuckDBTableFunction *ctx;
+};
+
+static void table_execute_with_gvl(void *data) {
+    struct table_execute_arg *arg = (struct table_execute_arg *)data;
     VALUE func_info_obj;
     VALUE data_chunk_obj;
     rubyDuckDBFunctionInfo *func_info_ctx;
     rubyDuckDBDataChunk *data_chunk_ctx;
     int state = 0;
 
-    // Get the C struct pointer (safe with GC compaction)
-    ctx = (rubyDuckDBTableFunction *)duckdb_function_get_extra_info(info);
-    if (!ctx || ctx->execute_proc == Qnil) {
+    if (!arg->ctx || arg->ctx->execute_proc == Qnil) {
         return;
     }
 
-    // Create FunctionInfo wrapper
     func_info_obj = rb_class_new_instance(0, NULL, cDuckDBTableFunctionFunctionInfo);
     func_info_ctx = get_struct_function_info(func_info_obj);
-    func_info_ctx->info = info;
+    func_info_ctx->info = arg->info;
 
-    // Create DataChunk wrapper
     data_chunk_obj = rb_class_new_instance(0, NULL, cDuckDBDataChunk);
     data_chunk_ctx = get_struct_data_chunk(data_chunk_obj);
-    data_chunk_ctx->data_chunk = output;
+    data_chunk_ctx->data_chunk = arg->output;
 
-    // Call Ruby block with exception protection
-    VALUE call_args[3] = { ctx->execute_proc, func_info_obj, data_chunk_obj };
+    VALUE call_args[3] = { arg->ctx->execute_proc, func_info_obj, data_chunk_obj };
     rb_protect(call_execute_proc, (VALUE)call_args, &state);
 
     if (state) {
         VALUE err = rb_errinfo();
         VALUE msg = rb_funcall(err, rb_intern("message"), 0);
-        duckdb_function_set_error(info, StringValueCStr(msg));
-        rb_set_errinfo(Qnil); // Clear the error
+        duckdb_function_set_error(arg->info, StringValueCStr(msg));
+        rb_set_errinfo(Qnil);
+    }
+}
+
+static void *table_execute_gvl_wrapper(void *data) {
+    table_execute_with_gvl(data);
+    return NULL;
+}
+
+static void table_function_execute_callback(duckdb_function_info info, duckdb_data_chunk output) {
+    struct table_execute_arg arg;
+    arg.info = info;
+    arg.output = output;
+    arg.ctx = (rubyDuckDBTableFunction *)duckdb_function_get_extra_info(info);
+
+    if (ruby_native_thread_p()) {
+        if (ruby_thread_has_gvl_p()) {
+            table_execute_with_gvl(&arg);
+        } else {
+            rb_thread_call_with_gvl(table_execute_gvl_wrapper, &arg);
+        }
+    } else {
+        /* Non-Ruby thread — dispatch to global executor */
+        rbduckdb_executor_dispatch(table_execute_with_gvl, &arg);
     }
 }
 
