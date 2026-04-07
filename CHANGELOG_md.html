@@ -8,7 +8,7 @@
 <title>CHANGELOG - RDoc Documentation</title>
 
   <meta name="keywords" content="ruby,documentation,CHANGELOG">
-  <meta name="description" content="CHANGELOG: Changelog All notable changes to this project will be documented in this file. ScalarFunction` to allow `HUGEINT` and `UHUGEINT` as `return_type` and">
+  <meta name="description" content="CHANGELOG: Changelog All notable changes to this project will be documented in this file. Result`.">
 
 
 <script type="text/javascript">
@@ -72,6 +72,7 @@
   <ul class="link-list" role="directory">
               <li>      <a href="#label-Changelog">Changelog</a>
           <li>      <a href="#label-Unreleased">Unreleased</a>
+          <li>      <a href="#label-1.5.1.1+-+2026-04-04">1.5.1.1 - 2026-04-04</a>
           <li>
             <details open>
               <summary>      <a href="#label-1.5.1.0+-+2026-03-29">1.5.1.0 - 2026-03-29</a>
@@ -337,6 +338,17 @@
 
 <h1 id="label-Unreleased">Unreleased<span><a href="#label-Unreleased">&para;</a> <a href="#top">&uarr;</a></span></h1>
 <ul><li>
+<p>add <code>TIME_NS</code> column support to <a href="DuckDB/Result.html"><code>DuckDB::Result</code></a>. <code>TIME_NS</code> values are returned as <code>Time</code> objects with nanoseconds truncated to microseconds.</p>
+</li><li>
+<p>add <code>INTERVAL</code> as a supported <code>return_type</code> for <a href="DuckDB/ScalarFunction.html"><code>DuckDB::ScalarFunction</code></a>. The scalar function block can now return a <a href="DuckDB/Interval.html"><code>DuckDB::Interval</code></a> object and it will be written back to the result vector correctly.</p>
+</li><li>
+<p>add <code>UUID</code> as a supported <code>return_type</code> for <a href="DuckDB/ScalarFunction.html"><code>DuckDB::ScalarFunction</code></a>. The scalar function block can now return a UUID string and it will be written back to the result vector correctly.</p>
+</li><li>
+<p>add <a href="DuckDB/Connection.html#method-i-extract"><code>DuckDB::Connection#extract</code></a> to extract multiple SQL statements as prepared statements without executing them.</p>
+</li></ul>
+
+<h1 id="label-1.5.1.1+-+2026-04-04">1.5.1.1 - 2026-04-04<span><a href="#label-1.5.1.1+-+2026-04-04">&para;</a> <a href="#top">&uarr;</a></span></h1>
+<ul><li>
 <p>fix <a href="DuckDB/ScalarFunction.html"><code>DuckDB::ScalarFunction</code></a> to allow <code>HUGEINT</code> and <code>UHUGEINT</code> as <code>return_type</code> and parameter type (the C extension’s vector write path was missing those cases).</p>
 </li><li>
 <p>add <a href="DuckDB/ScalarFunctionSet.html"><code>DuckDB::ScalarFunctionSet</code></a> to register multiple overloads of a scalar function under one name (wraps <code>duckdb_scalar_function_set</code>).</p>
@@ -350,6 +362,8 @@
 <p>add <a href="DuckDB/LogicalType.html#method-c-create_struct"><code>DuckDB::LogicalType.create_struct</code></a> to create a struct logical type.</p>
 </li><li>
 <p>add <a href="DuckDB/LogicalType.html#method-c-create_enum"><code>DuckDB::LogicalType.create_enum</code></a> to create an enum logical type.</p>
+</li><li>
+<p>add <a href="DuckDB/LogicalType.html#method-c-create_decimal"><code>DuckDB::LogicalType.create_decimal</code></a> to create a decimal logical type.</p>
 </li></ul>
 
 <h1 id="label-1.5.1.0+-+2026-03-29">1.5.1.0 - 2026-03-29<span><a href="#label-1.5.1.0+-+2026-03-29">&para;</a> <a href="#top">&uarr;</a></span></h1>
