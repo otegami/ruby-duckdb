@@ -16,7 +16,7 @@ module DuckDBTest
     def test_create_with_set_value
       db = DuckDB::Database.open
       conn = db.connect
-      conn.query('SET threads=1')
+      conn.query('SET threads=1') if Gem::Version.new(DuckDB::LIBRARY_VERSION) < Gem::Version.new('1.5.0')
 
       called = 0
 
@@ -92,7 +92,7 @@ module DuckDBTest
 
       db = DuckDB::Database.open
       conn = db.connect
-      conn.query('SET threads=1')
+      conn.query('SET threads=1') if Gem::Version.new(DuckDB::LIBRARY_VERSION) < Gem::Version.new('1.5.0')
 
       # Capture local variable in callbacks
       row_multiplier = 2
@@ -158,7 +158,7 @@ module DuckDBTest
     def test_symbol_columns
       db = DuckDB::Database.open
       conn = db.connect
-      conn.query('SET threads=1')
+      conn.query('SET threads=1') if Gem::Version.new(DuckDB::LIBRARY_VERSION) < Gem::Version.new('1.5.0')
 
       # Capture local variable in callbacks
       row_multiplier = 2
@@ -205,6 +205,42 @@ module DuckDBTest
       db.close
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+
+    def test_table_function_with_multithread # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+      unless Gem::Version.new(DuckDB::LIBRARY_VERSION) >= Gem::Version.new('1.5.0')
+        skip 'per-worker proxy requires duckdb >= 1.5.0'
+      end
+
+      db = DuckDB::Database.open
+      conn = db.connect
+      conn.execute('SET threads=4')
+
+      called = 0
+      tf = DuckDB::TableFunction.new
+      tf.name = 'mt_generate'
+      tf.bind do |bind_info|
+        bind_info.add_result_column('value', DuckDB::LogicalType::INTEGER)
+      end
+      tf.init { |_init_info| } # rubocop:disable Lint/EmptyBlock
+      tf.execute do |_func_info, output|
+        if called.zero?
+          100.times { |i| output.set_value(0, i, i * 2) }
+          output.size = 100
+          called += 1
+        else
+          output.size = 0
+        end
+      end
+
+      conn.register_table_function(tf)
+      result = conn.execute('SELECT SUM(value) FROM mt_generate()')
+
+      # sum(0, 2, 4, ..., 198) = 2 * sum(0..99) = 2 * 4950 = 9900
+      assert_equal 9900, result.first.first
+
+      conn.disconnect
+      db.close
+    end
 
     private
 

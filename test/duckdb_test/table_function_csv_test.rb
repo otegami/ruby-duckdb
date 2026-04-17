@@ -50,7 +50,9 @@ module DuckDBTest
     def setup
       @db = DuckDB::Database.open
       @con = @db.connect
-      @con.execute('SET threads=1') # Required for Ruby callbacks
+      return unless Gem::Version.new(DuckDB::LIBRARY_VERSION) < Gem::Version.new('1.5.0')
+
+      @con.execute('SET threads=1')
     end
 
     def teardown
