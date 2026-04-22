@@ -5,17 +5,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>class DuckDB::TableFunction::InitInfo - RDoc Documentation</title>
+<title>module DuckDB::FunctionTypeValidation - RDoc Documentation</title>
 
 
   <meta
     name="keywords"
-    content="ruby,class,DuckDB::TableFunction::InitInfo"
+    content="ruby,module,DuckDB::FunctionTypeValidation"
   >
 
     <meta
       name="description"
-      content="class DuckDB::TableFunction::InitInfo: InitInfo provides context during table function initialization. It is passed to the init callback to set up execution state."
+      content="module DuckDB::FunctionTypeValidation: Shared type-checking mixin for DuckDB function classes. Provides +SUPPORTED_TYPES+ and the private +check_supported_type!+ guard used by +ScalarFuncti"
     >
 
 
@@ -24,11 +24,11 @@
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="class DuckDB::TableFunction::InitInfo - RDoc Documentation">
+<meta property="og:title" content="module DuckDB::FunctionTypeValidation - RDoc Documentation">
 
 
 
-    <meta property="og:description" content="InitInfo provides context during table function initialization. It is passed to the init callback to set up execution state.">
+    <meta property="og:description" content="Shared type-checking mixin for DuckDB function classes. Provides +SUPPORTED_TYPES+ and the private +check_supported_type!+ guard used by +ScalarFuncti">
 
 
 
@@ -36,62 +36,62 @@
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="class DuckDB::TableFunction::InitInfo - RDoc Documentation">
+<meta name="twitter:title" content="module DuckDB::FunctionTypeValidation - RDoc Documentation">
 
 
 
-    <meta name="twitter:description" content="InitInfo provides context during table function initialization. It is passed to the init callback to set up execution state.">
+    <meta name="twitter:description" content="Shared type-checking mixin for DuckDB function classes. Provides +SUPPORTED_TYPES+ and the private +check_supported_type!+ guard used by +ScalarFuncti">
 
 
 
 <script type="text/javascript">
-  var rdoc_rel_prefix = "../../";
-  var index_rel_prefix = "../../";
+  var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script
-  src="../../js/theme-toggle.js?v=7.0.3"
+  src="../js/theme-toggle.js?v=7.0.3"
 ></script>
 
 <script
-  src="../../js/search_navigation.js?v=7.0.3"
+  src="../js/search_navigation.js?v=7.0.3"
   defer
 ></script>
 
 <script
-  src="../../js/search_data.js?v=7.0.3"
+  src="../js/search_data.js?v=7.0.3"
   defer
 ></script>
 
 <script
-  src="../../js/search_ranker.js?v=7.0.3"
+  src="../js/search_ranker.js?v=7.0.3"
   defer
 ></script>
 
 <script
-  src="../../js/search_controller.js?v=7.0.3"
+  src="../js/search_controller.js?v=7.0.3"
   defer
 ></script>
 
 <script
-  src="../../js/c_highlighter.js?v=7.0.3"
+  src="../js/c_highlighter.js?v=7.0.3"
   defer
 ></script>
 
 <script
-  src="../../js/aliki.js?v=7.0.3"
+  src="../js/aliki.js?v=7.0.3"
   defer
 ></script>
 
 <link
-  href="../../css/rdoc.css?v=7.0.3"
+  href="../css/rdoc.css?v=7.0.3"
   rel="stylesheet"
 >
 
 
 
 
-<body role="document" class="class has-toc">
+<body role="document" class="module has-toc">
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <!-- Chevron (right arrow) - used for expand/collapse -->
   <symbol
@@ -302,7 +302,7 @@
 </svg>
 
 <header class="top-navbar">
-  <a href="../../index.html" class="navbar-brand">
+  <a href="../index.html" class="navbar-brand">
     RDoc Documentation
   </a>
 
@@ -395,7 +395,7 @@
 
 
             <li>
-              <a href="../../CHANGELOG_md.html">
+              <a href="../CHANGELOG_md.html">
                 CHANGELOG
               </a>
             </li>
@@ -404,7 +404,7 @@
 
 
             <li>
-              <a href="../../CONTRIBUTION_md.html">
+              <a href="../CONTRIBUTION_md.html">
                 CONTRIBUTION
               </a>
             </li>
@@ -413,7 +413,7 @@
 
 
             <li>
-              <a href="../../HACKING_md.html">
+              <a href="../HACKING_md.html">
                 HACKING
               </a>
             </li>
@@ -422,7 +422,7 @@
 
 
             <li>
-              <a href="../../LICENSE.html">
+              <a href="../LICENSE.html">
                 LICENSE
               </a>
             </li>
@@ -431,7 +431,7 @@
 
 
             <li>
-              <a href="../../README_md.html">
+              <a href="../README_md.html">
                 README
               </a>
             </li>
@@ -444,21 +444,6 @@
   
 
   
-<div id="parent-class-section" class="nav-section">
-  <details class="nav-section-collapsible" open>
-    <summary class="nav-section-header">
-      <span class="nav-section-icon">
-        <svg><use href="#icon-ancestors"></use></svg>
-      </span>
-      <span class="nav-section-title">Ancestors</span>
-      <span class="nav-section-chevron">
-        <svg><use href="#icon-chevron"></use></svg>
-      </span>
-    </summary>
-    <ul><li><a href="../../Object.html">Object</a><ul><li>BasicObject</li></ul></li></ul>
-  </details>
-</div>
-
 
   
 
@@ -466,25 +451,6 @@
 
   
 
-
-  <div class="nav-section">
-    <details class="nav-section-collapsible" open>
-      <summary class="nav-section-header">
-        <span class="nav-section-icon">
-          <svg><use href="#icon-instance-methods"></use></svg>
-        </span>
-        <span class="nav-section-title">Instance Methods</span>
-        <span class="nav-section-chevron">
-          <svg><use href="#icon-chevron"></use></svg>
-        </span>
-      </summary>
-      <ul class="nav-list" role="directory">
-
-        <li ><a href="#method-i-set_error">set_error</a></li>
-
-      </ul>
-    </details>
-  </div>
 
 
   <div id="classindex-section" class="nav-section">
@@ -499,58 +465,39 @@
       </span>
     </summary>
 
-    <ul class="link-list nav-list"><li><code><a href="../../CSVTableAdapter.html">CSVTableAdapter</a></code></li><li><details><summary><code><a href="../../DuckDB.html">DuckDB</a></code></summary><ul class="link-list nav-list"><li><code><a href="../../DuckDB/AggregateFunction.html">AggregateFunction</a></code></li><li><code><a href="../../DuckDB/Appender.html">Appender</a></code></li><li><code><a href="../../DuckDB/Blob.html">Blob</a></code></li><li><code><a href="../../DuckDB/Casting.html">Casting</a></code></li><li><code><a href="../../DuckDB/ClientContext.html">ClientContext</a></code></li><li><code><a href="../../DuckDB/Column.html">Column</a></code></li><li><code><a href="../../DuckDB/Config.html">Config</a></code></li><li><code><a href="../../DuckDB/Connection.html">Connection</a></code></li><li><code><a href="../../DuckDB/DataChunk.html">DataChunk</a></code></li><li><code><a href="../../DuckDB/Database.html">Database</a></code></li><li><code><a href="../../DuckDB/Error.html">Error</a></code></li><li><code><a href="../../DuckDB/Expression.html">Expression</a></code></li><li><code><a href="../../DuckDB/ExtractedStatements.html">ExtractedStatements</a></code></li><li><code><a href="../../DuckDB/FunctionTypeValidation.html">FunctionTypeValidation</a></code></li><li><code><a href="../../DuckDB/Infinity.html">Infinity</a></code></li><li><code><a href="../../DuckDB/InstanceCache.html">InstanceCache</a></code></li><li><code><a href="../../DuckDB/Interval.html">Interval</a></code></li><li><code><a href="../../DuckDB/LogicalType.html">LogicalType</a></code></li><li><code><a href="../../DuckDB/MemoryHelper.html">MemoryHelper</a></code></li><li><code><a href="../../DuckDB/PendingResult.html">PendingResult</a></code></li><li><code><a href="../../DuckDB/PreparedStatement.html">PreparedStatement</a></code></li><li><code><a href="../../DuckDB/Result.html">Result</a></code></li><li><code><a href="../../DuckDB/ScalarFunction.html">ScalarFunction</a></code></li><li><code><a href="../../DuckDB/ScalarFunctionSet.html">ScalarFunctionSet</a></code></li><li><code><a href="../../DuckDB/TableDescription.html">TableDescription</a></code></li><li><details><summary><code><a href="../../DuckDB/TableFunction.html">TableFunction</a></code></summary><ul class="link-list nav-list"><li><code><a href="../../DuckDB/TableFunction/FunctionInfo.html">FunctionInfo</a></code></li><li><code><a href="../../DuckDB/TableFunction/InitInfo.html">InitInfo</a></code></li></ul></details></li><li><code><a href="../../DuckDB/Value.html">Value</a></code></li><li><code><a href="../../DuckDB/Vector.html">Vector</a></code></li></ul></details></li><li><code><a href="../../Object.html">Object</a></code></li><li><code><a href="../../PolarsDataFrameBatchTableAdapter.html">PolarsDataFrameBatchTableAdapter</a></code></li><li><code><a href="../../PolarsDataFrameOptimizedTableAdapter.html">PolarsDataFrameOptimizedTableAdapter</a></code></li><li><code><a href="../../PolarsDataFrameTableAdapter.html">PolarsDataFrameTableAdapter</a></code></li></ul>
+    <ul class="link-list nav-list"><li><code><a href="../CSVTableAdapter.html">CSVTableAdapter</a></code></li><li><details><summary><code><a href="../DuckDB.html">DuckDB</a></code></summary><ul class="link-list nav-list"><li><code><a href="../DuckDB/AggregateFunction.html">AggregateFunction</a></code></li><li><code><a href="../DuckDB/Appender.html">Appender</a></code></li><li><code><a href="../DuckDB/Blob.html">Blob</a></code></li><li><code><a href="../DuckDB/Casting.html">Casting</a></code></li><li><code><a href="../DuckDB/ClientContext.html">ClientContext</a></code></li><li><code><a href="../DuckDB/Column.html">Column</a></code></li><li><code><a href="../DuckDB/Config.html">Config</a></code></li><li><code><a href="../DuckDB/Connection.html">Connection</a></code></li><li><code><a href="../DuckDB/DataChunk.html">DataChunk</a></code></li><li><code><a href="../DuckDB/Database.html">Database</a></code></li><li><code><a href="../DuckDB/Error.html">Error</a></code></li><li><code><a href="../DuckDB/Expression.html">Expression</a></code></li><li><code><a href="../DuckDB/ExtractedStatements.html">ExtractedStatements</a></code></li><li><code><a href="../DuckDB/FunctionTypeValidation.html">FunctionTypeValidation</a></code></li><li><code><a href="../DuckDB/Infinity.html">Infinity</a></code></li><li><code><a href="../DuckDB/InstanceCache.html">InstanceCache</a></code></li><li><code><a href="../DuckDB/Interval.html">Interval</a></code></li><li><code><a href="../DuckDB/LogicalType.html">LogicalType</a></code></li><li><code><a href="../DuckDB/MemoryHelper.html">MemoryHelper</a></code></li><li><code><a href="../DuckDB/PendingResult.html">PendingResult</a></code></li><li><code><a href="../DuckDB/PreparedStatement.html">PreparedStatement</a></code></li><li><code><a href="../DuckDB/Result.html">Result</a></code></li><li><code><a href="../DuckDB/ScalarFunction.html">ScalarFunction</a></code></li><li><code><a href="../DuckDB/ScalarFunctionSet.html">ScalarFunctionSet</a></code></li><li><code><a href="../DuckDB/TableDescription.html">TableDescription</a></code></li><li><details><summary><code><a href="../DuckDB/TableFunction.html">TableFunction</a></code></summary><ul class="link-list nav-list"><li><code><a href="../DuckDB/TableFunction/FunctionInfo.html">FunctionInfo</a></code></li><li><code><a href="../DuckDB/TableFunction/InitInfo.html">InitInfo</a></code></li></ul></details></li><li><code><a href="../DuckDB/Value.html">Value</a></code></li><li><code><a href="../DuckDB/Vector.html">Vector</a></code></li></ul></details></li><li><code><a href="../Object.html">Object</a></code></li><li><code><a href="../PolarsDataFrameBatchTableAdapter.html">PolarsDataFrameBatchTableAdapter</a></code></li><li><code><a href="../PolarsDataFrameOptimizedTableAdapter.html">PolarsDataFrameOptimizedTableAdapter</a></code></li><li><code><a href="../PolarsDataFrameTableAdapter.html">PolarsDataFrameTableAdapter</a></code></li></ul>
   </details>
 </div>
 
 </nav>
 
-<main role="main" aria-labelledby="class-DuckDB::TableFunction::InitInfo">
+<main role="main" aria-labelledby="module-DuckDB::FunctionTypeValidation">
   
   
     <ol role="navigation" aria-label="Breadcrumb navigation" class="breadcrumb">
       
       <li>
         
-        <a href="../../DuckDB.html">DuckDB</a><span>::</span>
+        <a href="../DuckDB.html">DuckDB</a><span>::</span>
         
       </li>
       
       <li>
         
-        <a href="../../DuckDB/TableFunction.html">TableFunction</a><span>::</span>
-        
-      </li>
-      
-      <li>
-        
-        <span>InitInfo</span>
+        <span>FunctionTypeValidation</span>
         
       </li>
       
     </ol>
   
 
-  <h1 id="class-DuckDB::TableFunction::InitInfo" class="anchor-link class">
-    class DuckDB::TableFunction::InitInfo
+  <h1 id="module-DuckDB::FunctionTypeValidation" class="anchor-link module">
+    module DuckDB::FunctionTypeValidation
   </h1>
 
   <section class="description">
     
-<p>The <a href="InitInfo.html"><code>DuckDB::TableFunction::InitInfo</code></a> provides context during table function initialization.</p>
-
-<p>It is passed to the init callback to set up execution state.</p>
-
-<p>Example:</p>
-
-<pre class="ruby"><span class="ruby-identifier">table_function</span>.<span class="ruby-identifier">init</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">init_info</span><span class="ruby-operator">|</span>
-  <span class="ruby-comment"># Initialize execution state</span>
-  <span class="ruby-comment"># Can report errors if initialization fails</span>
-  <span class="ruby-identifier">init_info</span>.<span class="ruby-identifier">set_error</span>(<span class="ruby-string">&#39;Initialization failed&#39;</span>)
-<span class="ruby-keyword">end</span>
-</pre>
-
-<p>rubocop:disable Lint/EmptyClass</p>
+<p>Shared type-checking mixin for <a href="../DuckDB.html"><code>DuckDB</code></a> function classes. Provides <a href="FunctionTypeValidation.html#SUPPORTED_TYPES"><code>SUPPORTED_TYPES</code></a> and the private <code>check_supported_type!</code> guard used by <a href="ScalarFunction.html"><code>ScalarFunction</code></a> and <a href="AggregateFunction.html"><code>AggregateFunction</code></a>.</p>
 
   </section>
 
@@ -561,81 +508,35 @@
 
 
 
+    <section class="constants-list">
+      <header>
+        <h3 id="constants"><a href="#constants">Constants</a></h3>
+      </header>
+      <dl>
+
+        <dt id="SUPPORTED_TYPES">SUPPORTED_TYPES</dt>
+
+        <dd>
+
+          
+        </dd>
 
 
-
-
-
-
-
-
-
-
-
-
-
-     <section id="public-instance-5Buntitled-5D-method-details" class="method-section anchor-link">
-       <header>
-         <h3 id="public-instance-methods"><a href="#public-instance-methods">Public Instance Methods</a></h3>
-       </header>
-
-
-      <div id="method-i-set_error" class="method-detail anchor-link ">
-        <div class="method-header">
-
-
-              <div class="method-heading">
-                <a href="#method-i-set_error" title="Link to this method">
-                  <span class="method-callseq">
-                    set_error(error_message) &rarr; self
-                  </span>
-                </a>
-              </div>
-
-
-        </div>
-
-
-          <div class="method-controls">
-            <details class="method-source-toggle">
-              <summary>Source</summary>
-            </details>
-          </div>
-          <div class="method-source-code" id="set_error-source">
-            <pre class="c" data-language="c">static VALUE rbduckdb_init_info_set_error(VALUE self, VALUE error) {
-    rubyDuckDBInitInfo *ctx;
-    const char *error_msg;
-
-    TypedData_Get_Struct(self, rubyDuckDBInitInfo, &amp;init_info_data_type, ctx);
-
-    error_msg = StringValueCStr(error);
-    duckdb_init_set_error(ctx-&gt;info, error_msg);
-
-    return self;
-}</pre>
-          </div>
-
-
-
-        <div class="method-description">
-
-
-          <p>Sets an error message for the init phase. This will cause the query to fail with the specified error.</p>
-
-<pre class="ruby"><span class="ruby-identifier">init_info</span>.<span class="ruby-identifier">set_error</span>(<span class="ruby-string">&#39;Invalid initialization&#39;</span>)
-</pre>
-
-
-        </div>
-
-
-
-
-
-      </div>
-
-
+      </dl>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

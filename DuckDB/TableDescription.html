@@ -5,17 +5,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>class DuckDB::ScalarFunctionSet - RDoc Documentation</title>
+<title>class DuckDB::TableDescription - RDoc Documentation</title>
 
 
   <meta
     name="keywords"
-    content="ruby,class,DuckDB::ScalarFunctionSet"
+    content="ruby,class,DuckDB::TableDescription"
   >
 
     <meta
       name="description"
-      content="class DuckDB::ScalarFunctionSet: ScalarFunctionSet encapsulates DuckDB&#39;s scalar function set, which allows registering multiple overloads of a scalar function under one name. ScalarFu"
+      content="class DuckDB::TableDescription: TableDescription provides metadata about a table in DuckDB. Use it to retrieve column descriptions — including name, logical type, and whether a colum"
     >
 
 
@@ -24,11 +24,11 @@
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="class DuckDB::ScalarFunctionSet - RDoc Documentation">
+<meta property="og:title" content="class DuckDB::TableDescription - RDoc Documentation">
 
 
 
-    <meta property="og:description" content="ScalarFunctionSet encapsulates DuckDB&#39;s scalar function set, which allows registering multiple overloads of a scalar function under one name. ScalarFu">
+    <meta property="og:description" content="TableDescription provides metadata about a table in DuckDB. Use it to retrieve column descriptions — including name, logical type, and whether a colum">
 
 
 
@@ -36,11 +36,11 @@
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="class DuckDB::ScalarFunctionSet - RDoc Documentation">
+<meta name="twitter:title" content="class DuckDB::TableDescription - RDoc Documentation">
 
 
 
-    <meta name="twitter:description" content="ScalarFunctionSet encapsulates DuckDB&#39;s scalar function set, which allows registering multiple overloads of a scalar function under one name. ScalarFu">
+    <meta name="twitter:description" content="TableDescription provides metadata about a table in DuckDB. Use it to retrieve column descriptions — including name, logical type, and whether a colum">
 
 
 
@@ -499,7 +499,9 @@
       </summary>
       <ul class="nav-list" role="directory">
 
-        <li ><a href="#method-i-add">add</a></li>
+        <li ><a href="#method-i-column_descriptions">column_descriptions</a></li>
+
+        <li ><a href="#method-i-error_message">error_message</a></li>
 
       </ul>
     </details>
@@ -524,7 +526,7 @@
 
 </nav>
 
-<main role="main" aria-labelledby="class-DuckDB::ScalarFunctionSet">
+<main role="main" aria-labelledby="class-DuckDB::TableDescription">
   
   
     <ol role="navigation" aria-label="Breadcrumb navigation" class="breadcrumb">
@@ -537,22 +539,37 @@
       
       <li>
         
-        <span>ScalarFunctionSet</span>
+        <span>TableDescription</span>
         
       </li>
       
     </ol>
   
 
-  <h1 id="class-DuckDB::ScalarFunctionSet" class="anchor-link class">
-    class DuckDB::ScalarFunctionSet
+  <h1 id="class-DuckDB::TableDescription" class="anchor-link class">
+    class DuckDB::TableDescription
   </h1>
 
   <section class="description">
     
-<p><a href="ScalarFunctionSet.html"><code>DuckDB::ScalarFunctionSet</code></a> encapsulates DuckDB’s scalar function set, which allows registering multiple overloads of a scalar function under one name.</p>
+<p><a href="TableDescription.html"><code>DuckDB::TableDescription</code></a> provides metadata about a table in <a href="../DuckDB.html"><code>DuckDB</code></a>.</p>
 
-<p>@note <a href="ScalarFunctionSet.html"><code>DuckDB::ScalarFunctionSet</code></a> is experimental.</p>
+<p>Use it to retrieve column descriptions — including name, logical type, and whether a column has a default value — for any accessible table.</p>
+
+<p>Requires <a href="../DuckDB.html"><code>DuckDB</code></a> &gt;= 1.5.0.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
+<span class="ruby-identifier">db</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Database</span>.<span class="ruby-identifier">open</span>
+<span class="ruby-identifier">con</span> = <span class="ruby-identifier">db</span>.<span class="ruby-identifier">connect</span>
+<span class="ruby-identifier">con</span>.<span class="ruby-identifier">query</span>(<span class="ruby-string">&#39;CREATE TABLE users (id INTEGER, name VARCHAR DEFAULT \&#39;anonymous\&#39;)&#39;</span>)
+
+<span class="ruby-identifier">td</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">TableDescription</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">con</span>, <span class="ruby-string">&#39;users&#39;</span>)
+<span class="ruby-identifier">td</span>.<span class="ruby-identifier">column_descriptions</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">cd</span><span class="ruby-operator">|</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;#{cd.name}: #{cd.logical_type.type}, default=#{cd.has_default?}&quot;</span>
+<span class="ruby-keyword">end</span>
+<span class="ruby-comment"># id: integer, default=false</span>
+<span class="ruby-comment"># name: varchar, default=true</span>
+</pre>
 
   </section>
 
@@ -582,7 +599,7 @@
             <div class="method-heading">
               <a href="#method-c-new" title="Link to this method">
                 <span class="method-name">new</span>
-                <span class="method-args">(name)</span>
+                <span class="method-args">(con, table, schema: nil, catalog: nil)</span>
               </a>
             </div>
 
@@ -595,12 +612,12 @@
             </details>
           </div>
           <div class="method-source-code" id="new-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/scalar_function_set.rb, line 11</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">name</span>)
-  <span class="ruby-identifier">raise</span> <span class="ruby-constant">TypeError</span>, <span class="ruby-node">&quot;#{name.class} is not a String or Symbol&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Symbol</span>)
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/table_description.rb, line 39</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">con</span>, <span class="ruby-identifier">table</span>, <span class="ruby-value">schema:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">catalog:</span> <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Error</span>, <span class="ruby-string">&#39;1st argument must be DuckDB::Connection object.&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">con</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Connection</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Error</span>, <span class="ruby-string">&#39;2nd argument must be table name.&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">table</span>.<span class="ruby-identifier">nil?</span>
 
-  <span class="ruby-ivar">@name</span> = <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>
-  <span class="ruby-identifier">_initialize</span>(<span class="ruby-ivar">@name</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Error</span>, <span class="ruby-identifier">error_message</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">_initialize</span>(<span class="ruby-identifier">con</span>, <span class="ruby-identifier">catalog</span>, <span class="ruby-identifier">schema</span>, <span class="ruby-identifier">table</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
 
@@ -609,7 +626,20 @@
         <div class="method-description">
 
 
-          <p>@param name [String, Symbol] the function set name shared by all overloads @raise [TypeError] if name is not a String or Symbol</p>
+          <p>Creates a new <a href="TableDescription.html"><code>TableDescription</code></a> for the given table.</p>
+
+<p><code>con</code> must be a <a href="Connection.html"><code>DuckDB::Connection</code></a>. <code>table</code> is the table name (String). Optionally pass <code>schema:</code> and/or <code>catalog:</code> to qualify the table.</p>
+
+<p>Raises <a href="Error.html"><code>DuckDB::Error</code></a> if the connection is invalid, the table name is nil, or the table (or schema/catalog) does not exist.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
+<span class="ruby-identifier">db</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Database</span>.<span class="ruby-identifier">open</span>
+<span class="ruby-identifier">con</span> = <span class="ruby-identifier">db</span>.<span class="ruby-identifier">connect</span>
+<span class="ruby-identifier">con</span>.<span class="ruby-identifier">query</span>(<span class="ruby-string">&#39;CREATE TABLE t (i INTEGER)&#39;</span>)
+
+<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">TableDescription</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">con</span>, <span class="ruby-string">&#39;t&#39;</span>)
+<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">TableDescription</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">con</span>, <span class="ruby-string">&#39;t&#39;</span>, <span class="ruby-value">schema:</span> <span class="ruby-string">&#39;main&#39;</span>)
+</pre>
 
 
         </div>
@@ -635,13 +665,13 @@
        </header>
 
 
-      <div id="method-i-add" class="method-detail anchor-link ">
+      <div id="method-i-column_descriptions" class="method-detail anchor-link ">
         <div class="method-header">
 
             <div class="method-heading">
-              <a href="#method-i-add" title="Link to this method">
-                <span class="method-name">add</span>
-                <span class="method-args">(scalar_function)</span>
+              <a href="#method-i-column_descriptions" title="Link to this method">
+                <span class="method-name">column_descriptions</span>
+                <span class="method-args">()</span>
               </a>
             </div>
 
@@ -653,15 +683,16 @@
               <summary>Source</summary>
             </details>
           </div>
-          <div class="method-source-code" id="add-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/scalar_function_set.rb, line 22</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">add</span>(<span class="ruby-identifier">scalar_function</span>)
-  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">scalar_function</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">ScalarFunction</span>)
-    <span class="ruby-identifier">raise</span> <span class="ruby-constant">TypeError</span>, <span class="ruby-node">&quot;#{scalar_function.class} is not a DuckDB::ScalarFunction&quot;</span>
+          <div class="method-source-code" id="column_descriptions-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/table_description.rb, line 59</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">column_descriptions</span>
+  <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">_column_count</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-constant">ColumnDescription</span>.<span class="ruby-identifier">new</span>(
+      <span class="ruby-value">name:</span> <span class="ruby-identifier">_column_name</span>(<span class="ruby-identifier">i</span>),
+      <span class="ruby-value">logical_type:</span> <span class="ruby-identifier">_column_logical_type</span>(<span class="ruby-identifier">i</span>),
+      <span class="ruby-value">has_default:</span> <span class="ruby-identifier">_column_has_default?</span>(<span class="ruby-identifier">i</span>)
+    )
   <span class="ruby-keyword">end</span>
-
-  <span class="ruby-identifier">scalar_function</span>.<span class="ruby-identifier">name</span> = <span class="ruby-ivar">@name</span>
-  <span class="ruby-identifier">_add</span>(<span class="ruby-identifier">scalar_function</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
 
@@ -670,7 +701,62 @@
         <div class="method-description">
 
 
-          <p>@param <a href="../lib/duckdb/scalar_function_rb.html">scalar_function</a> [DuckDB::ScalarFunction] the overload to add @return [self] @raise [TypeError] if <a href="../lib/duckdb/scalar_function_rb.html">scalar_function</a> is not a <a href="ScalarFunction.html"><code>DuckDB::ScalarFunction</code></a> @raise [DuckDB::Error] if the overload already exists in the set</p>
+          <p>Returns an array of DuckDB::ColumnDescription objects, one per column.</p>
+
+<p>Each element describes a single column’s name, logical type, and whether it has a default value defined.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
+<span class="ruby-identifier">db</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Database</span>.<span class="ruby-identifier">open</span>
+<span class="ruby-identifier">con</span> = <span class="ruby-identifier">db</span>.<span class="ruby-identifier">connect</span>
+<span class="ruby-identifier">con</span>.<span class="ruby-identifier">query</span>(<span class="ruby-string">&quot;CREATE TABLE t (i INTEGER, j INTEGER DEFAULT 5)&quot;</span>)
+
+<span class="ruby-identifier">td</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">TableDescription</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">con</span>, <span class="ruby-string">&#39;t&#39;</span>)
+<span class="ruby-identifier">td</span>.<span class="ruby-identifier">column_descriptions</span>
+<span class="ruby-comment">#=&gt; [#&lt;data DuckDB::ColumnDescription name=&quot;i&quot; ...&gt;, ...]</span>
+</pre>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-i-error_message" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-i-error_message" title="Link to this method">
+                <span class="method-name">error_message</span>
+                <span class="method-args">()</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="error_message-source">
+            <pre class="c" data-language="c">static VALUE rbduckdb_table_description_error_message(VALUE self) {
+    rubyDuckDBTableDescription *ctx = get_struct_table_description(self);
+    const char *p = duckdb_table_description_error(ctx-&gt;table_description);
+    return p ? rb_str_new2(p) : Qnil;
+}</pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          
 
 
         </div>
