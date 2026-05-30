@@ -15,7 +15,7 @@
 
     <meta
       name="description"
-      content="class DuckDB::Appender: Appender encapsulates DuckDB Appender. Database."
+      content="class DuckDB::Appender: Appender encapsulates DuckDB Appender. tt&gt;&#39;schema."
     >
 
 
@@ -28,7 +28,7 @@
 
 
 
-    <meta property="og:description" content="Appender encapsulates DuckDB Appender. Database.">
+    <meta property="og:description" content="Appender encapsulates DuckDB Appender. tt&gt;&#39;schema.">
 
 
 
@@ -40,7 +40,7 @@
 
 
 
-    <meta name="twitter:description" content="Appender encapsulates DuckDB Appender. Database.">
+    <meta name="twitter:description" content="Appender encapsulates DuckDB Appender. tt&gt;&#39;schema.">
 
 
 
@@ -50,41 +50,41 @@
 </script>
 
 <script
-  src="../js/theme-toggle.js?v=7.0.3"
+  src="../js/theme-toggle.js?v=7.0.4"
 ></script>
 
 <script
-  src="../js/search_navigation.js?v=7.0.3"
+  src="../js/search_navigation.js?v=7.0.4"
   defer
 ></script>
 
 <script
-  src="../js/search_data.js?v=7.0.3"
+  src="../js/search_data.js?v=7.0.4"
   defer
 ></script>
 
 <script
-  src="../js/search_ranker.js?v=7.0.3"
+  src="../js/search_ranker.js?v=7.0.4"
   defer
 ></script>
 
 <script
-  src="../js/search_controller.js?v=7.0.3"
+  src="../js/search_controller.js?v=7.0.4"
   defer
 ></script>
 
 <script
-  src="../js/c_highlighter.js?v=7.0.3"
+  src="../js/c_highlighter.js?v=7.0.4"
   defer
 ></script>
 
 <script
-  src="../js/aliki.js?v=7.0.3"
+  src="../js/aliki.js?v=7.0.4"
   defer
 ></script>
 
 <link
-  href="../css/rdoc.css?v=7.0.3"
+  href="../css/rdoc.css?v=7.0.4"
   rel="stylesheet"
 >
 
@@ -461,6 +461,30 @@
 
 
   
+<div id="includes-section" class="nav-section">
+  <details class="nav-section-collapsible" open>
+    <summary class="nav-section-header">
+      <span class="nav-section-icon">
+        <svg><use href="#icon-includes"></use></svg>
+      </span>
+      <span class="nav-section-title">Included Modules</span>
+      <span class="nav-section-chevron">
+        <svg><use href="#icon-chevron"></use></svg>
+      </span>
+    </summary>
+
+    <ul class="nav-list">
+
+      <li>
+
+        <a class="include" href="TableNameParser.html">DuckDB::TableNameParser</a>
+
+      </li>
+
+    </ul>
+  </details>
+</div>
+
 
   
 
@@ -516,6 +540,8 @@
         <li ><a href="#method-i-append_date">append_date</a></li>
 
         <li ><a href="#method-i-append_default">append_default</a></li>
+
+        <li ><a href="#method-i-append_default_to_chunk">append_default_to_chunk</a></li>
 
         <li ><a href="#method-i-append_double">append_double</a></li>
 
@@ -588,7 +614,7 @@
       </span>
     </summary>
 
-    <ul class="link-list nav-list"><li><code><a href="../CSVTableAdapter.html">CSVTableAdapter</a></code></li><li><details><summary><code><a href="../DuckDB.html">DuckDB</a></code></summary><ul class="link-list nav-list"><li><code><a href="../DuckDB/AggregateFunction.html">AggregateFunction</a></code></li><li><code><a href="../DuckDB/Appender.html">Appender</a></code></li><li><code><a href="../DuckDB/Blob.html">Blob</a></code></li><li><code><a href="../DuckDB/Casting.html">Casting</a></code></li><li><code><a href="../DuckDB/ClientContext.html">ClientContext</a></code></li><li><code><a href="../DuckDB/Column.html">Column</a></code></li><li><code><a href="../DuckDB/Config.html">Config</a></code></li><li><code><a href="../DuckDB/Connection.html">Connection</a></code></li><li><code><a href="../DuckDB/DataChunk.html">DataChunk</a></code></li><li><code><a href="../DuckDB/Database.html">Database</a></code></li><li><code><a href="../DuckDB/Error.html">Error</a></code></li><li><code><a href="../DuckDB/Expression.html">Expression</a></code></li><li><code><a href="../DuckDB/ExtractedStatements.html">ExtractedStatements</a></code></li><li><code><a href="../DuckDB/FunctionTypeValidation.html">FunctionTypeValidation</a></code></li><li><code><a href="../DuckDB/Infinity.html">Infinity</a></code></li><li><code><a href="../DuckDB/InstanceCache.html">InstanceCache</a></code></li><li><code><a href="../DuckDB/Interval.html">Interval</a></code></li><li><code><a href="../DuckDB/LogicalType.html">LogicalType</a></code></li><li><code><a href="../DuckDB/MemoryHelper.html">MemoryHelper</a></code></li><li><code><a href="../DuckDB/PendingResult.html">PendingResult</a></code></li><li><code><a href="../DuckDB/PreparedStatement.html">PreparedStatement</a></code></li><li><code><a href="../DuckDB/Result.html">Result</a></code></li><li><code><a href="../DuckDB/ScalarFunction.html">ScalarFunction</a></code></li><li><code><a href="../DuckDB/ScalarFunctionSet.html">ScalarFunctionSet</a></code></li><li><code><a href="../DuckDB/TableDescription.html">TableDescription</a></code></li><li><details><summary><code><a href="../DuckDB/TableFunction.html">TableFunction</a></code></summary><ul class="link-list nav-list"><li><code><a href="../DuckDB/TableFunction/FunctionInfo.html">FunctionInfo</a></code></li><li><code><a href="../DuckDB/TableFunction/InitInfo.html">InitInfo</a></code></li></ul></details></li><li><code><a href="../DuckDB/Value.html">Value</a></code></li><li><code><a href="../DuckDB/Vector.html">Vector</a></code></li></ul></details></li><li><code><a href="../Object.html">Object</a></code></li><li><code><a href="../PolarsDataFrameBatchTableAdapter.html">PolarsDataFrameBatchTableAdapter</a></code></li><li><code><a href="../PolarsDataFrameOptimizedTableAdapter.html">PolarsDataFrameOptimizedTableAdapter</a></code></li><li><code><a href="../PolarsDataFrameTableAdapter.html">PolarsDataFrameTableAdapter</a></code></li></ul>
+    <ul class="link-list nav-list"><li><code><a href="../CSVTableAdapter.html">CSVTableAdapter</a></code></li><li><details><summary><code><a href="../DuckDB.html">DuckDB</a></code></summary><ul class="link-list nav-list"><li><code><a href="../DuckDB/AggregateFunction.html">AggregateFunction</a></code></li><li><code><a href="../DuckDB/AggregateFunctionSet.html">AggregateFunctionSet</a></code></li><li><code><a href="../DuckDB/Appender.html">Appender</a></code></li><li><code><a href="../DuckDB/Blob.html">Blob</a></code></li><li><code><a href="../DuckDB/Casting.html">Casting</a></code></li><li><code><a href="../DuckDB/ClientContext.html">ClientContext</a></code></li><li><code><a href="../DuckDB/Column.html">Column</a></code></li><li><code><a href="../DuckDB/Config.html">Config</a></code></li><li><code><a href="../DuckDB/Connection.html">Connection</a></code></li><li><code><a href="../DuckDB/DataChunk.html">DataChunk</a></code></li><li><code><a href="../DuckDB/Database.html">Database</a></code></li><li><code><a href="../DuckDB/Error.html">Error</a></code></li><li><code><a href="../DuckDB/Expression.html">Expression</a></code></li><li><code><a href="../DuckDB/ExtractedStatements.html">ExtractedStatements</a></code></li><li><code><a href="../DuckDB/FunctionTypeValidation.html">FunctionTypeValidation</a></code></li><li><code><a href="../DuckDB/Infinity.html">Infinity</a></code></li><li><code><a href="../DuckDB/InstanceCache.html">InstanceCache</a></code></li><li><code><a href="../DuckDB/Interval.html">Interval</a></code></li><li><code><a href="../DuckDB/LogicalType.html">LogicalType</a></code></li><li><code><a href="../DuckDB/MemoryHelper.html">MemoryHelper</a></code></li><li><code><a href="../DuckDB/PendingResult.html">PendingResult</a></code></li><li><code><a href="../DuckDB/PreparedStatement.html">PreparedStatement</a></code></li><li><code><a href="../DuckDB/Result.html">Result</a></code></li><li><code><a href="../DuckDB/ScalarFunction.html">ScalarFunction</a></code></li><li><code><a href="../DuckDB/ScalarFunctionSet.html">ScalarFunctionSet</a></code></li><li><code><a href="../DuckDB/TableDescription.html">TableDescription</a></code></li><li><details><summary><code><a href="../DuckDB/TableFunction.html">TableFunction</a></code></summary><ul class="link-list nav-list"><li><code><a href="../DuckDB/TableFunction/FunctionInfo.html">FunctionInfo</a></code></li><li><code><a href="../DuckDB/TableFunction/InitInfo.html">InitInfo</a></code></li></ul></details></li><li><code><a href="../DuckDB/TableNameParser.html">TableNameParser</a></code></li><li><code><a href="../DuckDB/Value.html">Value</a></code></li><li><code><a href="../DuckDB/Vector.html">Vector</a></code></li></ul></details></li><li><code><a href="../Object.html">Object</a></code></li><li><code><a href="../PolarsDataFrameBatchTableAdapter.html">PolarsDataFrameBatchTableAdapter</a></code></li><li><code><a href="../PolarsDataFrameOptimizedTableAdapter.html">PolarsDataFrameOptimizedTableAdapter</a></code></li><li><code><a href="../PolarsDataFrameTableAdapter.html">PolarsDataFrameTableAdapter</a></code></li></ul>
   </details>
 </div>
 
@@ -601,7 +627,7 @@
       
       <li>
         
-        <a href="../DuckDB.html">DuckDB</a><span>::</span>
+        <a href="../DuckDB.html">DuckDB</a><span class="separator">::</span>
         
       </li>
       
@@ -622,13 +648,14 @@
     
 <p>The <a href="Appender.html"><code>DuckDB::Appender</code></a> encapsulates <a href="../DuckDB.html"><code>DuckDB</code></a> <a href="Appender.html"><code>Appender</code></a>.</p>
 
-<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
-<span class="ruby-identifier">db</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Database</span>.<span class="ruby-identifier">open</span>
-<span class="ruby-identifier">con</span> = <span class="ruby-identifier">db</span>.<span class="ruby-identifier">connect</span>
-<span class="ruby-identifier">con</span>.<span class="ruby-identifier">query</span>(<span class="ruby-string">&#39;CREATE TABLE users (id INTEGER, name VARCHAR)&#39;</span>)
-<span class="ruby-identifier">appender</span> = <span class="ruby-identifier">con</span>.<span class="ruby-identifier">appender</span>(<span class="ruby-string">&#39;users&#39;</span>)
-<span class="ruby-identifier">appender</span>.<span class="ruby-identifier">append_row</span>(<span class="ruby-value">1</span>, <span class="ruby-string">&#39;Alice&#39;</span>)
-</pre>
+<p>The <code>table</code> argument (2nd positional argument) supports dot-notation and quoting:</p>
+<ul><li>
+<p><code>&#39;schema.table&#39;</code> — interpreted as schema-qualified (deprecated; use <code>schema:</code> instead)</p>
+</li><li>
+<p><code>&#39;&quot;schema.table&quot;&#39;</code> or <code>&quot;&#39;schema.table&#39;&quot;</code> — treated as a literal table name containing a dot</p>
+
+<p>require ‘duckdb’ db = <a href="Database.html#method-c-open"><code>DuckDB::Database.open</code></a> con = db.connect con.query(‘CREATE TABLE users (id INTEGER, name VARCHAR)’) appender = con.appender(‘users’) appender.append_row(1, ‘Alice’)</p>
+</li></ul>
 
   </section>
 
@@ -796,7 +823,7 @@
             <div class="method-heading">
               <a href="#method-c-new" title="Link to this method">
                 <span class="method-name">new</span>
-                <span class="method-args">(p1, p2, p3)</span>
+                <span class="method-args">(con, table_or_schema, table = nil, schema: nil, catalog: nil)</span>
               </a>
             </div>
 
@@ -809,28 +836,15 @@
             </details>
           </div>
           <div class="method-source-code" id="new-source">
-            <pre class="c" data-language="c">static VALUE appender_initialize(VALUE self, VALUE con, VALUE schema, VALUE table) {
-
-    rubyDuckDBConnection *ctxcon;
-    rubyDuckDBAppender *ctx;
-    char *pschema = 0;
-
-    if (!rb_obj_is_kind_of(con, cDuckDBConnection)) {
-        rb_raise(rb_eTypeError, &quot;1st argument should be instance of DackDB::Connection&quot;);
-    }
-
-    TypedData_Get_Struct(self, rubyDuckDBAppender, &amp;appender_data_type, ctx);
-    ctxcon = rbduckdb_get_struct_connection(con);
-
-    if (schema != Qnil) {
-        pschema = StringValuePtr(schema);
-    }
-
-    if (duckdb_appender_create(ctxcon-&gt;con, pschema, StringValuePtr(table), &amp;(ctx-&gt;appender)) == DuckDBError) {
-        rb_raise(eDuckDBError, &quot;failed to create appender&quot;);
-    }
-    return self;
-}</pre>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 29</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">con</span>, <span class="ruby-identifier">table_or_schema</span>, <span class="ruby-identifier">table</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-value">schema:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">catalog:</span> <span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">table</span>
+    <span class="ruby-identifier">warn_deprecated_3arg</span>
+    <span class="ruby-identifier">_initialize</span>(<span class="ruby-identifier">con</span>, <span class="ruby-identifier">table_or_schema</span>, <span class="ruby-identifier">table</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">initialize_with_parsed_table</span>(<span class="ruby-identifier">con</span>, <span class="ruby-identifier">table_or_schema</span>, <span class="ruby-value">schema:</span> <span class="ruby-identifier">schema</span>, <span class="ruby-value">catalog:</span> <span class="ruby-identifier">catalog</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
           </div>
 
 
@@ -886,7 +900,7 @@
             </details>
           </div>
           <div class="method-source-code" id="add_column-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 114</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 129</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">add_column</span>(<span class="ruby-identifier">column</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_add_column</span>(<span class="ruby-identifier">column</span>)
 
@@ -942,7 +956,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 683</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 740</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">value</span>
   <span class="ruby-keyword">when</span> <span class="ruby-constant">NilClass</span>
@@ -1018,7 +1032,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_blob-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 454</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 469</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_blob</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_append_blob</span>(<span class="ruby-identifier">value</span>)
 
@@ -1076,7 +1090,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_bool-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 185</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 200</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_bool</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_append_bool</span>(<span class="ruby-identifier">value</span>)
 
@@ -1135,7 +1149,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_data_chunk-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 664</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 693</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_data_chunk</span>(<span class="ruby-identifier">chunk</span>)
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;expected DuckDB::DataChunk, got #{chunk.class}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">chunk</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">DataChunk</span>)
 
@@ -1150,7 +1164,20 @@
         <div class="method-description">
 
 
-          
+          <p>Appends a pre-filled <a href="DataChunk.html"><code>DuckDB::DataChunk</code></a> to the appender.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
+<span class="ruby-identifier">db</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Database</span>.<span class="ruby-identifier">open</span>
+<span class="ruby-identifier">con</span> = <span class="ruby-identifier">db</span>.<span class="ruby-identifier">connect</span>
+<span class="ruby-identifier">con</span>.<span class="ruby-identifier">query</span>(<span class="ruby-string">&#39;CREATE TABLE users (id INTEGER, name VARCHAR)&#39;</span>)
+<span class="ruby-identifier">appender</span> = <span class="ruby-identifier">con</span>.<span class="ruby-identifier">appender</span>(<span class="ruby-string">&#39;users&#39;</span>)
+<span class="ruby-identifier">chunk</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">DataChunk</span>.<span class="ruby-identifier">new</span>([<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span><span class="ruby-operator">::</span><span class="ruby-constant">INTEGER</span>, <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span><span class="ruby-operator">::</span><span class="ruby-constant">VARCHAR</span>])
+<span class="ruby-identifier">chunk</span>.<span class="ruby-identifier">set_value</span>(<span class="ruby-value">0</span>, <span class="ruby-value">0</span>, <span class="ruby-value">1</span>)
+<span class="ruby-identifier">chunk</span>.<span class="ruby-identifier">set_value</span>(<span class="ruby-value">1</span>, <span class="ruby-value">0</span>, <span class="ruby-string">&#39;Alice&#39;</span>)
+<span class="ruby-identifier">chunk</span>.<span class="ruby-identifier">size</span> = <span class="ruby-value">1</span>
+<span class="ruby-identifier">appender</span>.<span class="ruby-identifier">append_data_chunk</span>(<span class="ruby-identifier">chunk</span>)
+<span class="ruby-identifier">appender</span>.<span class="ruby-identifier">flush</span>
+</pre>
 
 
         </div>
@@ -1184,7 +1211,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_date-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 562</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 577</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_date</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">date</span> = <span class="ruby-identifier">_parse_date</span>(<span class="ruby-identifier">value</span>)
 
@@ -1246,7 +1273,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_default-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 496</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 511</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_default</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_append_default</span>
 
@@ -1282,6 +1309,70 @@
       </div>
 
 
+      <div id="method-i-append_default_to_chunk" class="method-detail anchor-link ">
+        <div class="method-header">
+
+
+              <div class="method-heading">
+                <a href="#method-i-append_default_to_chunk" title="Link to this method">
+                  <span class="method-callseq">
+                    append_default_to_chunk(chunk, col, row) &rarr; self
+                  </span>
+                </a>
+              </div>
+
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="append_default_to_chunk-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 721</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_default_to_chunk</span>(<span class="ruby-identifier">chunk</span>, <span class="ruby-identifier">col</span>, <span class="ruby-identifier">row</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;expected DuckDB::DataChunk, got #{chunk.class}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">chunk</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">DataChunk</span>)
+
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_append_default_to_chunk</span>(<span class="ruby-identifier">chunk</span>, <span class="ruby-identifier">col</span>, <span class="ruby-identifier">row</span>)
+
+  <span class="ruby-identifier">raise_appender_error</span>(<span class="ruby-string">&#39;failed to append_default_to_chunk&#39;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Appends the DEFAULT value for the column at <code>col</code> and <code>row</code> in <code>chunk</code>. If no DEFAULT is defined for the column, NULL is used. Call this before appending the chunk via <a href="Appender.html#method-i-append_data_chunk"><code>append_data_chunk</code></a>.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
+<span class="ruby-identifier">db</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Database</span>.<span class="ruby-identifier">open</span>
+<span class="ruby-identifier">con</span> = <span class="ruby-identifier">db</span>.<span class="ruby-identifier">connect</span>
+<span class="ruby-identifier">con</span>.<span class="ruby-identifier">query</span>(<span class="ruby-string">&#39;CREATE TABLE users (name VARCHAR, enabled BOOLEAN DEFAULT TRUE)&#39;</span>)
+<span class="ruby-identifier">appender</span> = <span class="ruby-identifier">con</span>.<span class="ruby-identifier">appender</span>(<span class="ruby-string">&#39;users&#39;</span>)
+<span class="ruby-identifier">chunk</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">DataChunk</span>.<span class="ruby-identifier">new</span>([<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span><span class="ruby-operator">::</span><span class="ruby-constant">VARCHAR</span>, <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span><span class="ruby-operator">::</span><span class="ruby-constant">BOOLEAN</span>])
+<span class="ruby-identifier">appender</span>.<span class="ruby-identifier">append_default_to_chunk</span>(<span class="ruby-identifier">chunk</span>, <span class="ruby-value">1</span>, <span class="ruby-value">0</span>)  <span class="ruby-comment"># enabled DEFAULT for row 0</span>
+<span class="ruby-identifier">appender</span>.<span class="ruby-identifier">append_default_to_chunk</span>(<span class="ruby-identifier">chunk</span>, <span class="ruby-value">1</span>, <span class="ruby-value">1</span>)  <span class="ruby-comment"># enabled DEFAULT for row 1</span>
+<span class="ruby-identifier">chunk</span>.<span class="ruby-identifier">set_value</span>(<span class="ruby-value">0</span>, <span class="ruby-value">0</span>, <span class="ruby-string">&#39;Alice&#39;</span>)
+<span class="ruby-identifier">chunk</span>.<span class="ruby-identifier">set_value</span>(<span class="ruby-value">0</span>, <span class="ruby-value">1</span>, <span class="ruby-string">&#39;Bob&#39;</span>)
+<span class="ruby-identifier">chunk</span>.<span class="ruby-identifier">size</span> = <span class="ruby-value">2</span>
+<span class="ruby-identifier">appender</span>.<span class="ruby-identifier">append_data_chunk</span>(<span class="ruby-identifier">chunk</span>)
+<span class="ruby-identifier">appender</span>.<span class="ruby-identifier">flush</span>
+</pre>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
       <div id="method-i-append_double" class="method-detail anchor-link ">
         <div class="method-header">
 
@@ -1304,7 +1395,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_double-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 394</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 409</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_double</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_append_double</span>(<span class="ruby-identifier">value</span>)
 
@@ -1362,7 +1453,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_float-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 374</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 389</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_float</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_append_float</span>(<span class="ruby-identifier">value</span>)
 
@@ -1420,7 +1511,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_hugeint-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 516</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 531</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_hugeint</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">lower</span>, <span class="ruby-identifier">upper</span> = <span class="ruby-identifier">integer_to_hugeint</span>(<span class="ruby-identifier">value</span>)
 
@@ -1480,7 +1571,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_int16-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 228</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 243</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_int16</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_append_int16</span>(<span class="ruby-identifier">value</span>)
 
@@ -1539,7 +1630,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_int32-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 249</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 264</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_int32</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_append_int32</span>(<span class="ruby-identifier">value</span>)
 
@@ -1598,7 +1689,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_int64-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 270</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 285</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_int64</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_append_int64</span>(<span class="ruby-identifier">value</span>)
 
@@ -1657,7 +1748,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_int8-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 207</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 222</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_int8</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_append_int8</span>(<span class="ruby-identifier">value</span>)
 
@@ -1716,7 +1807,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_interval-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 632</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 647</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_interval</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">value</span> = <span class="ruby-constant">Interval</span>.<span class="ruby-identifier">to_interval</span>(<span class="ruby-identifier">value</span>)
 
@@ -1776,7 +1867,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_null-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 474</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 489</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_null</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_append_null</span>
 
@@ -1831,7 +1922,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_row-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 716</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 773</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_row</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
   <span class="ruby-identifier">args</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">arg</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">append</span>(<span class="ruby-identifier">arg</span>)
@@ -1889,7 +1980,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_time-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 585</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 600</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_time</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">time</span> = <span class="ruby-identifier">_parse_time</span>(<span class="ruby-identifier">value</span>)
 
@@ -1950,7 +2041,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_timestamp-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 609</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 624</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_timestamp</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">time</span> = <span class="ruby-identifier">to_time</span>(<span class="ruby-identifier">value</span>)
 
@@ -2012,7 +2103,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_uhugeint-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 538</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 553</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_uhugeint</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">lower</span>, <span class="ruby-identifier">upper</span> = <span class="ruby-identifier">integer_to_hugeint</span>(<span class="ruby-identifier">value</span>)
 
@@ -2072,7 +2163,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_uint16-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 312</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 327</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_uint16</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_append_uint16</span>(<span class="ruby-identifier">value</span>)
 
@@ -2131,7 +2222,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_uint32-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 333</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 348</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_uint32</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_append_uint32</span>(<span class="ruby-identifier">value</span>)
 
@@ -2190,7 +2281,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_uint64-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 354</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 369</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_uint64</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_append_uint64</span>(<span class="ruby-identifier">value</span>)
 
@@ -2249,7 +2340,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_uint8-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 291</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 306</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_uint8</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_append_uint8</span>(<span class="ruby-identifier">value</span>)
 
@@ -2308,7 +2399,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_value-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 654</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 669</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_value</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;expected DuckDB::Value, got #{value.class}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>)
 
@@ -2368,7 +2459,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_varchar-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 414</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 429</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_varchar</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_append_varchar</span>(<span class="ruby-identifier">value</span>)
 
@@ -2426,7 +2517,7 @@
             </details>
           </div>
           <div class="method-source-code" id="append_varchar_length-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 434</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 449</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">append_varchar_length</span>(<span class="ruby-identifier">value</span>, <span class="ruby-identifier">length</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_append_varchar_length</span>(<span class="ruby-identifier">value</span>, <span class="ruby-identifier">length</span>)
 
@@ -2500,7 +2591,7 @@
             </details>
           </div>
           <div class="method-source-code" id="begin_row-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 27</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 42</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">begin_row</span>
   <span class="ruby-keyword">self</span>
 <span class="ruby-keyword">end</span></pre>
@@ -2545,7 +2636,7 @@
             </details>
           </div>
           <div class="method-source-code" id="clear-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 163</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 178</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">clear</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_clear</span>
 
@@ -2604,7 +2695,7 @@
             </details>
           </div>
           <div class="method-source-code" id="clear_columns-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 140</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 155</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">clear_columns</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_clear_columns</span>
 
@@ -2665,7 +2756,7 @@
             </details>
           </div>
           <div class="method-source-code" id="close-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 90</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 105</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">close</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_close</span>
 
@@ -2724,7 +2815,7 @@
             </details>
           </div>
           <div class="method-source-code" id="end_row-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 44</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 59</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">end_row</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_end_row</span>
 
@@ -2846,7 +2937,7 @@
             </details>
           </div>
           <div class="method-source-code" id="flush-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 67</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/appender.rb, line 82</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">flush</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_flush</span>
 
@@ -2907,7 +2998,7 @@
 
   <div class="footer-bottom">
     <p>
-      Generated by <a href="https://ruby.github.io/rdoc/">RDoc 7.0.3</a>
+      Generated by <a href="https://ruby.github.io/rdoc/">RDoc 7.0.4</a>
       using the Aliki theme by <a href="http://st0012.dev">Stan Lo</a>
     </p>
   </div>

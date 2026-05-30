@@ -5,17 +5,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>module DuckDB::FunctionTypeValidation - RDoc Documentation</title>
+<title>module DuckDB::TableNameParser - RDoc Documentation</title>
 
 
   <meta
     name="keywords"
-    content="ruby,module,DuckDB::FunctionTypeValidation"
+    content="ruby,module,DuckDB::TableNameParser"
   >
 
     <meta
       name="description"
-      content="module DuckDB::FunctionTypeValidation: Shared type-checking mixin for DuckDB function classes. Provides +SUPPORTED_TYPES+ and the private +check_supported_type!+ guard used by +ScalarFuncti"
+      content="module DuckDB::TableNameParser: TableDescription. tt&gt;&#39;schema."
     >
 
 
@@ -24,11 +24,11 @@
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="module DuckDB::FunctionTypeValidation - RDoc Documentation">
+<meta property="og:title" content="module DuckDB::TableNameParser - RDoc Documentation">
 
 
 
-    <meta property="og:description" content="Shared type-checking mixin for DuckDB function classes. Provides +SUPPORTED_TYPES+ and the private +check_supported_type!+ guard used by +ScalarFuncti">
+    <meta property="og:description" content="TableDescription. tt&gt;&#39;schema.">
 
 
 
@@ -36,11 +36,11 @@
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="module DuckDB::FunctionTypeValidation - RDoc Documentation">
+<meta name="twitter:title" content="module DuckDB::TableNameParser - RDoc Documentation">
 
 
 
-    <meta name="twitter:description" content="Shared type-checking mixin for DuckDB function classes. Provides +SUPPORTED_TYPES+ and the private +check_supported_type!+ guard used by +ScalarFuncti">
+    <meta name="twitter:description" content="TableDescription. tt&gt;&#39;schema.">
 
 
 
@@ -471,7 +471,7 @@
 
 </nav>
 
-<main role="main" aria-labelledby="module-DuckDB::FunctionTypeValidation">
+<main role="main" aria-labelledby="module-DuckDB::TableNameParser">
   
   
     <ol role="navigation" aria-label="Breadcrumb navigation" class="breadcrumb">
@@ -484,20 +484,27 @@
       
       <li>
         
-        <span>FunctionTypeValidation</span>
+        <span>TableNameParser</span>
         
       </li>
       
     </ol>
   
 
-  <h1 id="module-DuckDB::FunctionTypeValidation" class="anchor-link module">
-    module DuckDB::FunctionTypeValidation
+  <h1 id="module-DuckDB::TableNameParser" class="anchor-link module">
+    module DuckDB::TableNameParser
   </h1>
 
   <section class="description">
     
-<p>Shared type-checking mixin for <a href="../DuckDB.html"><code>DuckDB</code></a> function classes. Provides <a href="FunctionTypeValidation.html#SUPPORTED_TYPES"><code>SUPPORTED_TYPES</code></a> and the private <code>check_supported_type!</code> guard used by <a href="ScalarFunction.html"><code>ScalarFunction</code></a> and <a href="AggregateFunction.html"><code>AggregateFunction</code></a>.</p>
+<p><a href="TableNameParser.html"><code>DuckDB::TableNameParser</code></a> provides shared table name parsing for classes that accept a table name argument, such as <a href="Appender.html"><code>DuckDB::Appender</code></a> and <a href="TableDescription.html"><code>DuckDB::TableDescription</code></a>.</p>
+
+<p>It handles:</p>
+<ul><li>
+<p>Dot-notation: <code>&#39;schema.table&#39;</code> is split into schema and table (deprecated).</p>
+</li><li>
+<p>Quoting: <code>&#39;&quot;a.b&quot;&#39;</code> or <code>&quot;&#39;a.b&#39;&quot;</code> strips the quotes and treats the name literally.</p>
+</li></ul>
 
   </section>
 
@@ -507,23 +514,6 @@
 
 
 
-
-    <section class="constants-list">
-      <header>
-        <h3 id="constants"><a href="#constants">Constants</a></h3>
-      </header>
-      <dl>
-
-        <dt id="SUPPORTED_TYPES">SUPPORTED_TYPES</dt>
-
-        <dd>
-
-          
-        </dd>
-
-
-      </dl>
-    </section>
 
 
 
