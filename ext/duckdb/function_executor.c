@@ -68,6 +68,14 @@ static struct callback_request *g_request_list = NULL;
 static VALUE g_executor_thread = Qnil;
 static int g_executor_started = 0;
 
+/*
+ * GC-protection array holding every live per-worker proxy Ruby thread.
+ * Proxies are created from non-Ruby init hooks (via the global executor) and
+ * are not reachable from any marked object, so without this array the GC could
+ * collect a proxy thread while DuckDB still dispatches callbacks to it.
+ */
+static VALUE g_proxy_threads = Qnil;
+
 /* Data passed to the executor wait function */
 struct executor_wait_data {
     struct callback_request *request;
@@ -166,6 +174,11 @@ void rbduckdb_function_executor_ensure_started(void) {
     }
 #endif
 
+    if (g_proxy_threads == Qnil) {
+        g_proxy_threads = rb_ary_new();
+        rb_global_variable(&g_proxy_threads);
+    }
+
     g_executor_thread = rb_thread_create(executor_thread_func, NULL);
     rb_global_variable(&g_executor_thread);
     g_executor_started = 1;
@@ -242,7 +255,244 @@ static void *callback_with_gvl(void *data) {
     return NULL;
 }
 
-void rbduckdb_function_executor_dispatch(rbduckdb_function_callback_t cb, void *user_data) {
+/*
+ * ============================================================================
+ * Per-worker proxy thread
+ * ============================================================================
+ *
+ * One dedicated Ruby thread per DuckDB worker thread. Same hand-off protocol as
+ * the global executor (mutex + condvars), but private to a single worker so
+ * that callbacks from different workers no longer serialize through one queue.
+ *
+ * Pattern follows the FFI gem's async callback dispatcher:
+ *   https://github.com/ffi/ffi/blob/master/ext/ffi_c/Function.c
+ */
+struct worker_proxy {
+    VALUE ruby_thread;
+    volatile int stop_requested;
+    rbduckdb_function_callback_t callback_func;
+    void *callback_data;
+    volatile int has_request;
+    volatile int request_done;
+    volatile int thread_exited;
+#ifdef _MSC_VER
+    CRITICAL_SECTION lock;
+    CONDITION_VARIABLE request_cond;
+    CONDITION_VARIABLE request_done_cond;
+    CONDITION_VARIABLE thread_exit_cond;
+#else
+    pthread_mutex_t lock;
+    pthread_cond_t request_cond;
+    pthread_cond_t request_done_cond;
+    pthread_cond_t thread_exit_cond;
+#endif
+};
+
+/* Runs without GVL: the proxy waits for a callback request */
+static void *proxy_wait_func(void *data) {
+    struct worker_proxy *proxy = (struct worker_proxy *)data;
+
+#ifdef _MSC_VER
+    EnterCriticalSection(&proxy->lock);
+    while (!proxy->stop_requested && !proxy->has_request) {
+        SleepConditionVariableCS(&proxy->request_cond, &proxy->lock, INFINITE);
+    }
+    LeaveCriticalSection(&proxy->lock);
+#else
+    pthread_mutex_lock(&proxy->lock);
+    while (!proxy->stop_requested && !proxy->has_request) {
+        pthread_cond_wait(&proxy->request_cond, &proxy->lock);
+    }
+    pthread_mutex_unlock(&proxy->lock);
+#endif
+
+    return NULL;
+}
+
+/* Unblock function for the proxy thread (VM shutdown or Thread#kill) */
+static void proxy_stop_func(void *data) {
+    struct worker_proxy *proxy = (struct worker_proxy *)data;
+
+#ifdef _MSC_VER
+    EnterCriticalSection(&proxy->lock);
+    proxy->stop_requested = 1;
+    WakeConditionVariable(&proxy->request_cond);
+    LeaveCriticalSection(&proxy->lock);
+#else
+    pthread_mutex_lock(&proxy->lock);
+    proxy->stop_requested = 1;
+    pthread_cond_signal(&proxy->request_cond);
+    pthread_mutex_unlock(&proxy->lock);
+#endif
+}
+
+/* The proxy thread main loop (Ruby thread) */
+static VALUE proxy_thread_func(void *data) {
+    struct worker_proxy *proxy = (struct worker_proxy *)data;
+
+    while (!proxy->stop_requested) {
+        /* Release the GVL and wait for a request */
+        rb_thread_call_without_gvl(proxy_wait_func, proxy, proxy_stop_func, proxy);
+
+        if (proxy->stop_requested) break;
+
+        if (proxy->has_request) {
+            /* Execute the callback with the GVL held */
+            proxy->callback_func(proxy->callback_data);
+
+            /* Signal completion to the DuckDB worker thread */
+#ifdef _MSC_VER
+            EnterCriticalSection(&proxy->lock);
+            proxy->has_request = 0;
+            proxy->request_done = 1;
+            WakeConditionVariable(&proxy->request_done_cond);
+            LeaveCriticalSection(&proxy->lock);
+#else
+            pthread_mutex_lock(&proxy->lock);
+            proxy->has_request = 0;
+            proxy->request_done = 1;
+            pthread_cond_signal(&proxy->request_done_cond);
+            pthread_mutex_unlock(&proxy->lock);
+#endif
+        }
+    }
+
+    /* Stop being GC-protected now that we are about to exit */
+    if (g_proxy_threads != Qnil) {
+        rb_ary_delete(g_proxy_threads, proxy->ruby_thread);
+    }
+
+    /*
+     * Signal that this thread has finished and no longer touches the proxy
+     * struct. Only after this may rbduckdb_worker_proxy_destroy free it.
+     */
+#ifdef _MSC_VER
+    EnterCriticalSection(&proxy->lock);
+    proxy->thread_exited = 1;
+    WakeConditionVariable(&proxy->thread_exit_cond);
+    LeaveCriticalSection(&proxy->lock);
+#else
+    pthread_mutex_lock(&proxy->lock);
+    proxy->thread_exited = 1;
+    pthread_cond_signal(&proxy->thread_exit_cond);
+    pthread_mutex_unlock(&proxy->lock);
+#endif
+
+    return Qnil;
+}
+
+struct worker_proxy *rbduckdb_worker_proxy_create(void) {
+    /*
+     * Use calloc (not xcalloc): rbduckdb_worker_proxy_destroy frees the struct
+     * from a non-Ruby thread where xfree is unsafe.
+     */
+    struct worker_proxy *proxy = calloc(1, sizeof(struct worker_proxy));
+    if (proxy == NULL) {
+        rb_raise(rb_eNoMemError, "failed to allocate worker_proxy");
+    }
+
+    proxy->stop_requested = 0;
+    proxy->has_request = 0;
+    proxy->request_done = 0;
+    proxy->thread_exited = 0;
+
+#ifdef _MSC_VER
+    InitializeCriticalSection(&proxy->lock);
+    InitializeConditionVariable(&proxy->request_cond);
+    InitializeConditionVariable(&proxy->request_done_cond);
+    InitializeConditionVariable(&proxy->thread_exit_cond);
+#else
+    pthread_mutex_init(&proxy->lock, NULL);
+    pthread_cond_init(&proxy->request_cond, NULL);
+    pthread_cond_init(&proxy->request_done_cond, NULL);
+    pthread_cond_init(&proxy->thread_exit_cond, NULL);
+#endif
+
+    proxy->ruby_thread = rb_thread_create(proxy_thread_func, proxy);
+
+    if (g_proxy_threads != Qnil) {
+        rb_ary_push(g_proxy_threads, proxy->ruby_thread);
+    }
+
+    return proxy;
+}
+
+/*
+ * Hand a callback to a proxy and block until it completes.
+ * Called from the DuckDB worker thread (non-Ruby thread) that owns this proxy.
+ */
+static void dispatch_callback_to_proxy(struct worker_proxy *proxy, rbduckdb_function_callback_t cb, void *user_data) {
+#ifdef _MSC_VER
+    EnterCriticalSection(&proxy->lock);
+    proxy->callback_func = cb;
+    proxy->callback_data = user_data;
+    proxy->request_done = 0;
+    proxy->has_request = 1;
+    WakeConditionVariable(&proxy->request_cond);
+    LeaveCriticalSection(&proxy->lock);
+
+    EnterCriticalSection(&proxy->lock);
+    while (!proxy->request_done) {
+        SleepConditionVariableCS(&proxy->request_done_cond, &proxy->lock, INFINITE);
+    }
+    LeaveCriticalSection(&proxy->lock);
+#else
+    pthread_mutex_lock(&proxy->lock);
+    proxy->callback_func = cb;
+    proxy->callback_data = user_data;
+    proxy->request_done = 0;
+    proxy->has_request = 1;
+    pthread_cond_signal(&proxy->request_cond);
+    pthread_mutex_unlock(&proxy->lock);
+
+    pthread_mutex_lock(&proxy->lock);
+    while (!proxy->request_done) {
+        pthread_cond_wait(&proxy->request_done_cond, &proxy->lock);
+    }
+    pthread_mutex_unlock(&proxy->lock);
+#endif
+}
+
+void rbduckdb_worker_proxy_destroy(void *data) {
+    struct worker_proxy *proxy = (struct worker_proxy *)data;
+    if (proxy == NULL) return;
+
+    /* Ask the proxy thread to stop, then wait until it has fully exited */
+#ifdef _MSC_VER
+    EnterCriticalSection(&proxy->lock);
+    proxy->stop_requested = 1;
+    WakeConditionVariable(&proxy->request_cond);
+    LeaveCriticalSection(&proxy->lock);
+
+    EnterCriticalSection(&proxy->lock);
+    while (!proxy->thread_exited) {
+        SleepConditionVariableCS(&proxy->thread_exit_cond, &proxy->lock, INFINITE);
+    }
+    LeaveCriticalSection(&proxy->lock);
+
+    DeleteCriticalSection(&proxy->lock);
+#else
+    pthread_mutex_lock(&proxy->lock);
+    proxy->stop_requested = 1;
+    pthread_cond_signal(&proxy->request_cond);
+    pthread_mutex_unlock(&proxy->lock);
+
+    pthread_mutex_lock(&proxy->lock);
+    while (!proxy->thread_exited) {
+        pthread_cond_wait(&proxy->thread_exit_cond, &proxy->lock);
+    }
+    pthread_mutex_unlock(&proxy->lock);
+
+    pthread_cond_destroy(&proxy->thread_exit_cond);
+    pthread_cond_destroy(&proxy->request_done_cond);
+    pthread_cond_destroy(&proxy->request_cond);
+    pthread_mutex_destroy(&proxy->lock);
+#endif
+
+    free(proxy);
+}
+
+void rbduckdb_function_executor_dispatch_via_proxy(rbduckdb_function_callback_t cb, void *user_data, struct worker_proxy *proxy) {
     if (ruby_native_thread_p()) {
         if (ruby_thread_has_gvl_p()) {
             /* Case 1: Ruby thread with GVL - call directly */
@@ -254,8 +504,15 @@ void rbduckdb_function_executor_dispatch(rbduckdb_function_callback_t cb, void *
             arg.user_data = user_data;
             rb_thread_call_with_gvl(callback_with_gvl, &arg);
         }
+    } else if (proxy != NULL) {
+        /* Case 3a: Non-Ruby thread with a per-worker proxy */
+        dispatch_callback_to_proxy(proxy, cb, user_data);
     } else {
-        /* Case 3: Non-Ruby thread - dispatch to executor */
+        /* Case 3b: Non-Ruby thread - dispatch to the global executor */
         dispatch_callback_to_executor(cb, user_data);
     }
+}
+
+void rbduckdb_function_executor_dispatch(rbduckdb_function_callback_t cb, void *user_data) {
+    rbduckdb_function_executor_dispatch_via_proxy(cb, user_data, NULL);
 }
