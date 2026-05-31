@@ -453,36 +453,62 @@ static void dispatch_callback_to_proxy(struct worker_proxy *proxy, rbduckdb_func
 #endif
 }
 
-void rbduckdb_worker_proxy_destroy(void *data) {
+/* Blocks until the proxy thread has fully exited. Runs without the GVL. */
+static void *proxy_join_func(void *data) {
     struct worker_proxy *proxy = (struct worker_proxy *)data;
-    if (proxy == NULL) return;
 
-    /* Ask the proxy thread to stop, then wait until it has fully exited */
 #ifdef _MSC_VER
-    EnterCriticalSection(&proxy->lock);
-    proxy->stop_requested = 1;
-    WakeConditionVariable(&proxy->request_cond);
-    LeaveCriticalSection(&proxy->lock);
-
     EnterCriticalSection(&proxy->lock);
     while (!proxy->thread_exited) {
         SleepConditionVariableCS(&proxy->thread_exit_cond, &proxy->lock, INFINITE);
     }
     LeaveCriticalSection(&proxy->lock);
-
-    DeleteCriticalSection(&proxy->lock);
 #else
-    pthread_mutex_lock(&proxy->lock);
-    proxy->stop_requested = 1;
-    pthread_cond_signal(&proxy->request_cond);
-    pthread_mutex_unlock(&proxy->lock);
-
     pthread_mutex_lock(&proxy->lock);
     while (!proxy->thread_exited) {
         pthread_cond_wait(&proxy->thread_exit_cond, &proxy->lock);
     }
     pthread_mutex_unlock(&proxy->lock);
+#endif
 
+    return NULL;
+}
+
+void rbduckdb_worker_proxy_destroy(void *data) {
+    struct worker_proxy *proxy = (struct worker_proxy *)data;
+    if (proxy == NULL) return;
+
+    /* Ask the proxy thread to stop. */
+#ifdef _MSC_VER
+    EnterCriticalSection(&proxy->lock);
+    proxy->stop_requested = 1;
+    WakeConditionVariable(&proxy->request_cond);
+    LeaveCriticalSection(&proxy->lock);
+#else
+    pthread_mutex_lock(&proxy->lock);
+    proxy->stop_requested = 1;
+    pthread_cond_signal(&proxy->request_cond);
+    pthread_mutex_unlock(&proxy->lock);
+#endif
+
+    /*
+     * Wait until the proxy thread has fully exited. Before exiting it runs Ruby
+     * code (removing itself from the GC-protection array), which needs the GVL.
+     * DuckDB may invoke this destructor either from a worker thread (no GVL) or
+     * — depending on when it tears down the local state — from a Ruby thread
+     * that holds the GVL. In the latter case we must release the GVL while
+     * waiting, or the proxy thread could never acquire it and we would deadlock.
+     */
+    if (ruby_native_thread_p() && ruby_thread_has_gvl_p()) {
+        rb_thread_call_without_gvl(proxy_join_func, proxy, NULL, NULL);
+    } else {
+        proxy_join_func(proxy);
+    }
+
+    /* The proxy thread is gone; tear down OS primitives and free the struct. */
+#ifdef _MSC_VER
+    DeleteCriticalSection(&proxy->lock);
+#else
     pthread_cond_destroy(&proxy->thread_exit_cond);
     pthread_cond_destroy(&proxy->request_done_cond);
     pthread_cond_destroy(&proxy->request_cond);
