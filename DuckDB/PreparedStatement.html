@@ -404,6 +404,15 @@
 
 
             <li>
+              <a href="../CLAUDE_md.html">
+                CLAUDE
+              </a>
+            </li>
+
+
+
+
+            <li>
               <a href="../CONTRIBUTION_md.html">
                 CONTRIBUTION
               </a>
@@ -551,11 +560,21 @@
 
         <li ><a href="#method-i-bind_uint8">bind_uint8</a></li>
 
+        <li ><a href="#method-i-bind_uuid">bind_uuid</a></li>
+
         <li ><a href="#method-i-bind_value">bind_value</a></li>
 
         <li ><a href="#method-i-bind_varchar">bind_varchar</a></li>
 
         <li ><a href="#method-i-clear_bindings">clear_bindings</a></li>
+
+        <li ><a href="#method-i-column_count">column_count</a></li>
+
+        <li ><a href="#method-i-column_logical_type">column_logical_type</a></li>
+
+        <li ><a href="#method-i-column_name">column_name</a></li>
+
+        <li ><a href="#method-i-column_type">column_type</a></li>
 
         <li ><a href="#method-i-execute">execute</a></li>
 
@@ -586,7 +605,7 @@
       </span>
     </summary>
 
-    <ul class="link-list nav-list"><li><code><a href="../CSVTableAdapter.html">CSVTableAdapter</a></code></li><li><details><summary><code><a href="../DuckDB.html">DuckDB</a></code></summary><ul class="link-list nav-list"><li><code><a href="../DuckDB/AggregateFunction.html">AggregateFunction</a></code></li><li><code><a href="../DuckDB/AggregateFunctionSet.html">AggregateFunctionSet</a></code></li><li><code><a href="../DuckDB/Appender.html">Appender</a></code></li><li><code><a href="../DuckDB/Blob.html">Blob</a></code></li><li><code><a href="../DuckDB/Casting.html">Casting</a></code></li><li><code><a href="../DuckDB/ClientContext.html">ClientContext</a></code></li><li><code><a href="../DuckDB/Column.html">Column</a></code></li><li><code><a href="../DuckDB/Config.html">Config</a></code></li><li><code><a href="../DuckDB/Connection.html">Connection</a></code></li><li><code><a href="../DuckDB/DataChunk.html">DataChunk</a></code></li><li><code><a href="../DuckDB/Database.html">Database</a></code></li><li><code><a href="../DuckDB/Error.html">Error</a></code></li><li><code><a href="../DuckDB/Expression.html">Expression</a></code></li><li><code><a href="../DuckDB/ExtractedStatements.html">ExtractedStatements</a></code></li><li><code><a href="../DuckDB/FunctionTypeValidation.html">FunctionTypeValidation</a></code></li><li><code><a href="../DuckDB/Infinity.html">Infinity</a></code></li><li><code><a href="../DuckDB/InstanceCache.html">InstanceCache</a></code></li><li><code><a href="../DuckDB/Interval.html">Interval</a></code></li><li><code><a href="../DuckDB/LogicalType.html">LogicalType</a></code></li><li><code><a href="../DuckDB/MemoryHelper.html">MemoryHelper</a></code></li><li><code><a href="../DuckDB/PendingResult.html">PendingResult</a></code></li><li><code><a href="../DuckDB/PreparedStatement.html">PreparedStatement</a></code></li><li><code><a href="../DuckDB/Result.html">Result</a></code></li><li><code><a href="../DuckDB/ScalarFunction.html">ScalarFunction</a></code></li><li><code><a href="../DuckDB/ScalarFunctionSet.html">ScalarFunctionSet</a></code></li><li><code><a href="../DuckDB/TableDescription.html">TableDescription</a></code></li><li><details><summary><code><a href="../DuckDB/TableFunction.html">TableFunction</a></code></summary><ul class="link-list nav-list"><li><code><a href="../DuckDB/TableFunction/FunctionInfo.html">FunctionInfo</a></code></li><li><code><a href="../DuckDB/TableFunction/InitInfo.html">InitInfo</a></code></li></ul></details></li><li><code><a href="../DuckDB/TableNameParser.html">TableNameParser</a></code></li><li><code><a href="../DuckDB/Value.html">Value</a></code></li><li><code><a href="../DuckDB/Vector.html">Vector</a></code></li></ul></details></li><li><code><a href="../Object.html">Object</a></code></li><li><code><a href="../PolarsDataFrameBatchTableAdapter.html">PolarsDataFrameBatchTableAdapter</a></code></li><li><code><a href="../PolarsDataFrameOptimizedTableAdapter.html">PolarsDataFrameOptimizedTableAdapter</a></code></li><li><code><a href="../PolarsDataFrameTableAdapter.html">PolarsDataFrameTableAdapter</a></code></li></ul>
+    <ul class="link-list nav-list"><li><code><a href="../CSVTableAdapter.html">CSVTableAdapter</a></code></li><li><details><summary><code><a href="../DuckDB.html">DuckDB</a></code></summary><ul class="link-list nav-list"><li><code><a href="../DuckDB/AggregateFunction.html">AggregateFunction</a></code></li><li><code><a href="../DuckDB/AggregateFunctionSet.html">AggregateFunctionSet</a></code></li><li><code><a href="../DuckDB/Appender.html">Appender</a></code></li><li><code><a href="../DuckDB/ArrowArrayStream.html">ArrowArrayStream</a></code></li><li><code><a href="../DuckDB/ArrowConvertedSchema.html">ArrowConvertedSchema</a></code></li><li><code><a href="../DuckDB/Blob.html">Blob</a></code></li><li><code><a href="../DuckDB/Casting.html">Casting</a></code></li><li><code><a href="../DuckDB/ClientContext.html">ClientContext</a></code></li><li><code><a href="../DuckDB/Column.html">Column</a></code></li><li><code><a href="../DuckDB/Config.html">Config</a></code></li><li><code><a href="../DuckDB/Connection.html">Connection</a></code></li><li><code><a href="../DuckDB/DataChunk.html">DataChunk</a></code></li><li><code><a href="../DuckDB/Database.html">Database</a></code></li><li><code><a href="../DuckDB/Error.html">Error</a></code></li><li><code><a href="../DuckDB/Expression.html">Expression</a></code></li><li><code><a href="../DuckDB/ExtractedStatements.html">ExtractedStatements</a></code></li><li><code><a href="../DuckDB/FunctionTypeValidation.html">FunctionTypeValidation</a></code></li><li><code><a href="../DuckDB/Infinity.html">Infinity</a></code></li><li><code><a href="../DuckDB/InstanceCache.html">InstanceCache</a></code></li><li><code><a href="../DuckDB/Interval.html">Interval</a></code></li><li><code><a href="../DuckDB/LogicalType.html">LogicalType</a></code></li><li><code><a href="../DuckDB/MemoryHelper.html">MemoryHelper</a></code></li><li><code><a href="../DuckDB/PendingResult.html">PendingResult</a></code></li><li><code><a href="../DuckDB/PreparedStatement.html">PreparedStatement</a></code></li><li><code><a href="../DuckDB/Result.html">Result</a></code></li><li><code><a href="../DuckDB/ScalarFunction.html">ScalarFunction</a></code></li><li><code><a href="../DuckDB/ScalarFunctionSet.html">ScalarFunctionSet</a></code></li><li><code><a href="../DuckDB/TableDescription.html">TableDescription</a></code></li><li><details><summary><code><a href="../DuckDB/TableFunction.html">TableFunction</a></code></summary><ul class="link-list nav-list"><li><code><a href="../DuckDB/TableFunction/FunctionInfo.html">FunctionInfo</a></code></li><li><code><a href="../DuckDB/TableFunction/InitInfo.html">InitInfo</a></code></li></ul></details></li><li><code><a href="../DuckDB/TableNameParser.html">TableNameParser</a></code></li><li><code><a href="../DuckDB/Value.html">Value</a></code></li><li><code><a href="../DuckDB/Vector.html">Vector</a></code></li></ul></details></li><li><code><a href="../Object.html">Object</a></code></li><li><code><a href="../PolarsDataFrameBatchTableAdapter.html">PolarsDataFrameBatchTableAdapter</a></code></li><li><code><a href="../PolarsDataFrameOptimizedTableAdapter.html">PolarsDataFrameOptimizedTableAdapter</a></code></li><li><code><a href="../PolarsDataFrameTableAdapter.html">PolarsDataFrameTableAdapter</a></code></li></ul>
   </details>
 </div>
 
@@ -797,7 +816,7 @@
             </details>
           </div>
           <div class="method-source-code" id="bind-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 335</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 367</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">bind</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">index</span>
   <span class="ruby-keyword">when</span> <span class="ruby-constant">Integer</span>
@@ -856,7 +875,7 @@
             </details>
           </div>
           <div class="method-source-code" id="bind_args-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 91</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 106</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">bind_args</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">**</span><span class="ruby-identifier">kwargs</span>)
   <span class="ruby-identifier">args</span>.<span class="ruby-identifier">each</span>.<span class="ruby-identifier">with_index</span>(<span class="ruby-value">1</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">arg</span>, <span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">bind</span>(<span class="ruby-identifier">i</span>, <span class="ruby-identifier">arg</span>)
@@ -1016,7 +1035,7 @@
             </details>
           </div>
           <div class="method-source-code" id="bind_date-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 209</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 241</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">bind_date</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">date</span> = <span class="ruby-identifier">_parse_date</span>(<span class="ruby-identifier">value</span>)
 
@@ -1070,7 +1089,7 @@
             </details>
           </div>
           <div class="method-source-code" id="bind_decimal-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 299</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 331</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">bind_decimal</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">decimal</span> = <span class="ruby-identifier">_parse_deciaml</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">lower</span>, <span class="ruby-identifier">upper</span> = <span class="ruby-identifier">decimal_to_hugeint</span>(<span class="ruby-identifier">decimal</span>)
@@ -1223,7 +1242,7 @@
             </details>
           </div>
           <div class="method-source-code" id="bind_hugeint-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 153</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 168</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">bind_hugeint</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">value</span>
   <span class="ruby-keyword">when</span> <span class="ruby-constant">Integer</span>
@@ -1278,7 +1297,7 @@
             </details>
           </div>
           <div class="method-source-code" id="bind_hugeint_internal-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 174</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 189</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">bind_hugeint_internal</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">lower</span>, <span class="ruby-identifier">upper</span> = <span class="ruby-identifier">integer_to_hugeint</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_bind_hugeint</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">lower</span>, <span class="ruby-identifier">upper</span>)
@@ -1529,7 +1548,7 @@
             </details>
           </div>
           <div class="method-source-code" id="bind_interval-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 282</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 314</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">bind_interval</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">value</span> = <span class="ruby-constant">Interval</span>.<span class="ruby-identifier">to_interval</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_bind_interval</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">value</span>.<span class="ruby-identifier">interval_months</span>, <span class="ruby-identifier">value</span>.<span class="ruby-identifier">interval_days</span>, <span class="ruby-identifier">value</span>.<span class="ruby-identifier">interval_micros</span>)
@@ -1678,7 +1697,7 @@
             </details>
           </div>
           <div class="method-source-code" id="bind_time-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 228</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 260</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">bind_time</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">time</span> = <span class="ruby-identifier">_parse_time</span>(<span class="ruby-identifier">value</span>)
 
@@ -1732,7 +1751,7 @@
             </details>
           </div>
           <div class="method-source-code" id="bind_timestamp-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 247</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 279</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">bind_timestamp</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">time</span> = <span class="ruby-identifier">_parse_time</span>(<span class="ruby-identifier">value</span>)
 
@@ -1786,7 +1805,7 @@
             </details>
           </div>
           <div class="method-source-code" id="bind_timestamp_tz-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 266</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 298</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">bind_timestamp_tz</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">time</span> = <span class="ruby-identifier">_parse_time</span>(<span class="ruby-identifier">value</span>).<span class="ruby-identifier">utc</span>
   <span class="ruby-identifier">_bind_timestamp_tz</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">month</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">day</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">hour</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">min</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">sec</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">usec</span>)
@@ -1839,7 +1858,7 @@
             </details>
           </div>
           <div class="method-source-code" id="bind_uhugeint-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 191</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 206</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">bind_uhugeint</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">lower</span>, <span class="ruby-identifier">upper</span> = <span class="ruby-identifier">integer_to_hugeint</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_bind_uhugeint</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">lower</span>, <span class="ruby-identifier">upper</span>)
@@ -1890,7 +1909,7 @@
             </details>
           </div>
           <div class="method-source-code" id="bind_uint16-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 114</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 129</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">bind_uint16</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">val</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_bind_uint16</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">val</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">val</span>.<span class="ruby-identifier">between?</span>(<span class="ruby-value">0</span>, <span class="ruby-value">65_535</span>)
 
@@ -1934,7 +1953,7 @@
             </details>
           </div>
           <div class="method-source-code" id="bind_uint32-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 124</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 139</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">bind_uint32</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">val</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_bind_uint32</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">val</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">val</span>.<span class="ruby-identifier">between?</span>(<span class="ruby-value">0</span>, <span class="ruby-value">4_294_967_295</span>)
 
@@ -1978,7 +1997,7 @@
             </details>
           </div>
           <div class="method-source-code" id="bind_uint64-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 134</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 149</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">bind_uint64</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">val</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_bind_uint64</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">val</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">val</span>.<span class="ruby-identifier">between?</span>(<span class="ruby-value">0</span>, <span class="ruby-value">18_446_744_073_709_551_615</span>)
 
@@ -2023,7 +2042,7 @@
             </details>
           </div>
           <div class="method-source-code" id="bind_uint8-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 104</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 119</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">bind_uint8</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">val</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_bind_uint8</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">val</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">val</span>.<span class="ruby-identifier">between?</span>(<span class="ruby-value">0</span>, <span class="ruby-value">255</span>)
 
@@ -2037,6 +2056,57 @@
 
 
           <p>binds i-th parameter with SQL prepared statement. The first argument is index of parameter. The index of first parameter is 1 not 0. The second argument value is to expected Integer value between 0 to 255.</p>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-i-bind_uuid" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-i-bind_uuid" title="Link to this method">
+                <span class="method-name">bind_uuid</span>
+                <span class="method-args">(index, value)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="bind_uuid-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 224</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">bind_uuid</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">_bind_uuid</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">value</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>binds i-th parameter with a UUID value. The first argument is the index of the parameter (1-based). The second argument must be a String in canonical UUID format (<code>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</code>). Raises ArgumentError if the value is not a valid UUID string.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
+<span class="ruby-identifier">db</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Database</span>.<span class="ruby-identifier">open</span>
+<span class="ruby-identifier">con</span> = <span class="ruby-identifier">db</span>.<span class="ruby-identifier">connect</span>
+<span class="ruby-identifier">con</span>.<span class="ruby-identifier">query</span>(<span class="ruby-string">&#39;CREATE TABLE uuids (id UUID)&#39;</span>)
+<span class="ruby-identifier">stmt</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">PreparedStatement</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">con</span>, <span class="ruby-string">&#39;INSERT INTO uuids(id) VALUES ($1)&#39;</span>)
+<span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">bind_uuid</span>(<span class="ruby-value">1</span>, <span class="ruby-string">&#39;550e8400-e29b-41d4-a716-446655440000&#39;</span>)
+<span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">execute</span>
+</pre>
 
 
         </div>
@@ -2067,7 +2137,7 @@
             </details>
           </div>
           <div class="method-source-code" id="bind_value-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 317</span>
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 349</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">bind_value</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;2nd argument must be DuckDB::Value&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>)
 
@@ -2201,6 +2271,235 @@
       </div>
 
 
+      <div id="method-i-column_count" class="method-detail anchor-link ">
+        <div class="method-header">
+
+
+              <div class="method-heading">
+                <a href="#method-i-column_count" title="Link to this method">
+                  <span class="method-callseq">
+                    column_count &rarr; Integer
+                  </span>
+                </a>
+              </div>
+
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="column_count-source">
+            <pre class="c" data-language="c">static VALUE prepared_statement_column_count(VALUE self) {
+    rubyDuckDBPreparedStatement *ctx;
+    TypedData_Get_Struct(self, rubyDuckDBPreparedStatement, &amp;prepared_statement_data_type, ctx);
+    return ULL2NUM(duckdb_prepared_statement_column_count(ctx-&gt;prepared_statement));
+}</pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Returns the number of columns in the result set of the prepared statement without executing it.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
+<span class="ruby-identifier">db</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Database</span>.<span class="ruby-identifier">open</span>
+<span class="ruby-identifier">con</span> = <span class="ruby-identifier">db</span>.<span class="ruby-identifier">connect</span>
+<span class="ruby-identifier">stmt</span> = <span class="ruby-identifier">con</span>.<span class="ruby-identifier">prepared_statement</span>(<span class="ruby-string">&#39;SELECT 1 AS a, 2 AS b&#39;</span>)
+<span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">column_count</span> <span class="ruby-comment"># =&gt; 2</span>
+</pre>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-i-column_logical_type" class="method-detail anchor-link ">
+        <div class="method-header">
+
+
+              <div class="method-heading">
+                <a href="#method-i-column_logical_type" title="Link to this method">
+                  <span class="method-callseq">
+                    column_logical_type(col_index) &rarr; DuckDB::LogicalType
+                  </span>
+                </a>
+              </div>
+
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="column_logical_type-source">
+            <pre class="c" data-language="c">static VALUE prepared_statement_column_logical_type(VALUE self, VALUE vidx) {
+    rubyDuckDBPreparedStatement *ctx;
+    duckdb_logical_type logical_type;
+    idx_t idx = NUM2ULL(vidx);
+
+    TypedData_Get_Struct(self, rubyDuckDBPreparedStatement, &amp;prepared_statement_data_type, ctx);
+
+    logical_type = duckdb_prepared_statement_column_logical_type(ctx-&gt;prepared_statement, idx);
+    if (logical_type == NULL) {
+        rb_raise(eDuckDBError, &quot;fail to get column logical type at %llu. column index is out of range.&quot;, (unsigned long long)idx);
+    }
+    return rbduckdb_create_logical_type(logical_type);
+}</pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Returns the logical type of the column at the specified index (0-based) of the result set of the prepared statement without executing it. Raises <a href="Error.html"><code>DuckDB::Error</code></a> if the column index is out of range.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
+<span class="ruby-identifier">db</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Database</span>.<span class="ruby-identifier">open</span>
+<span class="ruby-identifier">con</span> = <span class="ruby-identifier">db</span>.<span class="ruby-identifier">connect</span>
+<span class="ruby-identifier">stmt</span> = <span class="ruby-identifier">con</span>.<span class="ruby-identifier">prepared_statement</span>(<span class="ruby-string">&#39;SELECT 1.5::DECIMAL(9, 4) AS a&#39;</span>)
+<span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">column_logical_type</span>(<span class="ruby-value">0</span>).<span class="ruby-identifier">type</span> <span class="ruby-comment"># =&gt; :decimal</span>
+</pre>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-i-column_name" class="method-detail anchor-link ">
+        <div class="method-header">
+
+
+              <div class="method-heading">
+                <a href="#method-i-column_name" title="Link to this method">
+                  <span class="method-callseq">
+                    column_name(col_index) &rarr; String
+                  </span>
+                </a>
+              </div>
+
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="column_name-source">
+            <pre class="c" data-language="c">static VALUE prepared_statement_column_name(VALUE self, VALUE vidx) {
+    rubyDuckDBPreparedStatement *ctx;
+    VALUE vname;
+    const char *name;
+    idx_t idx = NUM2ULL(vidx);
+
+    TypedData_Get_Struct(self, rubyDuckDBPreparedStatement, &amp;prepared_statement_data_type, ctx);
+
+    name = duckdb_prepared_statement_column_name(ctx-&gt;prepared_statement, idx);
+    if (name == NULL) {
+        rb_raise(eDuckDBError, &quot;fail to get column name at %llu. column index is out of range.&quot;, (unsigned long long)idx);
+    }
+    vname = rb_str_new2(name);
+    duckdb_free((void *)name);
+    return vname;
+}</pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Returns the name of the column at the specified index (0-based) of the result set of the prepared statement without executing it. Raises <a href="Error.html"><code>DuckDB::Error</code></a> if the column index is out of range.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
+<span class="ruby-identifier">db</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Database</span>.<span class="ruby-identifier">open</span>
+<span class="ruby-identifier">con</span> = <span class="ruby-identifier">db</span>.<span class="ruby-identifier">connect</span>
+<span class="ruby-identifier">stmt</span> = <span class="ruby-identifier">con</span>.<span class="ruby-identifier">prepared_statement</span>(<span class="ruby-string">&#39;SELECT 1 AS a, 2 AS b&#39;</span>)
+<span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">column_name</span>(<span class="ruby-value">1</span>) <span class="ruby-comment"># =&gt; &#39;b&#39;</span>
+</pre>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-i-column_type" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-i-column_type" title="Link to this method">
+                <span class="method-name">column_type</span>
+                <span class="method-args">(index)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="column_type-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/prepared_statement.rb, line 89</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">column_type</span>(<span class="ruby-identifier">index</span>)
+  <span class="ruby-identifier">i</span> = <span class="ruby-identifier">_column_type</span>(<span class="ruby-identifier">index</span>)
+  <span class="ruby-constant">Converter</span><span class="ruby-operator">::</span><span class="ruby-constant">IntToSym</span>.<span class="ruby-identifier">type_to_sym</span>(<span class="ruby-identifier">i</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>returns the column type of the result set of the prepared statement without executing it. The argument is the column index (0-based). Returns :invalid if the column index is out of range.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
+<span class="ruby-identifier">db</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Database</span>.<span class="ruby-identifier">open</span>
+<span class="ruby-identifier">con</span> = <span class="ruby-identifier">db</span>.<span class="ruby-identifier">connect</span>
+<span class="ruby-identifier">con</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-string">&#39;CREATE TABLE users (id INTEGER, name VARCHAR(255))&#39;</span>)
+<span class="ruby-identifier">stmt</span> = <span class="ruby-identifier">con</span>.<span class="ruby-identifier">prepared_statement</span>(<span class="ruby-string">&#39;SELECT * FROM users&#39;</span>)
+<span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">column_type</span>(<span class="ruby-value">0</span>) <span class="ruby-comment"># =&gt; :integer</span>
+</pre>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
       <div id="method-i-execute" class="method-detail anchor-link ">
         <div class="method-header">
 
@@ -2225,7 +2524,6 @@
     rubyDuckDBResult *ctxr;
     const char *error;
     VALUE result = rbduckdb_create_result();
-    VALUE msg;
 
     TypedData_Get_Struct(self, rubyDuckDBPreparedStatement, &amp;prepared_statement_data_type, ctx);
     ctxr = rbduckdb_get_struct_result(result);
@@ -2242,11 +2540,10 @@
     if (state == DuckDBError) {
         error = duckdb_prepare_error(args.prepared_statement);
         if (error == NULL) {
-            error = duckdb_result_error(args.out_result);
+            /* error originates from the result, which carries an error type */
+            rbduckdb_raise_result_error(args.out_result);
         }
-        msg = rb_str_new2(error ? error : &quot;Failed to execute prepared statement.&quot;);
-
-        rb_raise(eDuckDBError, &quot;%s&quot;, StringValuePtr(msg));
+        rb_raise(eDuckDBError, &quot;%s&quot;, error);
     }
 
     return result;

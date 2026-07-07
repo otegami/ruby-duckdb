@@ -5,17 +5,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>class DuckDB::ScalarFunctionSet - RDoc Documentation</title>
+<title>class DuckDB::ArrowConvertedSchema - RDoc Documentation</title>
 
 
   <meta
     name="keywords"
-    content="ruby,class,DuckDB::ScalarFunctionSet"
+    content="ruby,class,DuckDB::ArrowConvertedSchema"
   >
 
     <meta
       name="description"
-      content="class DuckDB::ScalarFunctionSet: ScalarFunctionSet encapsulates DuckDB&#39;s scalar function set, which allows registering multiple overloads of a scalar function under one name. ScalarFu"
+      content="Documentation for the DuckDB::ArrowConvertedSchema class"
     >
 
 
@@ -24,11 +24,14 @@
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="class DuckDB::ScalarFunctionSet - RDoc Documentation">
+<meta property="og:title" content="class DuckDB::ArrowConvertedSchema - RDoc Documentation">
 
 
 
-    <meta property="og:description" content="ScalarFunctionSet encapsulates DuckDB&#39;s scalar function set, which allows registering multiple overloads of a scalar function under one name. ScalarFu">
+    <meta
+      property="og:description"
+      content="Documentation for DuckDB::ArrowConvertedSchema class - API reference and code examples"
+    >
 
 
 
@@ -36,11 +39,14 @@
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="class DuckDB::ScalarFunctionSet - RDoc Documentation">
+<meta name="twitter:title" content="class DuckDB::ArrowConvertedSchema - RDoc Documentation">
 
 
 
-    <meta name="twitter:description" content="ScalarFunctionSet encapsulates DuckDB&#39;s scalar function set, which allows registering multiple overloads of a scalar function under one name. ScalarFu">
+    <meta
+      name="twitter:description"
+      content="Documentation for DuckDB::ArrowConvertedSchema class - API reference and code examples"
+    >
 
 
 
@@ -474,45 +480,7 @@
   
 
   
-  <div class="nav-section">
-    <details class="nav-section-collapsible" open>
-      <summary class="nav-section-header">
-        <span class="nav-section-icon">
-          <svg><use href="#icon-class-methods"></use></svg>
-        </span>
-        <span class="nav-section-title">Class Methods</span>
-        <span class="nav-section-chevron">
-          <svg><use href="#icon-chevron"></use></svg>
-        </span>
-      </summary>
-      <ul class="nav-list" role="directory">
 
-        <li ><a href="#method-c-new">new</a></li>
-
-      </ul>
-    </details>
-  </div>
-
-
-
-  <div class="nav-section">
-    <details class="nav-section-collapsible" open>
-      <summary class="nav-section-header">
-        <span class="nav-section-icon">
-          <svg><use href="#icon-instance-methods"></use></svg>
-        </span>
-        <span class="nav-section-title">Instance Methods</span>
-        <span class="nav-section-chevron">
-          <svg><use href="#icon-chevron"></use></svg>
-        </span>
-      </summary>
-      <ul class="nav-list" role="directory">
-
-        <li ><a href="#method-i-add">add</a></li>
-
-      </ul>
-    </details>
-  </div>
 
 
   <div id="classindex-section" class="nav-section">
@@ -533,7 +501,7 @@
 
 </nav>
 
-<main role="main" aria-labelledby="class-DuckDB::ScalarFunctionSet">
+<main role="main" aria-labelledby="class-DuckDB::ArrowConvertedSchema">
   
   
     <ol role="navigation" aria-label="Breadcrumb navigation" class="breadcrumb">
@@ -546,23 +514,19 @@
       
       <li>
         
-        <span>ScalarFunctionSet</span>
+        <span>ArrowConvertedSchema</span>
         
       </li>
       
     </ol>
   
 
-  <h1 id="class-DuckDB::ScalarFunctionSet" class="anchor-link class">
-    class DuckDB::ScalarFunctionSet
+  <h1 id="class-DuckDB::ArrowConvertedSchema" class="anchor-link class">
+    class DuckDB::ArrowConvertedSchema
   </h1>
 
   <section class="description">
     
-<p><a href="ScalarFunctionSet.html"><code>DuckDB::ScalarFunctionSet</code></a> encapsulates DuckDB’s scalar function set, which allows registering multiple overloads of a scalar function under one name.</p>
-
-<p>@note <a href="ScalarFunctionSet.html"><code>DuckDB::ScalarFunctionSet</code></a> is experimental.</p>
-
   </section>
 
 
@@ -579,118 +543,11 @@
 
 
 
-     <section id="public-class-5Buntitled-5D-method-details" class="method-section anchor-link">
-       <header>
-         <h3 id="public-class-methods"><a href="#public-class-methods">Public Class Methods</a></h3>
-       </header>
-
-
-      <div id="method-c-new" class="method-detail anchor-link ">
-        <div class="method-header">
-
-            <div class="method-heading">
-              <a href="#method-c-new" title="Link to this method">
-                <span class="method-name">new</span>
-                <span class="method-args">(name)</span>
-              </a>
-            </div>
-
-        </div>
-
-
-          <div class="method-controls">
-            <details class="method-source-toggle">
-              <summary>Source</summary>
-            </details>
-          </div>
-          <div class="method-source-code" id="new-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/scalar_function_set.rb, line 11</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">name</span>)
-  <span class="ruby-identifier">raise</span> <span class="ruby-constant">TypeError</span>, <span class="ruby-node">&quot;#{name.class} is not a String or Symbol&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Symbol</span>)
-
-  <span class="ruby-ivar">@name</span> = <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>
-  <span class="ruby-identifier">_initialize</span>(<span class="ruby-ivar">@name</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div>
-
-
-
-        <div class="method-description">
-
-
-          <p>@param name [String, Symbol] the function set name shared by all overloads @raise [TypeError] if name is not a String or Symbol</p>
-
-
-        </div>
 
 
 
 
 
-      </div>
-
-
-    </section>
-
-
-
-
-
-
-
-     <section id="public-instance-5Buntitled-5D-method-details" class="method-section anchor-link">
-       <header>
-         <h3 id="public-instance-methods"><a href="#public-instance-methods">Public Instance Methods</a></h3>
-       </header>
-
-
-      <div id="method-i-add" class="method-detail anchor-link ">
-        <div class="method-header">
-
-            <div class="method-heading">
-              <a href="#method-i-add" title="Link to this method">
-                <span class="method-name">add</span>
-                <span class="method-args">(scalar_function)</span>
-              </a>
-            </div>
-
-        </div>
-
-
-          <div class="method-controls">
-            <details class="method-source-toggle">
-              <summary>Source</summary>
-            </details>
-          </div>
-          <div class="method-source-code" id="add-source">
-            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/scalar_function_set.rb, line 22</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">add</span>(<span class="ruby-identifier">scalar_function</span>)
-  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">scalar_function</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">ScalarFunction</span>)
-    <span class="ruby-identifier">raise</span> <span class="ruby-constant">TypeError</span>, <span class="ruby-node">&quot;#{scalar_function.class} is not a DuckDB::ScalarFunction&quot;</span>
-  <span class="ruby-keyword">end</span>
-
-  <span class="ruby-identifier">_add</span>(<span class="ruby-identifier">scalar_function</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div>
-
-
-
-        <div class="method-description">
-
-
-          <p>@param <a href="../lib/duckdb/scalar_function_rb.html">scalar_function</a> [DuckDB::ScalarFunction] the overload to add @return [self] @raise [TypeError] if <a href="../lib/duckdb/scalar_function_rb.html">scalar_function</a> is not a <a href="ScalarFunction.html"><code>DuckDB::ScalarFunction</code></a> @raise [DuckDB::Error] if the overload already exists in the set</p>
-
-
-        </div>
-
-
-
-
-
-      </div>
-
-
-    </section>
 
 
 
