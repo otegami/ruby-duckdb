@@ -493,13 +493,23 @@
       </summary>
       <ul class="nav-list" role="directory">
 
+        <li ><a href="#method-c-create_array">create_array</a></li>
+
+        <li ><a href="#method-c-create_bignum">create_bignum</a></li>
+
+        <li ><a href="#method-c-create_bit">create_bit</a></li>
+
         <li ><a href="#method-c-create_blob">create_blob</a></li>
 
         <li ><a href="#method-c-create_bool">create_bool</a></li>
 
+        <li ><a href="#method-c-create_date">create_date</a></li>
+
         <li ><a href="#method-c-create_decimal">create_decimal</a></li>
 
         <li ><a href="#method-c-create_double">create_double</a></li>
+
+        <li ><a href="#method-c-create_enum">create_enum</a></li>
 
         <li ><a href="#method-c-create_float">create_float</a></li>
 
@@ -513,7 +523,31 @@
 
         <li ><a href="#method-c-create_int8">create_int8</a></li>
 
+        <li ><a href="#method-c-create_interval">create_interval</a></li>
+
+        <li ><a href="#method-c-create_list">create_list</a></li>
+
+        <li ><a href="#method-c-create_map">create_map</a></li>
+
         <li ><a href="#method-c-create_null">create_null</a></li>
+
+        <li ><a href="#method-c-create_struct">create_struct</a></li>
+
+        <li ><a href="#method-c-create_time">create_time</a></li>
+
+        <li ><a href="#method-c-create_time_ns">create_time_ns</a></li>
+
+        <li ><a href="#method-c-create_time_tz">create_time_tz</a></li>
+
+        <li ><a href="#method-c-create_timestamp">create_timestamp</a></li>
+
+        <li ><a href="#method-c-create_timestamp_ms">create_timestamp_ms</a></li>
+
+        <li ><a href="#method-c-create_timestamp_ns">create_timestamp_ns</a></li>
+
+        <li ><a href="#method-c-create_timestamp_s">create_timestamp_s</a></li>
+
+        <li ><a href="#method-c-create_timestamp_tz">create_timestamp_tz</a></li>
 
         <li ><a href="#method-c-create_uhugeint">create_uhugeint</a></li>
 
@@ -525,6 +559,8 @@
 
         <li ><a href="#method-c-create_uint8">create_uint8</a></li>
 
+        <li ><a href="#method-c-create_union">create_union</a></li>
+
         <li ><a href="#method-c-create_varchar">create_varchar</a></li>
 
       </ul>
@@ -532,6 +568,37 @@
   </div>
 
 
+
+  <div class="nav-section">
+    <details class="nav-section-collapsible" open>
+      <summary class="nav-section-header">
+        <span class="nav-section-icon">
+          <svg><use href="#icon-instance-methods"></use></svg>
+        </span>
+        <span class="nav-section-title">Instance Methods</span>
+        <span class="nav-section-chevron">
+          <svg><use href="#icon-chevron"></use></svg>
+        </span>
+      </summary>
+      <ul class="nav-list" role="directory">
+
+        <li ><a href="#method-i-list_child">list_child</a></li>
+
+        <li ><a href="#method-i-list_size">list_size</a></li>
+
+        <li ><a href="#method-i-map_key">map_key</a></li>
+
+        <li ><a href="#method-i-map_size">map_size</a></li>
+
+        <li ><a href="#method-i-map_value">map_value</a></li>
+
+        <li ><a href="#method-i-struct_child">struct_child</a></li>
+
+        <li ><a href="#method-i-to_ruby">to_ruby</a></li>
+
+      </ul>
+    </details>
+  </div>
 
 
   <div id="classindex-section" class="nav-section">
@@ -598,6 +665,164 @@
        <header>
          <h3 id="public-class-methods"><a href="#public-class-methods">Public Class Methods</a></h3>
        </header>
+
+
+      <div id="method-c-create_array" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-c-create_array" title="Link to this method">
+                <span class="method-name">create_array</span>
+                <span class="method-args">(child_type, values)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="create_array-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/value.rb, line 522</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_array</span>(<span class="ruby-identifier">child_type</span>, <span class="ruby-identifier">values</span>)
+  <span class="ruby-identifier">check_value_array!</span>(<span class="ruby-identifier">values</span>)
+
+  <span class="ruby-identifier">_create_array</span>(<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span>.<span class="ruby-identifier">resolve</span>(<span class="ruby-identifier">child_type</span>), <span class="ruby-identifier">values</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Creates a <a href="Value.html"><code>DuckDB::Value</code></a> of ARRAY type. The array size is the number of elements given. The first argument is the element type: a Symbol (e.g. :integer) or a <a href="LogicalType.html"><code>DuckDB::LogicalType</code></a>. The second argument is an Array of <a href="Value.html"><code>DuckDB::Value</code></a> elements.</p>
+
+<pre class="ruby"><span class="ruby-identifier">values</span> = [<span class="ruby-value">1</span>, <span class="ruby-value">2</span>, <span class="ruby-value">3</span>].<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_int32</span>(<span class="ruby-identifier">i</span>) }
+<span class="ruby-identifier">array</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_array</span>(<span class="ruby-value">:integer</span>, <span class="ruby-identifier">values</span>)
+</pre>
+
+<p>@param child_type [Symbol, <a href="LogicalType.html"><code>DuckDB::LogicalType</code></a>] the element logical type. @param values [Array&lt;DuckDB::Value&gt;] the array elements. @return [DuckDB::Value] the created <a href="Value.html"><code>Value</code></a> object. @raise [DuckDB::Error] if child_type cannot be resolved to a</p>
+
+<pre>DuckDB::LogicalType.</pre>
+
+<p>@raise [ArgumentError] if values is not an Array of <a href="Value.html"><code>DuckDB::Value</code></a>.</p>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-c-create_bignum" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-c-create_bignum" title="Link to this method">
+                <span class="method-name">create_bignum</span>
+                <span class="method-args">(value)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="create_bignum-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/value.rb, line 479</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_bignum</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">check_type!</span>(<span class="ruby-identifier">value</span>, <span class="ruby-constant">Integer</span>)
+
+  <span class="ruby-identifier">hex</span> = <span class="ruby-identifier">value</span>.<span class="ruby-identifier">abs</span>.<span class="ruby-identifier">to_s</span>(<span class="ruby-value">16</span>)
+  <span class="ruby-identifier">hex</span> = <span class="ruby-node">&quot;0#{hex}&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">hex</span>.<span class="ruby-identifier">length</span>.<span class="ruby-identifier">odd?</span>
+  <span class="ruby-identifier">_create_bignum</span>([<span class="ruby-identifier">hex</span>].<span class="ruby-identifier">pack</span>(<span class="ruby-string">&#39;H*&#39;</span>), <span class="ruby-identifier">value</span>.<span class="ruby-identifier">negative?</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Creates a <a href="Value.html"><code>DuckDB::Value</code></a> of BIGNUM (arbitrary-precision integer) type.</p>
+
+<pre class="ruby"><span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_bignum</span>(<span class="ruby-value">2</span><span class="ruby-operator">**</span><span class="ruby-value">200</span>)
+</pre>
+
+<p>@param value [Integer] the integer value, of arbitrary size. @return [DuckDB::Value] the created <a href="Value.html"><code>Value</code></a> object. @raise [ArgumentError] if <code>value</code> is not an Integer.</p>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-c-create_bit" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-c-create_bit" title="Link to this method">
+                <span class="method-name">create_bit</span>
+                <span class="method-args">(value)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="create_bit-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/value.rb, line 463</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_bit</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">check_type!</span>(<span class="ruby-identifier">value</span>, <span class="ruby-constant">String</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&quot;expected a String of &#39;0&#39;/&#39;1&#39; characters&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">match?</span>(<span class="ruby-regexp">/\A[01]+\z/</span>)
+
+  <span class="ruby-identifier">pad</span> = <span class="ruby-operator">-</span><span class="ruby-identifier">value</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">%</span> <span class="ruby-value">8</span>
+  <span class="ruby-identifier">_create_bit</span>(<span class="ruby-node">&quot;#{pad.chr}#{[(&#39;1&#39; * pad) + value].pack(&#39;B*&#39;)}&quot;</span>.<span class="ruby-identifier">b</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Creates a <a href="Value.html"><code>DuckDB::Value</code></a> of BIT (bitstring) type.</p>
+
+<pre class="ruby"><span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_bit</span>(<span class="ruby-string">&#39;0101&#39;</span>)
+</pre>
+
+<p>@param value [String] the bitstring: ‘0’/‘1’ characters, MSB first. @return [DuckDB::Value] the created <a href="Value.html"><code>Value</code></a> object. @raise [ArgumentError] if <code>value</code> is not a non-empty String of ‘0’</p>
+
+<pre>and &#39;1&#39; characters.</pre>
+
+
+        </div>
+
+
+
+
+
+      </div>
 
 
       <div id="method-c-create_blob" class="method-detail anchor-link ">
@@ -699,6 +924,55 @@
       </div>
 
 
+      <div id="method-c-create_date" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-c-create_date" title="Link to this method">
+                <span class="method-name">create_date</span>
+                <span class="method-args">(value)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="create_date-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/value.rb, line 251</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_date</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">date</span> = <span class="ruby-identifier">_parse_date</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">_create_date</span>(<span class="ruby-identifier">date</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">date</span>.<span class="ruby-identifier">month</span>, <span class="ruby-identifier">date</span>.<span class="ruby-identifier">day</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Creates a <a href="Value.html"><code>DuckDB::Value</code></a> of DATE type. The argument is parsed leniently: a Date, a Time, or a String accepted by Date.parse, matching <a href="Appender.html#method-i-append_date"><code>Appender#append_date</code></a>.</p>
+
+<pre class="ruby"><span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_date</span>(<span class="ruby-constant">Date</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">2026</span>, <span class="ruby-value">7</span>, <span class="ruby-value">12</span>))
+<span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_date</span>(<span class="ruby-string">&#39;2026-07-12&#39;</span>)
+</pre>
+
+<p>@param value [Date, Time, String] the date value. @return [DuckDB::Value] the created <a href="Value.html"><code>Value</code></a> object. @raise [ArgumentError] if <code>value</code> cannot be parsed to a Date.</p>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
       <div id="method-c-create_decimal" class="method-detail anchor-link ">
         <div class="method-header">
 
@@ -789,6 +1063,63 @@
 </pre>
 
 <p>@param value [Numeric] the numeric value. @return [DuckDB::Value] the created <a href="Value.html"><code>Value</code></a> object. @raise [ArgumentError] if <code>value</code> is not a Numeric.</p>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-c-create_enum" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-c-create_enum" title="Link to this method">
+                <span class="method-name">create_enum</span>
+                <span class="method-args">(enum_type, member)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="create_enum-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/value.rb, line 412</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_enum</span>(<span class="ruby-identifier">enum_type</span>, <span class="ruby-identifier">member</span>)
+  <span class="ruby-identifier">enum_type</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span>.<span class="ruby-identifier">create_enum</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">enum_type</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">enum_type</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
+  <span class="ruby-identifier">check_type!</span>(<span class="ruby-identifier">enum_type</span>, <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;expected ENUM LogicalType, got #{enum_type.type}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">enum_type</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:enum</span>
+
+  <span class="ruby-identifier">_create_enum</span>(<span class="ruby-identifier">enum_type</span>, <span class="ruby-identifier">enum_member_index</span>(<span class="ruby-identifier">enum_type</span>, <span class="ruby-identifier">member</span>))
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Creates a <a href="Value.html"><code>DuckDB::Value</code></a> of ENUM type. The first argument is the enum type: an Array of member names (as accepted by <a href="LogicalType.html#method-c-create_enum"><code>DuckDB::LogicalType.create_enum</code></a>) or an ENUM <a href="LogicalType.html"><code>DuckDB::LogicalType</code></a>. The second argument is the member: its name (String or Symbol) or its 0-based index (Integer).</p>
+
+<pre class="ruby"><span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_enum</span>(<span class="ruby-node">%w[happy sad neutral]</span>, <span class="ruby-string">&#39;sad&#39;</span>)
+
+<span class="ruby-comment"># equivalent, with an explicit ENUM logical type:</span>
+<span class="ruby-identifier">enum_type</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span>.<span class="ruby-identifier">create_enum</span>(<span class="ruby-string">&#39;happy&#39;</span>, <span class="ruby-string">&#39;sad&#39;</span>, <span class="ruby-string">&#39;neutral&#39;</span>)
+<span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_enum</span>(<span class="ruby-identifier">enum_type</span>, <span class="ruby-string">&#39;sad&#39;</span>)
+</pre>
+
+<p>@param enum_type [Array&lt;String&gt;, <a href="LogicalType.html"><code>DuckDB::LogicalType</code></a>] the member names or ENUM logical type. @param member [String, Symbol, Integer] the member name or 0-based index. @return [DuckDB::Value] the created <a href="Value.html"><code>Value</code></a> object. @raise [ArgumentError] if enum_type is not an Array or an ENUM</p>
+
+<pre>DuckDB::LogicalType, or member is not a member of the enum.</pre>
 
 
         </div>
@@ -1103,6 +1434,177 @@
       </div>
 
 
+      <div id="method-c-create_interval" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-c-create_interval" title="Link to this method">
+                <span class="method-name">create_interval</span>
+                <span class="method-args">(value)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="create_interval-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/value.rb, line 388</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_interval</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">check_type!</span>(<span class="ruby-identifier">value</span>, <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Interval</span>)
+
+  <span class="ruby-identifier">_create_interval</span>(<span class="ruby-identifier">value</span>.<span class="ruby-identifier">interval_months</span>, <span class="ruby-identifier">value</span>.<span class="ruby-identifier">interval_days</span>, <span class="ruby-identifier">value</span>.<span class="ruby-identifier">interval_micros</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Creates a <a href="Value.html"><code>DuckDB::Value</code></a> of INTERVAL type. Unlike the other temporal creators, the input is strict: it must be a <a href="Interval.html"><code>DuckDB::Interval</code></a>.</p>
+
+<pre class="ruby"><span class="ruby-identifier">interval</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Interval</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">interval_months:</span> <span class="ruby-value">14</span>, <span class="ruby-value">interval_days:</span> <span class="ruby-value">3</span>, <span class="ruby-value">interval_micros:</span> <span class="ruby-value">12_000_000</span>)
+<span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_interval</span>(<span class="ruby-identifier">interval</span>)
+</pre>
+
+<p>@param value [DuckDB::Interval] the interval value. @return [DuckDB::Value] the created <a href="Value.html"><code>Value</code></a> object. @raise [ArgumentError] if <code>value</code> is not a <a href="Interval.html"><code>DuckDB::Interval</code></a>.</p>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-c-create_list" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-c-create_list" title="Link to this method">
+                <span class="method-name">create_list</span>
+                <span class="method-args">(child_type, values)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="create_list-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/value.rb, line 501</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_list</span>(<span class="ruby-identifier">child_type</span>, <span class="ruby-identifier">values</span>)
+  <span class="ruby-identifier">check_value_array!</span>(<span class="ruby-identifier">values</span>)
+
+  <span class="ruby-identifier">_create_list</span>(<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span>.<span class="ruby-identifier">resolve</span>(<span class="ruby-identifier">child_type</span>), <span class="ruby-identifier">values</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Creates a <a href="Value.html"><code>DuckDB::Value</code></a> of LIST type. The first argument is the element type: a Symbol (e.g. :integer) or a <a href="LogicalType.html"><code>DuckDB::LogicalType</code></a>. The second argument is an Array of <a href="Value.html"><code>DuckDB::Value</code></a> elements.</p>
+
+<pre class="ruby"><span class="ruby-identifier">values</span> = [<span class="ruby-value">1</span>, <span class="ruby-value">2</span>, <span class="ruby-value">3</span>].<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_int32</span>(<span class="ruby-identifier">i</span>) }
+<span class="ruby-identifier">list</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_list</span>(<span class="ruby-value">:integer</span>, <span class="ruby-identifier">values</span>)
+</pre>
+
+<p>@param child_type [Symbol, <a href="LogicalType.html"><code>DuckDB::LogicalType</code></a>] the element logical type. @param values [Array&lt;DuckDB::Value&gt;] the list elements. @return [DuckDB::Value] the created <a href="Value.html"><code>Value</code></a> object. @raise [DuckDB::Error] if child_type cannot be resolved to a</p>
+
+<pre>DuckDB::LogicalType.</pre>
+
+<p>@raise [ArgumentError] if values is not an Array of <a href="Value.html"><code>DuckDB::Value</code></a>.</p>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-c-create_map" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-c-create_map" title="Link to this method">
+                <span class="method-name">create_map</span>
+                <span class="method-args">(map_type, entries)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="create_map-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/value.rb, line 590</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_map</span>(<span class="ruby-identifier">map_type</span>, <span class="ruby-identifier">entries</span>)
+  <span class="ruby-identifier">map_type</span> = <span class="ruby-identifier">resolve_map_type</span>(<span class="ruby-identifier">map_type</span>)
+  <span class="ruby-identifier">check_type!</span>(<span class="ruby-identifier">entries</span>, <span class="ruby-constant">Hash</span>)
+  <span class="ruby-identifier">check_value_array!</span>(<span class="ruby-identifier">entries</span>.<span class="ruby-identifier">keys</span>)
+  <span class="ruby-identifier">check_value_array!</span>(<span class="ruby-identifier">entries</span>.<span class="ruby-identifier">values</span>)
+
+  <span class="ruby-identifier">_create_map</span>(<span class="ruby-identifier">map_type</span>, <span class="ruby-identifier">entries</span>.<span class="ruby-identifier">keys</span>, <span class="ruby-identifier">entries</span>.<span class="ruby-identifier">values</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Creates a <a href="Value.html"><code>DuckDB::Value</code></a> of MAP type. The first argument is the type spec: a one-pair Hash of key type to value type (each a Symbol or a <a href="LogicalType.html"><code>DuckDB::LogicalType</code></a>, as accepted by <a href="LogicalType.html#method-c-create_map"><code>DuckDB::LogicalType.create_map</code></a>) or a MAP <a href="LogicalType.html"><code>DuckDB::LogicalType</code></a>. The second argument is a Hash of <a href="Value.html"><code>DuckDB::Value</code></a> keys to <a href="Value.html"><code>DuckDB::Value</code></a> values.</p>
+
+<pre class="ruby"><span class="ruby-identifier">entries</span> = {
+  <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_varchar</span>(<span class="ruby-string">&#39;a&#39;</span>) <span class="ruby-operator">=&gt;</span> <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_int32</span>(<span class="ruby-value">1</span>),
+  <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_varchar</span>(<span class="ruby-string">&#39;b&#39;</span>) <span class="ruby-operator">=&gt;</span> <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_int32</span>(<span class="ruby-value">2</span>)
+}
+<span class="ruby-identifier">map</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_map</span>({ <span class="ruby-value">varchar:</span> <span class="ruby-value">:integer</span> }, <span class="ruby-identifier">entries</span>)
+
+<span class="ruby-comment"># equivalent, with an explicit MAP logical type:</span>
+<span class="ruby-identifier">map_type</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span>.<span class="ruby-identifier">create_map</span>(<span class="ruby-value">:varchar</span>, <span class="ruby-value">:integer</span>)
+<span class="ruby-identifier">map</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_map</span>(<span class="ruby-identifier">map_type</span>, <span class="ruby-identifier">entries</span>)
+</pre>
+
+<p>@param map_type [Hash, <a href="LogicalType.html"><code>DuckDB::LogicalType</code></a>] the type spec or MAP logical type. @param entries [Hash{DuckDB::Value =&gt; <a href="Value.html"><code>DuckDB::Value</code></a>}] the map entries. @return [DuckDB::Value] the created <a href="Value.html"><code>Value</code></a> object. @raise [DuckDB::Error] if a type in the Hash spec cannot be resolved</p>
+
+<pre>to a DuckDB::LogicalType.</pre>
+
+<p>@raise [ArgumentError] if map_type is not a one-pair Hash or a MAP</p>
+
+<pre>DuckDB::LogicalType, or entries is not a Hash of DuckDB::Value to
+DuckDB::Value.</pre>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
       <div id="method-c-create_null" class="method-detail anchor-link ">
         <div class="method-header">
 
@@ -1141,6 +1643,469 @@
 <pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
 <span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_null</span>
 </pre>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-c-create_struct" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-c-create_struct" title="Link to this method">
+                <span class="method-name">create_struct</span>
+                <span class="method-args">(struct_type, values)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="create_struct-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/value.rb, line 550</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_struct</span>(<span class="ruby-identifier">struct_type</span>, <span class="ruby-identifier">values</span>)
+  <span class="ruby-identifier">struct_type</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span>.<span class="ruby-identifier">create_struct</span>(<span class="ruby-operator">**</span><span class="ruby-identifier">struct_type</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">struct_type</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+  <span class="ruby-identifier">check_type!</span>(<span class="ruby-identifier">struct_type</span>, <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;expected STRUCT LogicalType, got #{struct_type.type}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">struct_type</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:struct</span>
+
+  <span class="ruby-identifier">check_value_array!</span>(<span class="ruby-identifier">values</span>)
+  <span class="ruby-comment"># The C API&#39;s duckdb_create_struct_value reads exactly child_count</span>
+  <span class="ruby-comment"># values from the buffer with no count argument, so a size mismatch</span>
+  <span class="ruby-comment"># here would cause an out-of-bounds read in C.</span>
+  <span class="ruby-identifier">n</span> = <span class="ruby-identifier">struct_type</span>.<span class="ruby-identifier">child_count</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;expected #{n} values for STRUCT, got #{values.size}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">values</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">n</span>
+
+  <span class="ruby-identifier">_create_struct</span>(<span class="ruby-identifier">struct_type</span>, <span class="ruby-identifier">values</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Creates a <a href="Value.html"><code>DuckDB::Value</code></a> of STRUCT type. The first argument is the field spec: a Hash of field name to field type (a Symbol or a <a href="LogicalType.html"><code>DuckDB::LogicalType</code></a>, as accepted by <a href="LogicalType.html#method-c-create_struct"><code>DuckDB::LogicalType.create_struct</code></a>) or a STRUCT <a href="LogicalType.html"><code>DuckDB::LogicalType</code></a>. The second argument is an Array of <a href="Value.html"><code>DuckDB::Value</code></a> field values, positional, matching the struct’s field order.</p>
+
+<pre class="ruby"><span class="ruby-identifier">values</span> = [<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_int32</span>(<span class="ruby-value">1</span>), <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_varchar</span>(<span class="ruby-string">&#39;x&#39;</span>)]
+<span class="ruby-identifier">struct</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_struct</span>({ <span class="ruby-value">a:</span> <span class="ruby-value">:integer</span>, <span class="ruby-value">b:</span> <span class="ruby-value">:varchar</span> }, <span class="ruby-identifier">values</span>)
+
+<span class="ruby-comment"># equivalent, with an explicit STRUCT logical type:</span>
+<span class="ruby-identifier">struct_type</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span>.<span class="ruby-identifier">create_struct</span>(<span class="ruby-value">a:</span> <span class="ruby-value">:integer</span>, <span class="ruby-value">b:</span> <span class="ruby-value">:varchar</span>)
+<span class="ruby-identifier">struct</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_struct</span>(<span class="ruby-identifier">struct_type</span>, <span class="ruby-identifier">values</span>)
+</pre>
+
+<p>@param struct_type [Hash, <a href="LogicalType.html"><code>DuckDB::LogicalType</code></a>] the field spec or STRUCT logical type. @param values [Array&lt;DuckDB::Value&gt;] the field values, in field order. @return [DuckDB::Value] the created <a href="Value.html"><code>Value</code></a> object. @raise [DuckDB::Error] if a field type in the Hash cannot be resolved</p>
+
+<pre>to a DuckDB::LogicalType.</pre>
+
+<p>@raise [ArgumentError] if struct_type is not a Hash or a STRUCT</p>
+
+<pre>DuckDB::LogicalType, values is not an Array of DuckDB::Value, or
+values.size does not match the struct&#39;s field count.</pre>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-c-create_time" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-c-create_time" title="Link to this method">
+                <span class="method-name">create_time</span>
+                <span class="method-args">(value)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="create_time-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/value.rb, line 266</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_time</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">time</span> = <span class="ruby-identifier">_parse_time</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">_create_time</span>(<span class="ruby-identifier">time</span>.<span class="ruby-identifier">hour</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">min</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">sec</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">usec</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Creates a <a href="Value.html"><code>DuckDB::Value</code></a> of TIME type (microsecond precision). The argument is parsed leniently: a Time or a String accepted by Time.parse, matching <a href="Appender.html#method-i-append_time"><code>Appender#append_time</code></a>.</p>
+
+<pre class="ruby"><span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_time</span>(<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
+<span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_time</span>(<span class="ruby-string">&#39;12:34:56.789&#39;</span>)
+</pre>
+
+<p>@param value [Time, String] the time value. @return [DuckDB::Value] the created <a href="Value.html"><code>Value</code></a> object. @raise [ArgumentError] if <code>value</code> cannot be parsed to a Time.</p>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-c-create_time_ns" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-c-create_time_ns" title="Link to this method">
+                <span class="method-name">create_time_ns</span>
+                <span class="method-args">(value)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="create_time_ns-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/value.rb, line 281</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_time_ns</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">time</span> = <span class="ruby-identifier">_parse_time</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">_create_time_ns</span>(<span class="ruby-identifier">time</span>.<span class="ruby-identifier">hour</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">min</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">sec</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">nsec</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Creates a <a href="Value.html"><code>DuckDB::Value</code></a> of TIME_NS type (nanosecond precision). The argument is parsed leniently: a Time or a String accepted by Time.parse. Nanoseconds are preserved.</p>
+
+<pre class="ruby"><span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_time_ns</span>(<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
+<span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_time_ns</span>(<span class="ruby-string">&#39;12:34:56.123456789&#39;</span>)
+</pre>
+
+<p>@param value [Time, String] the time value. @return [DuckDB::Value] the created <a href="Value.html"><code>Value</code></a> object. @raise [ArgumentError] if <code>value</code> cannot be parsed to a Time.</p>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-c-create_time_tz" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-c-create_time_tz" title="Link to this method">
+                <span class="method-name">create_time_tz</span>
+                <span class="method-args">(value)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="create_time_tz-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/value.rb, line 296</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_time_tz</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">time</span> = <span class="ruby-identifier">_parse_time</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">micros</span> = (((((<span class="ruby-identifier">time</span>.<span class="ruby-identifier">hour</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">min</span>) <span class="ruby-operator">*</span> <span class="ruby-value">60</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">sec</span>) <span class="ruby-operator">*</span> <span class="ruby-value">1_000_000</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">usec</span>
+  <span class="ruby-identifier">_create_time_tz</span>(<span class="ruby-identifier">micros</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">utc_offset</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Creates a <a href="Value.html"><code>DuckDB::Value</code></a> of TIMETZ type (time with UTC offset). The argument is parsed leniently: a Time (the offset is taken from the Time) or a String accepted by Time.parse.</p>
+
+<pre class="ruby"><span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_time_tz</span>(<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
+<span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_time_tz</span>(<span class="ruby-string">&#39;12:34:56.789012+05:30&#39;</span>)
+</pre>
+
+<p>@param value [Time, String] the time value. @return [DuckDB::Value] the created <a href="Value.html"><code>Value</code></a> object. @raise [ArgumentError] if <code>value</code> cannot be parsed to a Time.</p>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-c-create_timestamp" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-c-create_timestamp" title="Link to this method">
+                <span class="method-name">create_timestamp</span>
+                <span class="method-args">(value)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="create_timestamp-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/value.rb, line 312</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_timestamp</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">time</span> = <span class="ruby-identifier">to_time</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">_create_timestamp</span>(<span class="ruby-identifier">time</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">month</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">day</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">hour</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">min</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">sec</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">usec</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Creates a <a href="Value.html"><code>DuckDB::Value</code></a> of TIMESTAMP type (microsecond precision). The argument is parsed leniently: a Time, a Date, or a String accepted by Time.parse, matching <a href="Appender.html#method-i-append_timestamp"><code>Appender#append_timestamp</code></a>.</p>
+
+<pre class="ruby"><span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_timestamp</span>(<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
+<span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_timestamp</span>(<span class="ruby-string">&#39;2026-07-12 12:34:56.789&#39;</span>)
+</pre>
+
+<p>@param value [Time, Date, String] the timestamp value. @return [DuckDB::Value] the created <a href="Value.html"><code>Value</code></a> object. @raise [ArgumentError] if <code>value</code> cannot be parsed to a Time.</p>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-c-create_timestamp_ms" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-c-create_timestamp_ms" title="Link to this method">
+                <span class="method-name">create_timestamp_ms</span>
+                <span class="method-args">(value)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="create_timestamp_ms-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/value.rb, line 342</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_timestamp_ms</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">time</span> = <span class="ruby-identifier">to_time</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">_create_timestamp_ms</span>(<span class="ruby-identifier">time</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">month</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">day</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">hour</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">min</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">sec</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">usec</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Creates a <a href="Value.html"><code>DuckDB::Value</code></a> of TIMESTAMP_MS type (millisecond precision). The argument is parsed leniently: a Time, a Date, or a String accepted by Time.parse. Sub-millisecond input is truncated.</p>
+
+<pre class="ruby"><span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_timestamp_ms</span>(<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
+<span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_timestamp_ms</span>(<span class="ruby-string">&#39;2026-07-12 12:34:56.789&#39;</span>)
+</pre>
+
+<p>@param value [Time, Date, String] the timestamp value. @return [DuckDB::Value] the created <a href="Value.html"><code>Value</code></a> object. @raise [ArgumentError] if <code>value</code> cannot be parsed to a Time.</p>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-c-create_timestamp_ns" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-c-create_timestamp_ns" title="Link to this method">
+                <span class="method-name">create_timestamp_ns</span>
+                <span class="method-args">(value)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="create_timestamp_ns-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/value.rb, line 357</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_timestamp_ns</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">time</span> = <span class="ruby-identifier">to_time</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">_create_timestamp_ns</span>(<span class="ruby-identifier">time</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">month</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">day</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">hour</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">min</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">sec</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">nsec</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Creates a <a href="Value.html"><code>DuckDB::Value</code></a> of TIMESTAMP_NS type (nanosecond precision). The argument is parsed leniently: a Time, a Date, or a String accepted by Time.parse. Nanoseconds are preserved.</p>
+
+<pre class="ruby"><span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_timestamp_ns</span>(<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
+<span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_timestamp_ns</span>(<span class="ruby-string">&#39;2026-07-12 12:34:56.123456789&#39;</span>)
+</pre>
+
+<p>@param value [Time, Date, String] the timestamp value. @return [DuckDB::Value] the created <a href="Value.html"><code>Value</code></a> object. @raise [ArgumentError] if <code>value</code> cannot be parsed to a Time.</p>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-c-create_timestamp_s" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-c-create_timestamp_s" title="Link to this method">
+                <span class="method-name">create_timestamp_s</span>
+                <span class="method-args">(value)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="create_timestamp_s-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/value.rb, line 327</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_timestamp_s</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">time</span> = <span class="ruby-identifier">to_time</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">_create_timestamp_s</span>(<span class="ruby-identifier">time</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">month</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">day</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">hour</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">min</span>, <span class="ruby-identifier">time</span>.<span class="ruby-identifier">sec</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Creates a <a href="Value.html"><code>DuckDB::Value</code></a> of TIMESTAMP_S type (second precision). The argument is parsed leniently: a Time, a Date, or a String accepted by Time.parse. Sub-second input is truncated to seconds.</p>
+
+<pre class="ruby"><span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_timestamp_s</span>(<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
+<span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_timestamp_s</span>(<span class="ruby-string">&#39;2026-07-12 12:34:56&#39;</span>)
+</pre>
+
+<p>@param value [Time, Date, String] the timestamp value. @return [DuckDB::Value] the created <a href="Value.html"><code>Value</code></a> object. @raise [ArgumentError] if <code>value</code> cannot be parsed to a Time.</p>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-c-create_timestamp_tz" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-c-create_timestamp_tz" title="Link to this method">
+                <span class="method-name">create_timestamp_tz</span>
+                <span class="method-args">(value)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="create_timestamp_tz-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/value.rb, line 373</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_timestamp_tz</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">time</span> = <span class="ruby-identifier">to_time</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">_create_timestamp_tz</span>((<span class="ruby-identifier">time</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-value">1_000_000</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">usec</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Creates a <a href="Value.html"><code>DuckDB::Value</code></a> of TIMESTAMP WITH TIME ZONE type. The argument is parsed leniently: a Time, a Date, or a String accepted by Time.parse. The instant is stored (as microseconds since the Unix epoch), so the input’s UTC offset is honored.</p>
+
+<pre class="ruby"><span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_timestamp_tz</span>(<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
+<span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_timestamp_tz</span>(<span class="ruby-string">&#39;2026-07-12 12:34:56.789+05:30&#39;</span>)
+</pre>
+
+<p>@param value [Time, Date, String] the timestamp value. @return [DuckDB::Value] the created <a href="Value.html"><code>Value</code></a> object. @raise [ArgumentError] if <code>value</code> cannot be parsed to a Time.</p>
 
 
         </div>
@@ -1407,6 +2372,73 @@
       </div>
 
 
+      <div id="method-c-create_union" class="method-detail anchor-link ">
+        <div class="method-header">
+
+            <div class="method-heading">
+              <a href="#method-c-create_union" title="Link to this method">
+                <span class="method-name">create_union</span>
+                <span class="method-args">(union_type, tag, member_value)</span>
+              </a>
+            </div>
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="create_union-source">
+            <pre class="ruby" data-language="ruby"><span class="ruby-comment"># File lib/duckdb/value.rb, line 443</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_union</span>(<span class="ruby-identifier">union_type</span>, <span class="ruby-identifier">tag</span>, <span class="ruby-identifier">member_value</span>)
+  <span class="ruby-identifier">union_type</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span>.<span class="ruby-identifier">create_union</span>(<span class="ruby-operator">**</span><span class="ruby-identifier">union_type</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">union_type</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+  <span class="ruby-identifier">check_type!</span>(<span class="ruby-identifier">union_type</span>, <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;expected UNION LogicalType, got #{union_type.type}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">union_type</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:union</span>
+
+  <span class="ruby-identifier">check_type!</span>(<span class="ruby-identifier">member_value</span>, <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>)
+  <span class="ruby-identifier">tag_index</span> = <span class="ruby-identifier">union_type</span>.<span class="ruby-identifier">each_member_name</span>.<span class="ruby-identifier">find_index</span>(<span class="ruby-identifier">tag</span>.<span class="ruby-identifier">to_s</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;`#{tag}` is not a member of the union&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag_index</span>.<span class="ruby-identifier">nil?</span>
+
+  <span class="ruby-identifier">_create_union</span>(<span class="ruby-identifier">union_type</span>, <span class="ruby-identifier">tag_index</span>, <span class="ruby-identifier">member_value</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Creates a <a href="Value.html"><code>DuckDB::Value</code></a> of UNION type. The first argument is the union type: a Hash of member name to member type (as accepted by <a href="LogicalType.html#method-c-create_union"><code>DuckDB::LogicalType.create_union</code></a>) or a UNION <a href="LogicalType.html"><code>DuckDB::LogicalType</code></a>. The second argument is the member tag (String or Symbol), and the third is the member value as a <a href="Value.html"><code>DuckDB::Value</code></a> of the tagged type.</p>
+
+<pre class="ruby"><span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_union</span>({ <span class="ruby-value">num:</span> <span class="ruby-value">:integer</span>, <span class="ruby-value">str:</span> <span class="ruby-value">:varchar</span> }, <span class="ruby-value">:num</span>, <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_int32</span>(<span class="ruby-value">42</span>))
+<span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_ruby</span> <span class="ruby-comment">#=&gt; 42</span>
+
+<span class="ruby-comment"># equivalent, with an explicit UNION logical type:</span>
+<span class="ruby-identifier">union_type</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span>.<span class="ruby-identifier">create_union</span>(<span class="ruby-value">num:</span> <span class="ruby-value">:integer</span>, <span class="ruby-value">str:</span> <span class="ruby-value">:varchar</span>)
+<span class="ruby-identifier">value</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_union</span>(<span class="ruby-identifier">union_type</span>, <span class="ruby-value">:num</span>, <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_int32</span>(<span class="ruby-value">42</span>))
+</pre>
+
+<p>@param union_type [Hash, <a href="LogicalType.html"><code>DuckDB::LogicalType</code></a>] the member spec or UNION logical type. @param tag [String, Symbol] the member tag. @param member_value [DuckDB::Value] the member value. @return [DuckDB::Value] the created <a href="Value.html"><code>Value</code></a> object. @raise [ArgumentError] if union_type is not a Hash or a UNION</p>
+
+<pre>DuckDB::LogicalType, tag is not a member of the union, or
+member_value is not a DuckDB::Value.</pre>
+
+<p>@raise [DuckDB::Error] if member_value does not match the tagged</p>
+
+<pre>member&#39;s type.</pre>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
       <div id="method-c-create_varchar" class="method-detail anchor-link ">
         <div class="method-header">
 
@@ -1463,6 +2495,394 @@
 
 
 
+
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section anchor-link">
+       <header>
+         <h3 id="public-instance-methods"><a href="#public-instance-methods">Public Instance Methods</a></h3>
+       </header>
+
+
+      <div id="method-i-list_child" class="method-detail anchor-link ">
+        <div class="method-header">
+
+
+              <div class="method-heading">
+                <a href="#method-i-list_child" title="Link to this method">
+                  <span class="method-callseq">
+                    list_child(index) &rarr; DuckDB::Value
+                  </span>
+                </a>
+              </div>
+
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="list_child-source">
+            <pre class="c" data-language="c">static VALUE value_list_child(VALUE self, VALUE vidx) {
+    duckdb_value child = duckdb_get_list_child(rbduckdb_get_struct_value(self)-&gt;value, (idx_t)NUM2ULL(vidx));
+
+    if (child == NULL) {
+        rb_raise(rb_eIndexError, &quot;list index out of range (or the value is not a LIST)&quot;);
+    }
+    return rbduckdb_value_new(child);
+}</pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Returns the element at the specified index (0-based) of a LIST value as a <a href="Value.html"><code>DuckDB::Value</code></a>. Raises IndexError if the index is out of range or the value is not a LIST.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
+<span class="ruby-identifier">child_type</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span>.<span class="ruby-identifier">resolve</span>(<span class="ruby-value">:integer</span>)
+<span class="ruby-identifier">values</span> = [<span class="ruby-value">1</span>, <span class="ruby-value">2</span>, <span class="ruby-value">3</span>].<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_int32</span>(<span class="ruby-identifier">i</span>) }
+<span class="ruby-identifier">list</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_list</span>(<span class="ruby-identifier">child_type</span>, <span class="ruby-identifier">values</span>)
+<span class="ruby-identifier">list</span>.<span class="ruby-identifier">list_child</span>(<span class="ruby-value">0</span>) <span class="ruby-comment"># =&gt; DuckDB::Value</span>
+</pre>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-i-list_size" class="method-detail anchor-link ">
+        <div class="method-header">
+
+
+              <div class="method-heading">
+                <a href="#method-i-list_size" title="Link to this method">
+                  <span class="method-callseq">
+                    list_size &rarr; Integer
+                  </span>
+                </a>
+              </div>
+
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="list_size-source">
+            <pre class="c" data-language="c">static VALUE value_list_size(VALUE self) {
+    return ULL2NUM(duckdb_get_list_size(rbduckdb_get_struct_value(self)-&gt;value));
+}</pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Returns the number of elements of a LIST value.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
+<span class="ruby-identifier">child_type</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span>.<span class="ruby-identifier">resolve</span>(<span class="ruby-value">:integer</span>)
+<span class="ruby-identifier">values</span> = [<span class="ruby-value">1</span>, <span class="ruby-value">2</span>, <span class="ruby-value">3</span>].<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_int32</span>(<span class="ruby-identifier">i</span>) }
+<span class="ruby-identifier">list</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_list</span>(<span class="ruby-identifier">child_type</span>, <span class="ruby-identifier">values</span>)
+<span class="ruby-identifier">list</span>.<span class="ruby-identifier">list_size</span> <span class="ruby-comment"># =&gt; 3</span>
+</pre>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-i-map_key" class="method-detail anchor-link ">
+        <div class="method-header">
+
+
+              <div class="method-heading">
+                <a href="#method-i-map_key" title="Link to this method">
+                  <span class="method-callseq">
+                    map_key(index) &rarr; DuckDB::Value
+                  </span>
+                </a>
+              </div>
+
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="map_key-source">
+            <pre class="c" data-language="c">static VALUE value_map_key(VALUE self, VALUE vidx) {
+    duckdb_value child = duckdb_get_map_key(rbduckdb_get_struct_value(self)-&gt;value, (idx_t)NUM2ULL(vidx));
+
+    if (child == NULL) {
+        rb_raise(rb_eIndexError, &quot;map index out of range (or the value is not a MAP)&quot;);
+    }
+    return rbduckdb_value_new(child);
+}</pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Returns the key at the specified index (0-based) of a MAP value as a <a href="Value.html"><code>DuckDB::Value</code></a>. Raises IndexError if the index is out of range or the value is not a MAP.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
+<span class="ruby-identifier">map_type</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span>.<span class="ruby-identifier">create_map</span>(<span class="ruby-value">:varchar</span>, <span class="ruby-value">:integer</span>)
+<span class="ruby-identifier">keys</span> = [<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_varchar</span>(<span class="ruby-string">&#39;a&#39;</span>)]
+<span class="ruby-identifier">values</span> = [<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_int32</span>(<span class="ruby-value">1</span>)]
+<span class="ruby-identifier">map</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_map</span>(<span class="ruby-identifier">map_type</span>, <span class="ruby-identifier">keys</span>, <span class="ruby-identifier">values</span>)
+<span class="ruby-identifier">map</span>.<span class="ruby-identifier">map_key</span>(<span class="ruby-value">0</span>) <span class="ruby-comment"># =&gt; DuckDB::Value</span>
+</pre>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-i-map_size" class="method-detail anchor-link ">
+        <div class="method-header">
+
+
+              <div class="method-heading">
+                <a href="#method-i-map_size" title="Link to this method">
+                  <span class="method-callseq">
+                    map_size &rarr; Integer
+                  </span>
+                </a>
+              </div>
+
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="map_size-source">
+            <pre class="c" data-language="c">static VALUE value_map_size(VALUE self) {
+    return ULL2NUM(duckdb_get_map_size(rbduckdb_get_struct_value(self)-&gt;value));
+}</pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Returns the number of entries of a MAP value.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
+<span class="ruby-identifier">map_type</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span>.<span class="ruby-identifier">create_map</span>(<span class="ruby-value">:varchar</span>, <span class="ruby-value">:integer</span>)
+<span class="ruby-identifier">keys</span> = [<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_varchar</span>(<span class="ruby-string">&#39;a&#39;</span>)]
+<span class="ruby-identifier">values</span> = [<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_int32</span>(<span class="ruby-value">1</span>)]
+<span class="ruby-identifier">map</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_map</span>(<span class="ruby-identifier">map_type</span>, <span class="ruby-identifier">keys</span>, <span class="ruby-identifier">values</span>)
+<span class="ruby-identifier">map</span>.<span class="ruby-identifier">map_size</span> <span class="ruby-comment"># =&gt; 1</span>
+</pre>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-i-map_value" class="method-detail anchor-link ">
+        <div class="method-header">
+
+
+              <div class="method-heading">
+                <a href="#method-i-map_value" title="Link to this method">
+                  <span class="method-callseq">
+                    map_value(index) &rarr; DuckDB::Value
+                  </span>
+                </a>
+              </div>
+
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="map_value-source">
+            <pre class="c" data-language="c">static VALUE value_map_value(VALUE self, VALUE vidx) {
+    duckdb_value child = duckdb_get_map_value(rbduckdb_get_struct_value(self)-&gt;value, (idx_t)NUM2ULL(vidx));
+
+    if (child == NULL) {
+        rb_raise(rb_eIndexError, &quot;map index out of range (or the value is not a MAP)&quot;);
+    }
+    return rbduckdb_value_new(child);
+}</pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Returns the value at the specified index (0-based) of a MAP value as a <a href="Value.html"><code>DuckDB::Value</code></a>. Raises IndexError if the index is out of range or the value is not a MAP.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
+<span class="ruby-identifier">map_type</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span>.<span class="ruby-identifier">create_map</span>(<span class="ruby-value">:varchar</span>, <span class="ruby-value">:integer</span>)
+<span class="ruby-identifier">keys</span> = [<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_varchar</span>(<span class="ruby-string">&#39;a&#39;</span>)]
+<span class="ruby-identifier">values</span> = [<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_int32</span>(<span class="ruby-value">1</span>)]
+<span class="ruby-identifier">map</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_map</span>(<span class="ruby-identifier">map_type</span>, <span class="ruby-identifier">keys</span>, <span class="ruby-identifier">values</span>)
+<span class="ruby-identifier">map</span>.<span class="ruby-identifier">map_value</span>(<span class="ruby-value">0</span>) <span class="ruby-comment"># =&gt; DuckDB::Value</span>
+</pre>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-i-struct_child" class="method-detail anchor-link ">
+        <div class="method-header">
+
+
+              <div class="method-heading">
+                <a href="#method-i-struct_child" title="Link to this method">
+                  <span class="method-callseq">
+                    struct_child(index) &rarr; DuckDB::Value
+                  </span>
+                </a>
+              </div>
+
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="struct_child-source">
+            <pre class="c" data-language="c">static VALUE value_struct_child(VALUE self, VALUE vidx) {
+    duckdb_value child = duckdb_get_struct_child(rbduckdb_get_struct_value(self)-&gt;value, (idx_t)NUM2ULL(vidx));
+
+    if (child == NULL) {
+        rb_raise(rb_eIndexError, &quot;struct index out of range (or the value is not a STRUCT)&quot;);
+    }
+    return rbduckdb_value_new(child);
+}</pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Returns the field at the specified index (0-based) of a STRUCT value as a <a href="Value.html"><code>DuckDB::Value</code></a>. Raises IndexError if the index is out of range or the value is not a STRUCT.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
+<span class="ruby-identifier">struct_type</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span>.<span class="ruby-identifier">create_struct</span>(<span class="ruby-value">a:</span> <span class="ruby-value">:integer</span>, <span class="ruby-value">b:</span> <span class="ruby-value">:varchar</span>)
+<span class="ruby-identifier">values</span> = [<span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_int32</span>(<span class="ruby-value">1</span>), <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_varchar</span>(<span class="ruby-string">&#39;x&#39;</span>)]
+<span class="ruby-identifier">struct</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_struct</span>(<span class="ruby-identifier">struct_type</span>, <span class="ruby-identifier">values</span>)
+<span class="ruby-identifier">struct</span>.<span class="ruby-identifier">struct_child</span>(<span class="ruby-value">0</span>) <span class="ruby-comment"># =&gt; DuckDB::Value</span>
+</pre>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div id="method-i-to_ruby" class="method-detail anchor-link ">
+        <div class="method-header">
+
+
+              <div class="method-heading">
+                <a href="#method-i-to_ruby" title="Link to this method">
+                  <span class="method-callseq">
+                    to_ruby &rarr; Object
+                  </span>
+                </a>
+              </div>
+
+
+        </div>
+
+
+          <div class="method-controls">
+            <details class="method-source-toggle">
+              <summary>Source</summary>
+            </details>
+          </div>
+          <div class="method-source-code" id="to_ruby-source">
+            <pre class="c" data-language="c">static VALUE value_to_ruby(VALUE self) {
+    return rbduckdb_duckdb_value_to_ruby(rbduckdb_get_struct_value(self)-&gt;value);
+}</pre>
+          </div>
+
+
+
+        <div class="method-description">
+
+
+          <p>Converts the <a href="Value.html"><code>DuckDB::Value</code></a> to a Ruby object. Scalar types are converted to their natural Ruby classes. LIST and ARRAY values are converted to Array recursively. STRUCT and MAP values are converted to Hash recursively (STRUCT keys are Symbols; MAP keys keep their natural Ruby type). ENUM values are converted to the member String. UNION values are converted to the member’s Ruby value. BIT values are converted to a String of ‘0’/‘1’ characters. BIGNUM values are converted to Integer. BLOB values are converted to a BINARY-encoded String. DECIMAL values are converted to BigDecimal. NULL is converted to nil. Returns nil for unsupported types.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;duckdb&#39;</span>
+<span class="ruby-identifier">child_type</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">LogicalType</span>.<span class="ruby-identifier">resolve</span>(<span class="ruby-value">:integer</span>)
+<span class="ruby-identifier">values</span> = [<span class="ruby-value">1</span>, <span class="ruby-value">2</span>, <span class="ruby-value">3</span>].<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_int32</span>(<span class="ruby-identifier">i</span>) }
+<span class="ruby-identifier">list</span> = <span class="ruby-constant">DuckDB</span><span class="ruby-operator">::</span><span class="ruby-constant">Value</span>.<span class="ruby-identifier">create_list</span>(<span class="ruby-identifier">child_type</span>, <span class="ruby-identifier">values</span>)
+<span class="ruby-identifier">list</span>.<span class="ruby-identifier">to_ruby</span> <span class="ruby-comment"># =&gt; [1, 2, 3]</span>
+</pre>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+
+    </section>
 
 
 

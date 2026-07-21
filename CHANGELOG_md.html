@@ -11,7 +11,7 @@
   <meta name="keywords" content="ruby,documentation,CHANGELOG">
   <meta
     name="description"
-    content="CHANGELOG: Changelog All notable changes to this project will be documented in this file. Unreleased - bump Ruby to 3."
+    content="CHANGELOG: Changelog All notable changes to this project will be documented in this file. TIME_NS`)."
   >
 
 
@@ -23,7 +23,7 @@
 
 
 
-    <meta property="og:description" content="Changelog All notable changes to this project will be documented in this file. Unreleased - bump Ruby to 3.">
+    <meta property="og:description" content="Changelog All notable changes to this project will be documented in this file. TIME_NS`).">
 
 
 
@@ -35,7 +35,7 @@
 
 
 
-    <meta name="twitter:description" content="Changelog All notable changes to this project will be documented in this file. Unreleased - bump Ruby to 3.">
+    <meta name="twitter:description" content="Changelog All notable changes to this project will be documented in this file. TIME_NS`).">
 
 
 
@@ -473,11 +473,69 @@
 
 <h1 id="label-Unreleased"><a href="#label-Unreleased">Unreleased</a></h1>
 <ul><li>
+<p>support TIME_NS columns in <a href="DuckDB/ScalarFunction.html"><code>DuckDB::ScalarFunction</code></a> and <a href="DuckDB/AggregateFunction.html"><code>DuckDB::AggregateFunction</code></a>: TIME_NS can now be used as parameter and return type (with <code>DuckDB::LogicalType::TIME_NS</code>). Requires <a href="DuckDB.html"><code>DuckDB</code></a> &gt;= 1.5.0 for full TIME_NS support in the C API.</p>
+</li><li>
 <p>bump Ruby to 3.4.10 on CI.</p>
+</li><li>
+<p>add <code>DuckDB::Connection#table_names(sql, qualified: false)</code> returning the table names referenced by a SQL query without executing it (binds <code>duckdb_get_table_names</code>). With <code>qualified: true</code>, names are returned as written in the query (including schema/catalog prefixes and aliases). Result order is unspecified.</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-c-create_list"><code>DuckDB::Value.create_list(child_type, values)</code></a> and <a href="DuckDB/Value.html#method-c-create_array"><code>DuckDB::Value.create_array(child_type, values)</code></a> to create LIST/ARRAY values from an element type (a Symbol like <code>:integer</code> or a <a href="DuckDB/LogicalType.html"><code>DuckDB::LogicalType</code></a>) and an Array of <a href="DuckDB/Value.html"><code>DuckDB::Value</code></a> elements. The created values can be bound to prepared statements with bind_value.</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-i-list_size"><code>DuckDB::Value#list_size</code></a> and <a href="DuckDB/Value.html#method-i-list_child"><code>DuckDB::Value#list_child(index)</code></a> to read LIST value elements as <a href="DuckDB/Value.html"><code>DuckDB::Value</code></a>.</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-i-to_ruby"><code>DuckDB::Value#to_ruby</code></a> converting a <a href="DuckDB/Value.html"><code>DuckDB::Value</code></a> to a Ruby object. LIST/ARRAY values are converted to Ruby Arrays recursively; NULL becomes <code>nil</code>.</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-c-create_struct"><code>DuckDB::Value.create_struct(struct_type, values)</code></a> to create STRUCT values from a field spec (a Hash like <code>{ a: :integer, b: :varchar }</code> or a STRUCT <a href="DuckDB/LogicalType.html"><code>DuckDB::LogicalType</code></a>) and an Array of <a href="DuckDB/Value.html"><code>DuckDB::Value</code></a> field values (positional, matching field order).</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-i-struct_child"><code>DuckDB::Value#struct_child(index)</code></a> to read STRUCT fields as <a href="DuckDB/Value.html"><code>DuckDB::Value</code></a>. <a href="DuckDB/Value.html#method-i-to_ruby"><code>DuckDB::Value#to_ruby</code></a> converts STRUCT values to a Hash with Symbol keys recursively.</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-c-create_map"><code>DuckDB::Value.create_map(map_type, entries)</code></a> to create MAP values from a type spec (a one-pair Hash like <code>{ varchar: :integer }</code> or a MAP <a href="DuckDB/LogicalType.html"><code>DuckDB::LogicalType</code></a>) and a Hash of <a href="DuckDB/Value.html"><code>DuckDB::Value</code></a> keys to <a href="DuckDB/Value.html"><code>DuckDB::Value</code></a> values.</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-i-map_size"><code>DuckDB::Value#map_size</code></a>, map_key(index) and map_value(index) to read MAP entries as <a href="DuckDB/Value.html"><code>DuckDB::Value</code></a>. <a href="DuckDB/Value.html#method-i-to_ruby"><code>DuckDB::Value#to_ruby</code></a> converts MAP values to a Hash recursively (keys keep their natural Ruby type).</p>
 </li><li>
 <p>add <a href="DuckDB/PreparedStatement.html#method-i-column_count"><code>DuckDB::PreparedStatement#column_count</code></a>, column_name(col_index), column_type(col_index) and column_logical_type(col_index) to get the result-set column metadata of a prepared statement without executing it (column index is 0-based). Useful for PG-style statement caching where column types must be known before execution.</p>
 </li><li>
 <p>add <a href="DuckDB/Error.html#method-i-error_type"><code>DuckDB::Error#error_type</code></a> returning the <a href="DuckDB.html"><code>DuckDB</code></a> error category as a Symbol (e.g. <code>:constraint</code>, <code>:catalog</code>, <code>:parser</code>), or <code>nil</code> for errors not originating from a query result. Helps the ActiveRecord adapter map failures to <code>RecordNotUnique</code> / <code>NotNullViolation</code> etc. without parsing error messages.</p>
+</li><li>
+<p>add <a href="DuckDB/PreparedStatement.html#method-i-param_logical_type"><code>DuckDB::PreparedStatement#param_logical_type(param_index)</code></a> returning the <a href="DuckDB/LogicalType.html"><code>DuckDB::LogicalType</code></a> of a bind parameter (1-based index), giving richer type information than param_type (e.g. decimal width/scale, nested types).</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-c-create_date"><code>DuckDB::Value.create_date(value)</code></a> to create DATE values from a Date, a Time, or a parseable String (same lenient input as <code>Appender#append_date</code>).</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-c-create_time"><code>DuckDB::Value.create_time(value)</code></a> to create TIME values (microsecond precision) from a Time or a parseable String.</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-c-create_time_ns"><code>DuckDB::Value.create_time_ns(value)</code></a> to create TIME_NS values (nanosecond precision) from a Time or a parseable String. TIME_NS values are now converted to Ruby Time with full nanosecond precision (previously truncated to microseconds).</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-c-create_time_tz"><code>DuckDB::Value.create_time_tz(value)</code></a> to create TIMETZ values from a Time (the UTC offset is taken from the Time) or a parseable String with offset.</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-c-create_timestamp"><code>DuckDB::Value.create_timestamp(value)</code></a> to create TIMESTAMP values (microsecond precision) from a Time, a Date, or a parseable String (same lenient input as <code>Appender#append_timestamp</code>).</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-c-create_timestamp_s"><code>DuckDB::Value.create_timestamp_s(value)</code></a> to create TIMESTAMP_S values (second precision; sub-second input is truncated).</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-c-create_timestamp_ms"><code>DuckDB::Value.create_timestamp_ms(value)</code></a> to create TIMESTAMP_MS values (millisecond precision).</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-c-create_timestamp_ns"><code>DuckDB::Value.create_timestamp_ns(value)</code></a> to create TIMESTAMP_NS values (nanosecond precision). TIMESTAMP_NS values (including query results) are now converted to Ruby Time with full nanosecond precision (previously truncated to microseconds).</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-c-create_timestamp_tz"><code>DuckDB::Value.create_timestamp_tz(value)</code></a> to create TIMESTAMP WITH TIME ZONE values; the instant is stored correctly regardless of the input UTC offset.</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-c-create_interval"><code>DuckDB::Value.create_interval(value)</code></a> to create INTERVAL values from a <a href="DuckDB/Interval.html"><code>DuckDB::Interval</code></a>.</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-c-create_enum"><code>DuckDB::Value.create_enum(enum_type, member)</code></a> to create ENUM values from an Array of member names (or an ENUM <a href="DuckDB/LogicalType.html"><code>DuckDB::LogicalType</code></a>) and a member name or 0-based index.</p>
+</li><li>
+<p><a href="DuckDB/Value.html#method-i-to_ruby"><code>DuckDB::Value#to_ruby</code></a> converts ENUM values to the member String.</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-c-create_union"><code>DuckDB::Value.create_union(union_type, tag, value)</code></a> to create UNION values from a member spec Hash like <code>{ num: :integer, str: :varchar }</code> (or a UNION <a href="DuckDB/LogicalType.html"><code>DuckDB::LogicalType</code></a>), a member tag, and a <a href="DuckDB/Value.html"><code>DuckDB::Value</code></a>. <a href="DuckDB/Value.html#method-i-to_ruby"><code>DuckDB::Value#to_ruby</code></a> converts UNION values to the member value.</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-c-create_bit"><code>DuckDB::Value.create_bit(value)</code></a> to create BIT values from a String of ‘0’/‘1’ characters.</p>
+</li><li>
+<p><a href="DuckDB/Value.html#method-i-to_ruby"><code>DuckDB::Value#to_ruby</code></a> converts BIT values to a String of ‘0’/‘1’ characters.</p>
+</li><li>
+<p>add <a href="DuckDB/Value.html#method-c-create_bignum"><code>DuckDB::Value.create_bignum(value)</code></a> to create BIGNUM (arbitrary-precision integer) values from a Ruby Integer.</p>
+</li><li>
+<p><a href="DuckDB/Value.html#method-i-to_ruby"><code>DuckDB::Value#to_ruby</code></a> converts BIGNUM values to a Ruby Integer.</p>
+</li><li>
+<p><a href="DuckDB/Value.html#method-i-to_ruby"><code>DuckDB::Value#to_ruby</code></a> converts BLOB values to a BINARY-encoded String.</p>
+</li><li>
+<p><a href="DuckDB/Value.html#method-i-to_ruby"><code>DuckDB::Value#to_ruby</code></a> converts DECIMAL values to a BigDecimal.</p>
 </li></ul>
 
 <h1 id="label-1.5.4.0+-+2026-06-20"><a href="#label-1.5.4.0+-+2026-06-20">1.5.4.0 - 2026-06-20</a></h1>
